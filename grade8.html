@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Level Topics | 2026</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #3b82f6;
+            --bg-light: #f8fafc;
+            --text-dark: #0f172a;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        header {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            border-left: 10px solid var(--accent);
+        }
+
+        header h1 { margin: 0; color: var(--primary); }
+
+        .topic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .topic-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e2e8f0;
+            transition: 0.2s ease;
+        }
+
+        .topic-item:hover {
+            border-color: var(--accent);
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.1);
+        }
+
+        .topic-info h3 { margin: 0; font-size: 1.2rem; }
+        .topic-info p { margin: 5px 0 0; color: #64748b; font-size: 0.9rem; }
+
+        .status-badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-btn">&#8592; Back to Dashboard</a>
+
+        <header>
+            <h1>Grade 8 Mathematics</h1>
+            <p>Select a title to see lesson exercises.</p>
+        </header>
+
+        <div class="topic-list">
+            <!-- Topic 1 -->
+            <a href="Powers8 Mak.html" class="topic-item">
+                <div class="topic-info">
+                    <h3>Powers</h3>
+                    <p>Applying the rules of powers - Simplifying expressions involving powers</p>
+                </div>
+                <span class="status-badge">Available</span>
+            </a>
+
+            <!-- Topic 2 -->
+            <a href="Radicals8 Mak.html" class="topic-item">
+                <div class="topic-info">
+                    <h3>Rules of Radicals</h3>
+                    <p>Applying the rules of radicals - Simplifying expressions involving radicals.</p>
+                </div>
+                <span class="status-badge">Available</span>
+            </a>
+
+            <!-- Topic 3 -->
+            <a href="Identities8 Mak.html" class="topic-item">
+                <div class="topic-info">
+                    <h3>Algebraic identities</h3>
+                    <p>Applying the algebraic identities - Term by term multiplication.</p>
+                </div>
+                <span class="status-badge">Available</span>
+            </a>
+
+           <!-- Topic 4 -->
+            <a href="Factorize8 Mak.html" class="topic-item">
+                <div class="topic-info">
+                    <h3>Factorization</h3>
+                    <p>Factoring by taking the G.C.F - Factoring using identites - Mixed factorizations.</p>
+                </div>
+                <span class="status-badge">Available</span>
+            </a>
+
+            <!-- Topic 4 -->
+            <a href="ZeroProduct equations8 Mak.html" class="topic-item">
+            <div class="topic-info">
+            <h3>Solving equations by factoring (Zero products)</h3>
+            <p>Solving equations by taking common factor - Solving using identities - Various equations.</p>
+            </div>
+            <span class="status-badge">Available</span>
+            </a>
+
+        <!-- Topic 5 -->
+        <a href="Geometry Problems Parallelogram8 Mak.html" class="topic-item">
+        <div class="topic-info">
+        <h3>Interactive Geometry Problems: Parallelograms</h3>
+        <p>Using the properties of a parallelogram and the ways to prove it</p>
+        </div>
+        <span class="status-badge">Available</span>
+        </a>
+
+        <!-- Topic 6 -->
+        <a href="Geometry Problems Special8 Mak.html" class="topic-item">
+        <div class="topic-info">
+        <h3>Interactive Geometry Problems: Special Parallelograms</h3>
+        <p>Using the properties of Rectangle, Rhombus and Square and the ways to prove them</p>
+        </div>
+        <span class="status-badge">Available</span>
+        </a>
+
+        <!-- Topic 9 -->
+        <a href="Geometry Problems Special8 Mak.html" class="topic-item">
+        <div class="topic-info">
+        <h3>Interactive Geometry Problems: Midsegment Theorem</h3>
+        <p>Solved problems about midsegment theorem (or midpoint theorem)</p>
+        </div>
+        <span class="status-badge">Available</span>
+        </a>
+
+            <!-- Add more topics here -->
+        </div>
+    </div>
+
+</body>
+</html>

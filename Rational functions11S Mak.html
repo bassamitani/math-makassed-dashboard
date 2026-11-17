@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rational Functions (2026)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://jsxgraph.org/distrib/jsxgraph.css" />
+    <script type="text/javascript" src="https://jsxgraph.org/distrib/jsxgraphcore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
+
+         <style>
+         .jxgbox { border: 1px solid #cbd5e1; width: 500px; height: 500px; max-width: 100%; margin: 0; }
+         .config-panel { background-color: #f8fafc; border: 1px solid #cbd5e1; width: 500px; max-width: 100%; border-bottom: none; }
+         .info-box { background-color: white; border: 1px solid #cbd5e1; border-top: none; width: 500px; max-width: 100%; padding: 15px; min-height: auto; }
+         .math-block { background: #f8fafc; padding: 0.6rem; border-radius: 0.25rem; margin-bottom: 0.4rem; font-size: 0.85rem; border-left: 4px solid #1e3a8a; }
+         .activity-separator { border-top: 6px solid #1e3a8a; margin: 3rem 0; width: 500px; }
+         strong { color: #1e3a8a; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; }
+         </style>
+        </head>
+        <body class="bg-slate-50 p-6 md:p-12 font-sans" onload="initAll()">
+    <a href="grade11S.html" style="padding-left:190px" class="back-btn">&#8592; Back to Grade 11S</a>
+    <a href="grade11SE.html" style="padding-left:190px" class="back-btn">&#8592; Back to Grade 11SE</a>
+   <header class="max-w-4xl mx-auto bg-white rounded-2xl p-8 mb-12 shadow-md text-center border-b-4 border-blue-900">
+             <div style="display: flex; justify-content: center; align-items: center;">
+            <img src= "data:image/jpeg;base64,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";>
+                </div>
+                </br>
+        <h1 id="mainTitle" class="text-3xl md:text-5xl font-black text-blue-900 tracking-tight uppercase">Rational Functions</h1>
+        <p class="text-xl font-bold text-slate-500 uppercase tracking-widest mt-2">Grade 11S-SE | 2025-2026 Academic Session</p>
+         <div class="mt-6 inline-block bg-blue-100 text-blue-800 px-4 py-1 rounded-full font-semibold">Interactive document by Mathematics Department General Coordinator</div>
+
+         </header>
+         <main class="max-w-4xl mx-auto flex flex-col items-center">
+         <!-- Activities 1-3 Sections (Implicitly kept from previous versions) -->
+         <!-- REPLACE YOUR ACTIVITY 1 SECTION WITH THIS -->
+        <section class="mb-10">
+         <h2 class="text-xl font-bold text-blue-800 mb-4 activity-title">Activity 1: Rational Function \(f(x)=\frac{ax+b}{cx+d}\)</h2>
+         <div class="config-panel p-4 flex flex-wrap gap-4 items-center rounded-t-lg justify-between">
+         <div class="flex gap-2">
+         <label class="text-xs font-bold uppercase">a: <input type="number" id="aIn" value="1" step="0.5" autocomplete="off" class="w-14 border p-1 rounded" oninput="updateAll()"></label>
+         <label class="text-xs font-bold uppercase">b: <input type="number" id="bIn" value="2" step="0.5" autocomplete="off" class="w-14 border p-1 rounded" oninput="updateAll()"></label>
+         <label class="text-xs font-bold uppercase">c: <input type="number" id="cIn" value="1" step="0.5" autocomplete="off" class="w-14 border p-1 rounded" oninput="updateAll()"></label>
+         <label class="text-xs font-bold uppercase">d: <input type="number" id="dIn" value="-1" step="0.5" autocomplete="off" class="w-14 border p-1 rounded" oninput="updateAll()"></label>
+         </div>
+         <div class="flex items-center gap-2">
+         <input type="checkbox" id="chkTangent" onchange="updateAll()">
+         <label for="chkTangent" class="text-xs font-bold uppercase">Show Tangent</label>
+         </div>
+         <div class="flex items-center gap-2">
+         <input type="checkbox" id="chkBranch" onchange="updateAll()">
+         <label for="chkBranch" class="text-xs font-bold uppercase">Switch Branch</label>
+         </div>
+         </div>
+         <div id="jxgbox" class="jxgbox"></div>
+         <div id="infoBox" class="info-box rounded-b-lg"></div>
+        </section>
+
+         <div class="activity-separator"></div>
+
+ <section class="mb-10">
+    <h2 class="text-xl font-bold text-blue-800 mb-4">Activity 2: Rational Function \(f(x) = ax + b + \frac{c}{dx + e}\)</h2>
+    <div class="config-panel p-4 flex flex-wrap gap-4 items-center rounded-t-lg justify-between">
+        <div class="flex gap-2">
+            <label class="text-xs font-bold uppercase">a: <input type="number" id="aIn2" value="1" step="0.5" class="w-12 border p-1 rounded" oninput="updateActivity2()"></label>
+            <label class="text-xs font-bold uppercase">b: <input type="number" id="bIn2" value="1" step="0.5" class="w-12 border p-1 rounded" oninput="updateActivity2()"></label>
+            <label class="text-xs font-bold uppercase">c: <input type="number" id="cIn2" value="2" step="0.5" class="w-12 border p-1 rounded" oninput="updateActivity2()"></label>
+            <label class="text-xs font-bold uppercase">d: <input type="number" id="dIn2" value="1" step="0.5" class="w-12 border p-1 rounded" oninput="updateActivity2()"></label>
+            <label class="text-xs font-bold uppercase">e: <input type="number" id="eIn2" value="-2" step="0.5" class="w-12 border p-1 rounded" oninput="updateActivity2()"></label>
+        </div>
+        <div class="flex items-center gap-2">
+            <input type="checkbox" id="chkTangent2" onchange="updateActivity2()">
+            <label for="chkTangent2" class="text-xs font-bold uppercase">Show Tangent</label>
+        </div>
+        <div class="flex items-center gap-2">
+            <input type="checkbox" id="chkBranch2" onchange="updateActivity2()">
+            <label for="chkBranch2" class="text-xs font-bold uppercase">Switch Branch</label>
+        </div>
+    </div>
+    <div id="jxgbox2" class="jxgbox"></div>
+    <div id="infoBox2" class="info-box rounded-b-lg"></div>
+</section>
+
+
+         <div class="activity-separator"></div>
+
+<section class="mb-10">
+    <h2 class="text-xl font-bold text-blue-800 mb-4">Activity 3: Rational Function \(f(x) = \cfrac{ax^2 + bx + c}{dx + e}\)</h2>
+    <div class="config-panel p-4 flex flex-wrap gap-4 items-center rounded-t-lg justify-between">
+        <div class="flex gap-2">
+            <label class="text-xs font-bold uppercase">a: <input type="number" id="aIn3" value="0.5" step="0.1" class="w-12 border p-1 rounded" oninput="updateActivity3()"></label>
+            <label class="text-xs font-bold uppercase">b: <input type="number" id="bIn3" value="1" step="0.5" class="w-12 border p-1 rounded" oninput="updateActivity3()"></label>
+            <label class="text-xs font-bold uppercase">c: <input type="number" id="cIn3" value="0" step="0.5" class="w-12 border p-1 rounded" oninput="updateActivity3()"></label>
+            <label class="text-xs font-bold uppercase">d: <input type="number" id="dIn3" value="1" step="0.5" class="w-12 border p-1 rounded" oninput="updateActivity3()"></label>
+            <label class="text-xs font-bold uppercase">e: <input type="number" id="eIn3" value="-2" step="0.5" class="w-12 border p-1 rounded" oninput="updateActivity3()"></label>
+        </div>
+        <div class="flex items-center gap-2">
+            <input type="checkbox" id="chkTangent3" onchange="updateActivity3()">
+            <label for="chkTangent3" class="text-xs font-bold uppercase">Show Tangent</label>
+        </div>
+        <div class="flex items-center gap-2">
+            <input type="checkbox" id="chkBranch3" onchange="updateActivity3()">
+            <label for="chkBranch3" class="text-xs font-bold uppercase">Switch Branch</label>
+        </div>
+    </div>
+    <div id="jxgbox3" class="jxgbox"></div>
+    <div id="infoBox3" class="info-box rounded-b-lg"></div>
+</section>
+
+
+         <div class="activity-separator"></div>
+
+  <section class="mb-10">
+ <h2 class="text-xl font-bold text-blue-800 mb-4">Activity 4: Intersection of Rational Functions</h2>
+ <div class="config-panel p-4 flex flex-col gap-3 rounded-t-lg">
+ <div class="flex items-center gap-3">
+ <span class="text-xs font-bold text-blue-700 w-12">f(x):</span>
+ <input type="text" id="fnF" value="(x-3)/(x^2+2)" class="flex-1 border p-2 rounded font-mono text-sm" oninput="updateIntersections()">
+ </div>
+ <div class="flex items-center gap-3">
+ <span class="text-xs font-bold text-red-600 w-12">g(x):</span>
+ <input type="text" id="fnG" value="(-x+3)/(x+1)" class="flex-1 border p-2 rounded font-mono text-sm" oninput="updateIntersections()">
+ </div>
+ </div>
+ <div id="jxgbox5" class="jxgbox"></div>
+ <div id="infoBox5" class="info-box rounded-b-lg"></div>
+</section>
+
+
+         </main>
+
+
+         <script>
+         let boards = {}, elements = {};
+         const boardOpts = { boundingbox: [-10, 10, 10, -10], axis: true, showCopyright: false, defaultAxes: { x: { ticks: { insertTicks: false, ticksDistance: 1 } }, y: { ticks: { insertTicks: false, ticksDistance: 1 } } } };
+         function formatPoly(coeffs) {
+         let terms = [];
+         const degMax = coeffs.length - 1;
+         coeffs.forEach((c, i) => {
+         if (Math.abs(c) < 0.001) return;
+         let deg = degMax - i;
+         let val = Number.isInteger(c) ? c : parseFloat(c.toFixed(2));
+         let absVal = Math.abs(val);
+         let term = "";
+         if (deg > 0) {
+         if (absVal === 1) term = (val < 0) ? "-" : "";
+         else term = val;
+         term += (deg === 1) ? "x" : "x^" + deg;
+         } else term = val;
+         if (terms.length > 0 && val > 0) term = "+ " + term;
+         else if (val < 0 && terms.length > 0) term = "- " + term.toString().replace("-", "");
+         terms.push(term);
+         });
+         return terms.length === 0 ? "0" : terms.join(" ");
+         }
+         function getTangentEq(x0, y0, derivCoeffs) {
+         let m = 0;
+         const deg = derivCoeffs.length - 1;
+         derivCoeffs.forEach((c, i) => m += c * Math.pow(x0, deg - i));
+         let b = y0 - m * x0;
+         return "y = " + formatPoly([m, b]);
+         }
+
+        // Add a global variable for the vertical asymptote line element
+        let verticalAsymptote, horizontalAsymptote, centerPoint;
+
+    function initAll() {
+    if(window.renderMathInElement) renderMathInElement(document.body);
+
+    // Board Initialization
+    boards.b1 = JXG.JSXGraph.initBoard('jxgbox', boardOpts);
+    elements.f1 = boards.b1.create('functiongraph', [x => (1*x + 2)/(1*x - 1)], {strokeColor: 'blue', strokeWidth: 3});
+
+    // Initialize Glider A
+    elements.pA1 = boards.b1.create('glider', [3, 2.5, elements.f1], {name: 'A', color: 'blue'});
+
+    // NEW: Add event listener to update the info box when Point A moves
+    elements.pA1.on('drag', function() {
+        updateAll();
+    });
+
+    elements.t1 = boards.b1.create('tangent', [elements.pA1], {visible: false, strokeColor: 'orange'});
+
+    // ... (rest of your initAll for boards 2, 3, and 4)
+    updateAll();
+
+    // Inside your initAll() function
+boards.b2 = JXG.JSXGraph.initBoard('jxgbox2', boardOpts);
+elements.f2 = boards.b2.create('functiongraph', [x => x], {strokeColor: 'green', strokeWidth: 3});
+elements.pA2 = boards.b2.create('glider', [5, 5, elements.f2], {name: 'A', color: 'green'});
+elements.t2 = boards.b2.create('tangent', [elements.pA2], {visible: false, strokeColor: 'orange'});
+
+// Update info box live on drag
+elements.pA2.on('drag', () => updateActivity2());
+
+// Trigger initial render
+updateActivity2();
+
+// Inside your existing initAll() function
+boards.b3 = JXG.JSXGraph.initBoard('jxgbox3', boardOpts);
+elements.f3 = boards.b3.create('functiongraph', [x => 0], {strokeColor: 'purple', strokeWidth: 3});
+elements.pA3 = boards.b3.create('glider', [4, 2, elements.f3], {name: 'A', color: 'purple'});
+elements.t3 = boards.b3.create('tangent', [elements.pA3], {visible: false, strokeColor: 'orange'});
+
+// Update live coordinates on drag
+elements.pA3.on('drag', () => updateActivity3());
+
+// Initial call
+updateActivity3();
+
+// Inside initAll()
+boards.b4 = JXG.JSXGraph.initBoard('jxgbox5', boardOpts);
+elements.fGraph = null;
+elements.gGraph = null;
+elements.points4 = [];
+asymptotesF = [];
+asymptotesG = [];
+
+// Call the update function to show the initial "nice example"
+updateIntersections();
+
+
+}
+
+function updateAll() {
+    const a = parseFloat(document.getElementById('aIn').value);
+    const b = parseFloat(document.getElementById('bIn').value);
+    const c = parseFloat(document.getElementById('cIn').value);
+    const d = parseFloat(document.getElementById('dIn').value);
+
+    const vertX = -d / c;
+    const horizY = a / c;
+    const fmt = (num) => Number(num.toFixed(2));
+
+    // 1. Update Function and Tangent Visibility
+    elements.f1.Y = x => (a * x + b) / (c * x + d);
+    elements.f1.updateCurve();
+    elements.t1.setAttribute({ visible: document.getElementById('chkTangent').checked });
+
+    // 2. Branch Switching Logic
+    const isRightBranch = document.getElementById('chkBranch').checked;
+    let pAx = elements.pA1.X();
+    const onWrongSide = isRightBranch ? (pAx <= vertX) : (pAx >= vertX);
+
+    if (onWrongSide) {
+        pAx = isRightBranch ? vertX + 2 : vertX - 2;
+        const pAyNew = (a * pAx + b) / (c * pAx + d);
+        elements.pA1.setPosition(JXG.COORDS_BY_USER, [pAx, pAyNew]);
+    }
+
+    // 3. Update Visuals
+    if (verticalAsymptote) boards.b1.removeObject(verticalAsymptote);
+    if (horizontalAsymptote) boards.b1.removeObject(horizontalAsymptote);
+    if (centerPoint) boards.b1.removeObject(centerPoint);
+
+    verticalAsymptote = boards.b1.create('line', [[vertX, -10], [vertX, 10]], { strokeColor: 'gray', dash: 2, name: `x = ${fmt(vertX)}`, withLabel: true });
+    horizontalAsymptote = boards.b1.create('line', [[-10, horizY], [10, horizY]], { strokeColor: 'gray', dash: 2, name: `y = ${fmt(horizY)}`, withLabel: true });
+
+    // CHANGED: withLabel is now set to false to remove the word "Center"
+    centerPoint = boards.b1.create('point', [vertX, horizY], {
+        name: 'Center',
+        color: 'red',
+        size: 3,
+        withLabel: false
+    });
+
+    boards.b1.update();
+
+    // 4. Calculations for Info Box
+    const pAy = elements.pA1.Y();
+    const xInt = (a !== 0) ? fmt(-b / a) : "None";
+    const yInt = (d !== 0) ? fmt(b / d) : "None";
+    const derivNum = fmt(a * d - b * c);
+
+    const slopeM = (a * d - b * c) / Math.pow(c * pAx + d, 2);
+    const interceptB = pAy - (slopeM * pAx);
+    const tangentEqStr = "y = " + formatPoly([slopeM, interceptB]);
+
+    document.getElementById('infoBox').innerHTML = `
+    <div class="grid grid-cols-2 gap-4">
+        <div class="math-block"><strong>FUNCTION</strong><br>\\(f(x) = \\cfrac{${formatPoly([a, b])}}{${formatPoly([c, d])}}\\)</div>
+        <div class="math-block"><strong>DERIVATIVE</strong><br>\\(f'(x) = \\cfrac{${derivNum}}{(${formatPoly([c, d])})^2}\\)</div>
+        <div class="math-block"><strong>POINT A</strong><br>\\(A(${fmt(pAx)}, ${fmt(pAy)})\\)</div>
+        <div class="math-block"><strong>SYMMETRY</strong><br>Center: (${fmt(vertX)}, ${fmt(horizY)})</div>
+        <div class="math-block"><strong>INTERCEPTS</strong><br>X: (${xInt}) | Y: (0, ${yInt})</div>
+        <div class="math-block"><strong>ASYMPTOTES</strong><br>V: x = ${fmt(vertX)} | H: y = ${fmt(horizY)}</div>
+        <div class="math-block col-span-2"><strong>TANGENT AT A</strong><br>\\(${tangentEqStr}\\)</div>
+    </div>`;
+
+    renderMathInElement(document.getElementById('infoBox'));
+}
+
+let obliqueAsymptote2, verticalAsymptote2, centerPoint2;
+
+function updateActivity2() {
+    const a = parseFloat(document.getElementById('aIn2').value);
+    const b = parseFloat(document.getElementById('bIn2').value);
+    const c = parseFloat(document.getElementById('cIn2').value);
+    const d = parseFloat(document.getElementById('dIn2').value);
+    const e = parseFloat(document.getElementById('eIn2').value);
+    const fmt = (num) => Number(num.toFixed(2));
+
+    const vertX = -e / d;
+    const centerSubY = a * vertX + b; // Symmetry point y-coord
+
+    // 1. Update Graph
+    elements.f2.Y = x => a * x + b + c / (d * x + e);
+    elements.f2.updateCurve();
+    elements.t2.setAttribute({ visible: document.getElementById('chkTangent2').checked });
+
+    // 2. Branch Switching
+    const isRightBranch = document.getElementById('chkBranch2').checked;
+    let pAx = elements.pA2.X();
+    if (isRightBranch ? (pAx <= vertX) : (pAx >= vertX)) {
+        pAx = isRightBranch ? vertX + 2 : vertX - 2;
+        const pAyNew = a * pAx + b + c / (d * pAx + e);
+        elements.pA2.setPosition(JXG.COORDS_BY_USER, [pAx, pAyNew]);
+    }
+
+    // 3. Update Visuals (Fixed Asymptote Line)
+    if (obliqueAsymptote2) boards.b2.removeObject(obliqueAsymptote2);
+    if (verticalAsymptote2) boards.b2.removeObject(verticalAsymptote2);
+    if (centerPoint2) boards.b2.removeObject(centerPoint2);
+
+    // Correct homogeneous coordinates for y = ax + b are [-b, -a, 1]
+    obliqueAsymptote2 = boards.b2.create('line', [-b, -a, 1], {
+        strokeColor: 'gray', dash: 2, name: `y = ${formatPoly([a, b])}`, withLabel: true
+    });
+    verticalAsymptote2 = boards.b2.create('line', [[vertX, -10], [vertX, 10]], {
+        strokeColor: 'gray', dash: 2, name: `x = ${fmt(vertX)}`, withLabel: true
+    });
+    centerPoint2 = boards.b2.create('point', [vertX, centerSubY], { color: 'red', size: 3, withLabel: false });
+
+    boards.b2.update();
+
+    // 4. Calculations for Info Box
+    const pAy = elements.pA2.Y();
+    // f'(x) = a - (c*d)/(dx+e)^2
+    const derivNum = fmt(-(c * d));
+    const slopeM = a - (c * d) / Math.pow(d * pAx + e, 2);
+    const interceptB = pAy - (slopeM * pAx);
+    const tangentEqStr = "y = " + formatPoly([slopeM, interceptB]);
+
+    // Intercepts
+    const yInt = (e !== 0) ? fmt(b + c / e) : "None";
+    // X-intercepts found by solving quadratic: a*d*x^2 + (a*e + b*d)*x + (b*e + c) = 0
+    const A_quad = a * d, B_quad = a * e + b * d, C_quad = b * e + c;
+    const disc = B_quad * B_quad - 4 * A_quad * C_quad;
+    let xInts = "None";
+    if (disc >= 0 && A_quad !== 0) {
+        const x1 = (-B_quad + Math.sqrt(disc)) / (2 * A_quad);
+        const x2 = (-B_quad - Math.sqrt(disc)) / (2 * A_quad);
+        xInts = (x1 === x2) ? fmt(x1) : `${fmt(x1)}, ${fmt(x2)}`;
+    }
+
+    document.getElementById('infoBox2').innerHTML = `
+    <div class="grid grid-cols-2 gap-4">
+        <div class="math-block"><strong>FUNCTION</strong><br>\\(f(x) = ${formatPoly([a, b])} + \\cfrac{${c}}{${formatPoly([d, e])}}\\)</div>
+        <div class="math-block"><strong>DERIVATIVE</strong><br>\\(f'(x) = ${a} + \\cfrac{${derivNum}}{(${formatPoly([d, e])})^2}\\)</div>
+        <div class="math-block"><strong>POINT A</strong><br>\\(A(${fmt(pAx)}, ${fmt(pAy)})\\)</div>
+        <div class="math-block"><strong>SYMMETRY</strong><br>Center: (${fmt(vertX)}, ${fmt(centerSubY)})</div>
+        <div class="math-block"><strong>INTERCEPTS</strong><br>X: ${xInts} | Y: (0, ${yInt})</div>
+        <div class="math-block"><strong>ASYMPTOTES</strong><br>V: x = ${fmt(vertX)} | O: y = ${formatPoly([a, b])}</div>
+        <div class="math-block col-span-2"><strong>TANGENT AT A</strong><br>\\(${tangentEqStr}\\)</div>
+    </div>`;
+
+    renderMathInElement(document.getElementById('infoBox2'));
+}
+
+ 
+let obliqueAsymptote3, verticalAsymptote3, centerPoint3;
+
+function updateActivity3() {
+    const a = parseFloat(document.getElementById('aIn3').value);
+    const b = parseFloat(document.getElementById('bIn3').value);
+    const c = parseFloat(document.getElementById('cIn3').value);
+    let d = parseFloat(document.getElementById('dIn3').value);
+    const e = parseFloat(document.getElementById('eIn3').value);
+
+    if (d === 0) d = 0.0001;
+    const fmt = (num) => Number(num.toFixed(2));
+    const vertX = -e / d;
+
+    // 1. Oblique Asymptote Calculations
+    const mO = a / d;
+    const kO = (b - (a * e) / d) / d;
+    const centerSubY = mO * vertX + kO;
+
+    // 2. Update Graph & Tangent
+    elements.f3.Y = x => (a * x * x + b * x + c) / (d * x + e);
+    elements.f3.updateCurve();
+    elements.t3.setAttribute({ visible: document.getElementById('chkTangent3').checked });
+
+    // 3. Branch Switching
+    const isRightBranch = document.getElementById('chkBranch3').checked;
+    let pAx = elements.pA3.X();
+    if (isRightBranch ? (pAx <= vertX) : (pAx >= vertX)) {
+        pAx = isRightBranch ? vertX + 2 : vertX - 2;
+        const pAyNew = (a * pAx * pAx + b * pAx + c) / (d * pAx + e);
+        elements.pA3.setPosition(JXG.COORDS_BY_USER, [pAx, pAyNew]);
+    }
+
+    // 4. Update Visuals
+    if (obliqueAsymptote3) boards.b3.removeObject(obliqueAsymptote3);
+    if (verticalAsymptote3) boards.b3.removeObject(verticalAsymptote3);
+    if (centerPoint3) boards.b3.removeObject(centerPoint3);
+
+    // CHANGED: withLabel is now set to false for the Oblique Asymptote
+    obliqueAsymptote3 = boards.b3.create('line', [-kO, -mO, 1], {
+        strokeColor: 'gray',
+        dash: 2,
+        withLabel: false
+    });
+
+    verticalAsymptote3 = boards.b3.create('line', [[vertX, -10], [vertX, 10]], {
+        strokeColor: 'gray',
+        dash: 2,
+        name: `x = ${fmt(vertX)}`,
+        withLabel: true
+    });
+
+    centerPoint3 = boards.b3.create('point', [vertX, centerSubY], {
+        color: 'red',
+        size: 3,
+        withLabel: false
+    });
+
+    boards.b3.update();
+
+    // 5. Info Box Calculations
+    const pAy = elements.pA3.Y();
+    const derivNumCoeffs = [a * d, 2 * a * e, (b * e - c * d)];
+    const numVal = derivNumCoeffs[0] * pAx * pAx + derivNumCoeffs[1] * pAx + derivNumCoeffs[2];
+    const slopeM = numVal / Math.pow(d * pAx + e, 2);
+    const interceptB = pAy - (slopeM * pAx);
+    const tangentEqStr = "y = " + formatPoly([slopeM, interceptB]);
+
+    const yInt = (e !== 0) ? fmt(c / e) : "None";
+    const disc = b * b - 4 * a * c;
+    let xInts = "None";
+    if (disc >= 0 && a !== 0) {
+        const x1 = (-b + Math.sqrt(disc)) / (2 * a);
+        const x2 = (-b - Math.sqrt(disc)) / (2 * a);
+        xInts = (x1 === x2) ? fmt(x1) : `${fmt(x1)}, ${fmt(x2)}`;
+    }
+
+    document.getElementById('infoBox3').innerHTML = `
+    <div class="grid grid-cols-2 gap-4">
+        <div class="math-block"><strong>FUNCTION</strong><br>\\(f(x) = \\cfrac{${formatPoly([a, b, c])}}{${formatPoly([d, e])}}\\)</div>
+        <div class="math-block"><strong>DERIVATIVE</strong><br>\\(f'(x) = \\cfrac{${formatPoly(derivNumCoeffs)}}{(${formatPoly([d, e])})^2}\\)</div>
+        <div class="math-block"><strong>POINT A</strong><br>\\(A(${fmt(pAx)}, ${fmt(pAy)})\\)</div>
+        <div class="math-block"><strong>SYMMETRY</strong><br>Center: (${fmt(vertX)}, ${fmt(centerSubY)})</div>
+        <div class="math-block"><strong>INTERCEPTS</strong><br>X: ${xInts} | Y: (0, ${yInt})</div>
+        <div class="math-block"><strong>ASYMPTOTES</strong><br>V: x = ${fmt(vertX)} | O: y = ${formatPoly([mO, kO])}</div>
+        <div class="math-block col-span-2"><strong>TANGENT AT A</strong><br>\\(${tangentEqStr}\\)</div>
+    </div>`;
+
+    renderMathInElement(document.getElementById('infoBox3'));
+}
+
+
+
+         /**
+         * Finds a single root of a function h(x) within a given interval [a, b] using the bisection method.
+         * Assumes h(a) and h(b) have opposite signs (Intermediate Value Theorem).
+         * @param {Function} h - The function to find the root of (f(x) - g(x)).
+         * @param {number} a - The start of the interval.
+         * @param {number} b - The end of the interval.
+         * @param {number} tolerance - The desired precision.
+         * @param {number} maxIterations - Maximum iterations to prevent infinite loops.
+         * @returns {number|null} The approximate x-coordinate of the root, or null if not found.
+         */
+         function findRootInInterval(h, a, b, tolerance = 1e-6, maxIterations = 100) {
+         let fa = h(a);
+         let fb = h(b);
+         if (fa * fb >= 0) {
+         // No guaranteed root in this interval
+         return null;
+         }
+         for (let i = 0; i < maxIterations; i++) {
+         let c = (a + b) / 2; // Midpoint
+         let fc = h(c);
+         if (Math.abs(b - a) < tolerance || fc === 0) {
+         return c; // Root found
+         }
+         if (fc * fa < 0) {
+         b = c;
+         fb = fc;
+         } else {
+         a = c;
+         fa = fc;
+         }
+         }
+         return (a + b) / 2; // Best approximation after max iterations
+         }
+         /**
+         * Scans a range to find multiple potential root intervals and solves them.
+         * This is a heuristic approach to find multiple roots across the graph display.
+         */
+         function findRootsOfH(h) {
+         const xMin = -10, xMax = 10;
+         const step = 0.1; // Decreased step size for better accuracy
+         const potentialRootsX = [];
+         // Scan for sign changes with a finer step
+         for (let x = xMin; x < xMax; x += step) {
+         const hx = h(x);
+         const hxNext = h(x + step);
+         if (hx * hxNext < 0) {
+         // Found a sign change interval [x, x + step]
+         const root = findRootInInterval(h, x, x + step);
+         if (root !== null) {
+         // Ensure the root is within the main range
+         if (root >= xMin && root <= xMax) {
+         potentialRootsX.push(root);
+         }
+         }
+         }
+         // Also check if function value is very close to zero at the exact step point
+         if (Math.abs(hxNext) < 1e-6) {
+         potentialRootsX.push(x + step);
+         }
+         }
+         // Filter for unique roots if the same root is found multiple times due to step size
+         return [...new Set(potentialRootsX.map(r => r.toFixed(4)))].map(Number);
+         }
+
+
+let asymptotesF = [], asymptotesG = [];
+
+function updateIntersections() {
+    const fStr = document.getElementById('fnF').value;
+    const gStr = document.getElementById('fnG').value;
+    const fmt = (num) => Number(num.toFixed(2));
+
+    // Cleanup previous objects (0.1.20)
+    if (elements.fGraph) boards.b4.removeObject(elements.fGraph);
+    if (elements.gGraph) boards.b4.removeObject(elements.gGraph);
+    asymptotesF.forEach(a => boards.b4.removeObject(a));
+    asymptotesG.forEach(a => boards.b4.removeObject(a));
+    elements.points4.forEach(p => boards.b4.removeObject(p));
+    asymptotesF = []; asymptotesG = []; elements.points4 = [];
+
+    try {
+        const fComp = math.compile(fStr);
+        const gComp = math.compile(gStr);
+        const f = (x) => fComp.evaluate({x});
+        const g = (x) => gComp.evaluate({x});
+
+        elements.fGraph = boards.b4.create('functiongraph', [f], {strokeColor: '#1e3a8a', strokeWidth: 3});
+        elements.gGraph = boards.b4.create('functiongraph', [g], {strokeColor: '#dc2626', strokeWidth: 3});
+
+        // 1. Numerical Asymptote Detection (Horizontal and Vertical) (0.1.21)
+        const detectAsymptotes = (fn, color, storage) => {
+            for (let x = -10; x <= 10; x += 0.02) {
+                let y1 = fn(x), y2 = fn(x + 0.01);
+                if (Math.abs(y1) > 100 && Math.sign(y1) !== Math.sign(y2)) {
+                    storage.push(boards.b4.create('line', [[x, -10], [x, 10]], {strokeColor: color, dash: 1, strokeOpacity: 0.3}));
+                }
+            }
+            const hVal = fn(1000);
+            if (Math.abs(hVal) < 100) {
+                storage.push(boards.b4.create('line', [[-10, hVal], [10, hVal]], {strokeColor: color, dash: 1, strokeOpacity: 0.3}));
+                return fmt(hVal);
+            }
+            return "None";
+        };
+
+        const haF = detectAsymptotes(f, '#1e3a8a', asymptotesF);
+        const haG = detectAsymptotes(g, '#dc2626', asymptotesG);
+
+        // 2. FIXED SLANT ASYMPTOTE LOGIC
+        const findSlant = (fn, color, storage) => {
+            const xLarge = 1000;
+            // Calculate slope and intercept using raw numbers for reliability
+            const m = (fn(xLarge) - fn(xLarge - 1));
+            const b = fn(xLarge) - (m * xLarge);
+
+            // Check if m is a true, stable slope
+            if (Math.abs(m) > 0.01 && Math.abs(m) < 100) {
+                // Use raw m and b here
+                storage.push(boards.b4.create('line', [-b, -m, 1], {
+                    strokeColor: color, dash: 2, strokeOpacity: 0.3, withLabel: false
+                }));
+                return `y = ${formatPoly([m, b])}`;
+            }
+            return "None";
+        };
+
+        const slantF = findSlant(f, '#1e3a8a', asymptotesF);
+        const slantG = findSlant(g, '#dc2626', asymptotesG);
+
+        // 3. FIXED INTERSECTION LOGIC (0.1.23)
+        const rawRoots = findRootsOfH(x => f(x) - g(x));
+        let validPoints = [];
+
+        rawRoots.forEach(x => {
+            const valF = f(x);
+            const valG = g(x);
+
+            if (Math.abs(valF) < 100 && Math.abs(valF - valG) < 0.1) {
+                validPoints.push({x: x, y: valF});
+                elements.points4.push(boards.b4.create('point', [x, valF], {
+                    name: `(${fmt(x)}, ${fmt(valF)})`, color: 'black', size: 3, withLabel: true, label: {fontSize: 10, offset: [5, 10]}
+                }));
+            }
+        });
+
+        const pointsHtml = validPoints.length > 0 ? validPoints.map(p => `(${fmt(p.x)}, ${fmt(p.y)})`).join(', ') : "None found";
+
+        // 4. Update Info Box with \cfrac display
+        const formatLatexRational = (str) => {
+            if (str.includes('/')) {
+                const parts = str.split('/');
+                // Remove outer parentheses if they exist for a cleaner look
+                const num = parts[0].replace(/^\((.*)\)$/, '$1');
+                const den = parts[1].replace(/^\((.*)\)$/, '$1');
+                return `\\cfrac{${num}}{${den}}`;
+            }
+            return str;
+        };
+
+        document.getElementById('infoBox5').innerHTML = `
+        <div class="grid grid-cols-1 gap-3">
+            <div class="math-block" style="border-left-color: #1e3a8a;">
+                <strong style="color: #1e3a8a;">FUNCTION f(x) (BLUE)</strong>
+                \\(f(x) = ${formatLatexRational(fStr)}\\) <br>
+                <span class="text-xs">H.Asy: y = ${haF} | O.Asy: ${slantF}</span>
+            </div>
+            <div class="math-block" style="border-left-color: #dc2626;">
+                <strong style="color: #dc2626;">FUNCTION g(x) (RED)</strong>
+                \\(g(x) = ${formatLatexRational(gStr)}\\) <br>
+                <span class="text-xs">H.Asy: y = ${haG} | O.Asy: ${slantG}</span>
+            </div>
+            <div class="math-block">
+                <strong>INTERSECTION POINTS</strong><br>
+                ${pointsHtml}
+            </div>
+        </div>`;
+
+
+        renderMathInElement(document.getElementById('infoBox5'));
+        boards.b4.update();
+
+    } catch (e) {
+        document.getElementById('infoBox5').innerHTML = `<div class="text-red-500 font-bold p-2">Error in expression.</div>`;
+    }
+}
+
+
+
+
+
+         </script>
+         <footer class="bg-slate-900 text-white py-12 text-center mt-12 rounded-t-3xl shadow-inner">
+         <p class="font-black text-2xl tracking-tighter">General Coordinator</p>
+         <p class="text-slate-500 text-sm mt-2 uppercase tracking-widest">Mathematics Department &copy; 2025-2026</p>
+         <div class="mt-6 flex justify-center gap-4">
+         <button onclick="window.print()" class="bg-white/10 px-4 py-2 rounded-lg text-xs hover:bg-white/20 transition">Download as PDF</button>
+         </div>
+         </footer>
+
+   <footer class="bg-slate-900 text-white py-12 text-center mt-12 rounded-t-3xl shadow-inner">
+        <p class="font-black text-2xl tracking-tighter">General Coordinator</p>
+        <p class="text-slate-500 text-sm mt-2 uppercase tracking-widest">Mathematics Department &copy; 2025-2026</p>
+        <div class="mt-6 flex justify-center gap-4">
+            <button onclick="window.print()" class="bg-white/10 px-4 py-2 rounded-lg text-xs hover:bg-white/20 transition">Download as PDF</button>
+        </div>
+    </footer>
+
+
+</body>
+</html>

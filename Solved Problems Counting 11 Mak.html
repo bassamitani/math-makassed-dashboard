@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solved Problems</title>
+
+    <link rel="stylesheet" href="cdn.jsdelivr.net">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
+     <script src="https://cdn.tailwindcss.com"></script>
+
+ <!-- KaTeX Auto-Render Extension with Custom Delimiter Config -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false},
+                {left: '\\[', right: '\\]', display: true}
+            ],
+            throwOnError: false
+        });">
+        </script>
+
+ <style>
+/* 1. Global Variables & Base Setup */
+:root {
+    --accent: #2563eb;       /* Primary Blue */
+    --accent-bg: #e7f3ff;    /* Light Blue for active states */
+    --star-color: #f59e0b;   /* Gold for ratings */
+    --bg-sidebar: #f8f9fa;   /* Light gray sidebar */
+    --border-color: #e0e0e0;
+    --text-main: #333;
+    --text-muted: #64748b;
+}
+
+body {
+    display: flex;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    height: 100vh;
+    color: var(--text-main);
+    overflow: hidden; /* Prevents double scrollbars */
+}
+
+/* 2. Sidebar & Search Layout */
+#sidebar {
+    width: 300px;
+    border-right: 1px solid var(--border-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-sidebar);
+    box-sizing: border-box;
+}
+
+#search-box {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+#search-box:focus {
+    border-color: var(--accent);
+}
+
+#nav-list {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+/* 3. Collapsible Sidebar Items */
+.sidebar-group {
+    margin-bottom: 8px;
+}
+
+/* Remove default browser arrows */
+summary {
+    list-style: none;
+    outline: none;
+}
+summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Main Clickable Topic Title */
+.compact-title {
+    padding: 12px 15px;
+    cursor: pointer;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+    display: block;
+}
+
+.compact-title:hover {
+    background-color: #edf2f7;
+}
+
+/* Active/Selected Highlight */
+.compact-title.active-link,
+details[open] .compact-title {
+    background-color: var(--accent-bg);
+    color: var(--accent);
+    border-left-color: var(--accent);
+}
+
+/* Sub-problem Bullet List */
+.parts-list {
+    margin: 8px 0 15px 35px;
+    padding: 0;
+    list-style-type: disc;
+    color: var(--text-muted);
+    font-size: 0.85em;
+}
+
+.parts-list li {
+    margin-bottom: 5px;
+}
+
+/* 4. Main Content Area */
+#content {
+    flex: 1;
+    padding: 40px 60px;
+    overflow-y: auto;
+    background: white;
+}
+
+.puzzle-card {
+    border: 1px solid var(--border-color);
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #1a202c;
+}
+
+/* Solution Box Styling */
+.answer-link {
+    display: inline-block;
+    color: var(--accent);
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.answer-box {
+    background: #f0f7ff;
+    padding: 20px;
+    margin-top: 15px;
+    border-left: 5px solid var(--accent);
+    border-radius: 4px;
+}
+
+/* 5. Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.image-div img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.math-image {
+    display: block;
+    max-width: 100%; /* Prevents image from overflowing card */
+    height: auto;
+    margin: 15px auto; /* Centers the image with spacing */
+    border-radius: 8px; /* Matches card aesthetic */
+    border: 1px solid #eee; /* Light border to define the image area */
+}
+
+/* Hide the answer box by default */
+.hidden {
+    display: none;
+}
+
+.puzzle-card h3 {
+    font-weight: bold !important;
+    display: block;
+    font-size: 1.25rem; /* Adjust as needed */
+    margin-bottom: 0.5rem;
+}
+
+</style>
+
+</head>
+<body>
+
+<div id="sidebar">
+    <h2 style="font-size: 1.2rem; margin-top: 0;">
+    Problems (<span id="count-display">0</span>)
+    </h2>
+
+    <input type="text" id="search-box" placeholder="Filter problems..." onkeyup="filterContent()">
+    <div id="nav-list"></div>
+</div>
+
+<div id="content">
+        <div id="logo1" style="display: flex; justify-content: center; align-items: center;">
+        </div>
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <p class="text-xl font-bold text-slate-500 uppercase tracking-widest mt-2">Grade 11 | 2025-2026 Academic Session</p>
+        <div class="mt-6 inline-block bg-blue-100 text-blue-800 px-4 py-1 rounded-full font-semibold">Document by Mathematics Department General Coordinator</div>
+        </div>
+        <br>
+    <div id="problem-container"></div>
+</div>
+
+<script>
+
+    const mylogo = "data:image/jpeg;base64,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";
+
+    const targetDiv = document.getElementById('logo1');
+    targetDiv.innerHTML = `<img src="${mylogo}" alt="Log Image" />`;
+
+const courseData = [
+    {
+        id: "P1",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P1",
+                type: "question",
+                title: "Arranging Books",
+                question: "You have 8 different books to place on a shelf. <br> a) How many ways can you arrange all 8 books? <br> b) If the 'Math' and 'History' books must sit side-by-side, how many arrangements are possible? <br> c) If those two books cannot be next to each other, how many ways can the shelf be organized?",
+                answer: "<b>a) Arrange all 8 books:</b> <br> This is a simple permutation of 8 distinct items. <br> Total ways = $8P8 = 8! = 40,320$. <br><br> <b>b) Math and History side-by-side:</b> <br> 1. Tie the Math and History books together to form 1 'block'. <br> 2. Now we have 7 items to arrange (the block + 6 other books). <br> 3. The 2 books inside the block can be swapped ($2!$ ways). <br> Total ways = $7! \\times 2! = 5,040 \\times 2 = 10,080$. <br><br> <b>c) Not next to each other:</b> <br> Use the complement method: Total arrangements minus the arrangements where they ARE together. <br> Total ways = $40,320 - 10,080 = 30,240$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P2",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P2",
+                type: "question",
+                title: "Password Creation",
+                question: "You are setting a 6-character password using only lowercase letters (a–z). <br> a) How many passwords can be made if characters can be repeated? <br> b) How many passwords can be made if you are not allowed to repeat any letters? <br> c) How many passwords can be made if the first character must be a vowel (a, e, i, o, u) and repeats are allowed?",
+                answer: "<b>a) With repetition:</b> <br> Each of the 6 slots has 26 possible letters. <br> Total = $26 \\times 26 \\times 26 \\times 26 \\times 26 \\times 26 = 26^6 = 308,915,776$. <br><br> <b>b) Without repetition:</b> <br> We are choosing and arranging 6 distinct letters out of 26. <br> Total = $26P6 = \\cfrac{26!}{(26-6)!} = 165,765,600$. <br><br> <b>c) First character is a vowel (repeats allowed):</b> <br> 1. Slot 1: 5 choices (a, e, i, o, u). <br> 2. Slots 2 to 6: 26 choices each. <br> Total = $5 \\times 26^5 = 5 \\times 11,881,376 = 59,406,880$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P3",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P3",
+                type: "question",
+                title: "Hiring Committee",
+                question: "A company has 10 employees (6 men and 4 women). They need to form a hiring committee of 4 people. <br> a) How many different committees can be formed with no restrictions? <br> b) How many committees can be formed if the group must have exactly 2 men and 2 women? <br> c) How many committees can be formed if the group must have at least 3 women?",
+                answer: "<b>a) No restrictions:</b> <br> Choosing 4 people out of 10. Order does not matter. <br> Total = $10C4 = \\cfrac{10 \\times 9 \\times 8 \\times 7}{4 \\times 3 \\times 2 \\times 1} = 210$. <br><br> <b>b) Exactly 2 men and 2 women:</b> <br> 1. Choose 2 men: $6C2 = 15$. <br> 2. Choose 2 women: $4C2 = 6$. <br> Total = $15 \\times 6 = 90$. <br><br> <b>c) At least 3 women:</b> <br> This includes two cases: <br> 1. Case 1 (3 Women, 1 Man): $4C3 \\times 6C1 = 4 \\times 6 = 24$. <br> 2. Case 2 (4 Women, 0 Men): $4C4 \\times 6C0 = 1 \\times 1 = 1$. <br> Total = $24 + 1 = 25$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P4",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P4",
+                type: "question",
+                title: "Word AVALANCHE",
+                question: "Using all the letters in the word AVALANCHE: <br> a) How many different distinguishable 'words' can be formed? <br> b) How many begin with L and end with N? <br> c) How many have all three As next to each other? <br> d) How many start and end with the same letter?",
+                answer: "Word length: 9. Counts: A=3, V=1, L=1, N=1, C=1, H=1, E=1. <br> <b>a) Total distinguishable words:</b> <br> Total = $\\cfrac{9!}{3!} = \\cfrac{362,880}{6} = 60,480$. <br><br> <b>b) Start with L, End with N:</b> <br> Slots 1 and 9 are fixed. Arrange the remaining 7 letters (including 3 As). <br> Total = $\\cfrac{7!}{3!} = \\cfrac{5,040}{6} = 840$. <br><br> <b>c) Three As together:</b> <br> Treat 'AAA' as one block. Total items to arrange: 7 (the block + 6 other letters). <br> Total = $7! = 5,040$. <br><br> <b>d) Start and end with the same letter:</b> <br> The only letter that can start and end the word is 'A' (since it is the only repeated letter). <br> 1. Fix 'A' at start and 'A' at end. <br> 2. Remaining letters to arrange: 7 (including one 'A'). <br> Total = $7! = 5,040$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P5",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P5",
+                type: "question",
+                title: "Televised Debate Seating",
+                question: "Four women and three men are participating in a televised debate. <br> a) In how many ways can these people be seated in 7 chairs? <br> b) In how many ways can they be seated with the men and women seated in alternate seats? <br> c) In how many different ways can they be seated with women are not separated?",
+                answer: "<b>a) Total arrangements:</b> <br> Arranging 7 distinct people in 7 seats. <br> Total = $7P7 = 7! = 5,040$. <br><br> <b>b) Seated alternately:</b> <br> Since there are 4 women (W) and 3 men (M), the only possible pattern is W-M-W-M-W-M-W. <br> 1. Arrange the 4 women in their spots: $4! = 24$. <br> 2. Arrange the 3 men in their spots: $3! = 6$. <br> Total = $24 \\times 6 = 144$. <br><br> <b>c) Women not separated (Together):</b> <br> 1. Treat the 4 women as 1 single block. <br> 2. We now have 4 items to arrange (the block + 3 men): $4! = 24$. <br> 3. Arrange the women within the block: $4! = 24$. <br> Total = $24 \\times 24 = 576$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P6",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P6",
+                type: "question",
+                title: "License Plates",
+                question: "How many plates can be made up using 2 letters followed by 3 digits if: <br> a) The letters and numbers can be repeated. <br> b) The letters can be repeated but not the numbers. <br> c) Neither the letters nor the numbers can be repeated.",
+                answer: "<b>a) Repetition allowed:</b> <br> Letters: $26 \\times 26$; Digits: $10 \\times 10 \\times 10$. <br> Total = $26^2 \\times 10^3 = 676,000$. <br><br> <b>b) Letters repeat, numbers do not:</b> <br> Letters: $26 \\times 26$; Digits: choosing 3 distinct digits $10P3$. <br> Total = $26^2 \\times (10 \\times 9 \\times 8) = 676 \\times 720 = 486,720$. <br><br> <b>c) No repetition:</b> <br> Letters: $26P2$; Digits: $10P3$. <br> Total = $(26 \\times 25) \\times (10 \\times 9 \\times 8) = 650 \\times 720 = 468,000$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P7",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P7",
+                type: "question",
+                title: "Word BONUS",
+                question: "a) How many different words can be formed using the letters of the word 'BONUS' without repeating any letter? <br> b) How many of them have the letter B in the first place? <br> c) How many of them have B in the first place and S in the last?",
+                answer: "The word 'BONUS' has 5 distinct letters. <br> <b>a) Total words:</b> <br> Total = $5P5 = 5! = 120$. <br><br> <b>b) B in the first place:</b> <br> Fix B in slot 1. Arrange the remaining 4 letters (O, N, U, S). <br> Total = $4! = 24$. <br><br> <b>c) B first and S last:</b> <br> Fix B in slot 1 and S in slot 5. Arrange the remaining 3 letters (O, N, U). <br> Total = $3! = 6$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P8",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P8",
+                type: "question",
+                title: "Bank PIN Numbers",
+                question: "A four-digit PIN number is needed (digits: 0-9). How many PINs are there: <br> a) If repetition is allowed? <br> b) If repetition is not allowed? <br> c) If repetition is allowed and the first and third digits must be odd?",
+                answer: "<b>a) Repetition allowed:</b> <br> Each of the 4 slots has 10 choices. <br> Total = $10^4 = 10,000$. <br><br> <b>b) Repetition not allowed:</b> <br> Selecting and arranging 4 distinct digits. <br> Total = $10P4 = 10 \\times 9 \\times 8 \\times 7 = 5,040$. <br><br> <b>c) 1st and 3rd are odd (repetition allowed):</b> <br> Odd digits are {1, 3, 5, 7, 9} (5 choices). <br> 1. Slot 1 (Odd): 5 choices. <br> 2. Slot 2 (Any): 10 choices. <br> 3. Slot 3 (Odd): 5 choices. <br> 4. Slot 4 (Any): 10 choices. <br> Total = $5 \\times 10 \\times 5 \\times 10 = 2,500$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P9",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P9",
+                type: "question",
+                title: "Age-Based Seating",
+                question: "Six people of different ages are seated in a row. <br> a) If the youngest two persons are always on adjacent seats? <br> b) If the oldest person and the youngest person are always on the ends?",
+                answer: "<b>a) Youngest two adjacent:</b> <br> 1. Tie the two youngest as 1 block. <br> 2. Arrange 5 items (the block + 4 others): $5! = 120$. <br> 3. Arrange within the block: $2! = 2$. <br> Total = $120 \\times 2 = 240$. <br><br> <b>b) Oldest and youngest at ends:</b> <br> 1. Two cases for ends: (Oldest...Youngest) or (Youngest...Oldest). <br> 2. For each case, arrange the 4 middle people: $4! = 24$. <br> Total = $2 \\times 4! = 2 \\times 24 = 48$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P10",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P10",
+                type: "question",
+                title: "Rearranging 32414",
+                question: "The digits of the number 32414 are rearranged. <br> a) How many different numbers can be formed? <br> b) How many are: i) odd? ; ii) less than 30000?",
+                answer: "Digits: {1, 2, 3, 4, 4}. Total = 5; Repeated: 4 (twice). <br> <b>a) Total numbers:</b> <br> Total = $\\cfrac{5!}{2!} = \\cfrac{120}{2} = 60$. <br><br> <b>b) i) Odd numbers:</b> <br> Must end in 1 or 3. <br> - Case ends in 1: Arrange {2, 3, 4, 4} $\\rightarrow \\cfrac{4!}{2!} = 12$. <br> - Case ends in 3: Arrange {1, 2, 4, 4} $\\rightarrow \\cfrac{4!}{2!} = 12$. <br> Total Odd = $12 + 12 = 24$. <br><br> <b>b) ii) Less than 30000:</b> <br> Must start with 1 or 2. <br> - Case starts with 1: Arrange {2, 3, 4, 4} $\\rightarrow \\cfrac{4!}{2!} = 12$. <br> - Case starts with 2: Arrange {1, 3, 4, 4} $\\rightarrow \\cfrac{4!}{2!} = 12$. <br> Total < 30000 = $12 + 12 = 24$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+     {
+    id: "P11",
+    mainTitle: "Counting Problem",
+    parts: [
+      {
+        id: "P11",
+        type: "question",
+        title: "State License Plates",
+        question: "A license plate consists of three letters followed by three digits. <br> a) If repetition is not allowed, how many possibilities are there? <br> b) If repetition is allowed, how many possibilities are there?",
+        answer: "<b>a) No repetition:</b> <br> We choose and arrange 3 distinct letters and then 3 distinct digits. <br> Total = $26P3 \\times 10P3$ <br> Total = $(26 \\times 25 \\times 24) \\times (10 \\times 9 \\times 8) = 15,600 \\times 720 = 11,232,000$. <br><br> <b>b) With repetition:</b> <br> Each of the 3 letter slots has 26 choices, and each of the 3 digit slots has 10 choices. <br> Total = $26^3 \\times 10^3 = 17,576 \\times 1,000 = 17,576,000$.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+    id: "P12",
+    mainTitle: "Counting Problem",
+    parts: [
+      {
+        id: "P12",
+        type: "question",
+        title: "Word AMERICA",
+        question: "In how many ways can one arrange the letters of AMERICA if: <br> a) There are no restrictions? <br> b) The rearrangement must begin with M? <br> c) The rearrangement must begin with M and end with C? <br> d) The rearrangement must begin with A?",
+        answer: "Total letters: 7. Counts: A(2), M(1), E(1), R(1), I(1), C(1). <br> <b>a) No restrictions:</b> <br> Total = $\\cfrac{7!}{2!} = \\cfrac{5,040}{2} = 2,520$. <br><br> <b>b) Begin with M:</b> <br> Fix M at the start. Arrange the remaining 6 letters {A, A, E, R, I, C}. <br> Total = $\\cfrac{6!}{2!} = \\cfrac{720}{2} = 360$. <br><br> <b>c) Begin with M and end with C:</b> <br> Fix M and C. Arrange the remaining 5 letters {A, A, E, R, I}. <br> Total = $\\cfrac{5!}{2!} = \\cfrac{120}{2} = 60$. <br><br> <b>d) Begin with A:</b> <br> Fix one 'A' at the start. Arrange the remaining 6 letters {A, M, E, R, I, C}. <br> Since the remaining letters are all distinct except for the fixed one, we arrange 6 distinct items. <br> Total = $6! = 720$.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+    id: "P13",
+    mainTitle: "Counting Problem",
+    parts: [
+      {
+        id: "P13",
+        type: "question",
+        title: "Identical Marbles",
+        question: "Five pink marbles, two red, and three rose marbles are to be arranged in a row. If marbles of the same color are identical, in how many different ways can these marbles be arranged?",
+        answer: "This is a permutation of $n$ objects with groups of identical items. <br> Total marbles = $5 + 2 + 3 = 10$. <br> Identical groups: Pink (5), Red (2), Rose (3). <br> Total arrangements = $\\cfrac{10!}{5! \\times 2! \\times 3!}$ <br> Total = $\\cfrac{3,628,800}{120 \\times 2 \\times 6} = \\cfrac{3,628,800}{1,440} = 2,520$.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+    id: "P14",
+    mainTitle: "Counting Problem",
+    parts: [
+      {
+        id: "P14",
+        type: "question",
+        title: "Arranging Colored Balls",
+        question: "1) In how many ways can 9 different color balls be arranged in a row? <br> 2) In how many ways can these balls be arranged so that black, white, red, and green balls are: <br> i) always together? <br> ii) never together?",
+        answer: "<b>1) 9 different balls:</b> <br> Total = $9! = 362,880$. <br><br> <b>2) i) Always together:</b> <br> 1. Treat the 4 specific balls {B, W, R, G} as 1 block. <br> 2. We now have 6 items to arrange (the block + 5 other balls): $6! = 720$. <br> 3. Arrange the 4 balls inside the block: $4! = 24$. <br> Total = $720 \\times 24 = 17,280$. <br><br> <b>2) ii) Never together:</b> <br> This means the group of 4 is NOT a solid block. <br> Total - Always together = $362,880 - 17,280 = 345,600$.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+    id: "P15",
+    mainTitle: "Counting Problem",
+    parts: [
+      {
+        id: "P15",
+        type: "question",
+        title: "Combinations and Selections",
+        question: "1) In how many ways can a committee of 5 be chosen from 10 people? <br> 2) A student must work any 4 of 5 problems on a quiz. How many different selections can be made? <br> 3) If you have enough money to see 2 movies, but 12 movies are playing, how many choices do you have?",
+        answer: "<b>1) Committee Selection:</b> <br> Order does not matter. <br> $10C5 = \\cfrac{10 \\times 9 \\times 8 \\times 7 \\times 6}{5 \\times 4 \\times 3 \\times 2 \\times 1} = 252$. <br><br> <b>2) Quiz Problems:</b> <br> Choosing 4 out of 5 problems. <br> $5C4 = 5C1 = 5$. <br><br> <b>3) Movie Choices:</b> <br> Choosing 2 out of 12 movies. <br> $12C2 = \\cfrac{12 \\times 11}{2 \\times 1} = 66$.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+        id: "P16",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P16",
+                type: "question",
+                title: "Gender-Based Seating",
+                question: "In how many ways can four men and four women be seated in a row of eight seats if: <br> a) The first seat is to be occupied by a man? <br> b) The first and last seats are to be occupied by women? <br> c) The women are to be seated together? <br> d) The men and women are to be seated alternately by gender?",
+                answer: "Total people = 8 (4M, 4W). <br> <b>a) First seat is a man:</b> <br> Choice for 1st seat: 4. Arrange remaining 7: $7!$. <br> Total = $4 \\times 7! = 4 \\times 5,040 = 20,160$. <br><br> <b>b) First and last are women:</b> <br> Choose/arrange 2 women for the ends: $4P2 = 12$. Arrange middle 6: $6! = 720$. <br> Total = $12 \\times 720 = 8,640$. <br><br> <b>c) Women together:</b> <br> Block of 4 women + 4 men = 5 items. <br> Total = $5! \\times 4! = 120 \\times 24 = 2,880$. <br><br> <b>d) Alternating gender:</b> <br> Two patterns: MWMWMWMW or WMWMWMWM. <br> For each: $4! \\times 4! = 24 \\times 24 = 576$. <br> Total = $2 \\times 576 = 1,152$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P17",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P17",
+                type: "question",
+                title: "Rearranging 314152",
+                question: "The digits of the number 314152 are rearranged to make different numbers. <br> a) How many different numbers can be formed? <br> b) How many different ODD numbers can be formed?",
+                answer: "Digits: {1, 1, 2, 3, 4, 5}. Total = 6; Repeated: 1 (twice). <br> <b>a) Total numbers:</b> <br> Total = $\\cfrac{6!}{2!} = \\cfrac{720}{2} = 360$. <br><br> <b>b) Odd numbers:</b> <br> Must end in 1, 3, or 5. <br> - Ends in 3 or 5: Fix digit (2 choices). Arrange remaining 5 (two 1s): $\\cfrac{5!}{2!} = 60$. Subtotal = $2 \\times 60 = 120$. <br> - Ends in 1: Fix one '1'. Arrange remaining 5 distinct digits: $5! = 120$. <br> Total Odd = $120 + 120 = 240$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P18",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P18",
+                type: "question",
+                title: "Word DIPLOMA",
+                question: "How many arrangements of DIPLOMA are possible if: <br> a) There are no restrictions? <br> b) The arrangements begin and end with a vowel? <br> c) The vowels appear together?",
+                answer: "DIPLOMA has 7 distinct letters. Vowels: {I, O, A}. <br> <b>a) No restrictions:</b> <br> Total = $7! = 5,040$. <br><br> <b>b) Begin and end with vowel:</b> <br> Choose 2 vowels for ends: $3P2 = 6$. Arrange remaining 5: $5! = 120$. <br> Total = $6 \\times 120 = 720$. <br><br> <b>c) Vowels together:</b> <br> Block {IOA} + 4 consonants = 5 items. <br> Total = $5! \\times 3! = 120 \\times 6 = 720$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P19",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P19",
+                type: "question",
+                title: "Digits and Parity",
+                question: "1) Find how many four-digit numbers can be formed from {2, 3, 4, 5, 7, 9} without repetition. <br> 2) Find how many of these are: a) less than 7000; b) odd.",
+                answer: "<b>1) Total 4-digit numbers:</b> <br> $6P4 = 6 \\times 5 \\times 4 \\times 3 = 360$. <br><br> <b>2) a) Less than 7000:</b> <br> Thousands digit must be {2, 3, 4, 5} (4 choices). <br> Remaining 3 slots: $5P3 = 60$. <br> Total = $4 \\times 60 = 240$. <br><br> <b>2) b) Odd numbers:</b> <br> Last digit must be {3, 5, 7, 9} (4 choices). <br> Remaining 3 slots: $5P3 = 60$. <br> Total = $4 \\times 60 = 240$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P20",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P20",
+                type: "question",
+                title: "Girls and Boys in Line",
+                question: "Four boys and two girls sit in a line. <br> a) In how many ways can they arrange themselves so that the two girls are together? <br> b) In how many ways can they sit if the two girls are not together?",
+                answer: "Total = 6 people. <br> <b>a) Girls together:</b> <br> Block {G1, G2} + 4 boys = 5 items. <br> Total = $5! \\times 2! = 120 \\times 2 = 240$. <br><br> <b>b) Girls not together:</b> <br> Total arrangements - Together. <br> Total = $6! - 240 = 720 - 240 = 480$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P21",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P21",
+                type: "question",
+                title: "Restricted Extremities",
+                question: "In how many ways can four boys and a girl be seated in a row of five chairs if the girl is never at the extremities?",
+                answer: "Total seats = 5. Extremities are the 1st and 5th seats. <br> The girl must sit in seat 2, 3, or 4 (3 choices). <br> The 4 boys can be arranged in the remaining 4 seats in $4!$ ways. <br> Total = $3 \\times 4! = 3 \\times 24 = 72$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P22",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P22",
+                type: "question",
+                title: "Alternating Digits",
+                question: "How many distinct numbers can be formed from the digits {1, 2, 3, 4, 5, 6} if no two even or no two odd digits are next to each other?",
+                answer: "This requires an alternating Odd (O) and Even (E) pattern. Digits: O={1,3,5}, E={2,4,6}. <br> Two possible patterns: OE O E O E or EO E O E O. <br> 1. For OE O E O E: Arrange Odds ($3!$) and Evens ($3!$) = $6 \\times 6 = 36$. <br> 2. For EO E O E O: Arrange Evens ($3!$) and Odds ($3!$) = $6 \\times 6 = 36$. <br> Total = $36 + 36 = 72$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+     {
+    id: "P23",
+    mainTitle: "Counting Problem",
+    parts: [
+      {
+        id: "P23",
+        type: "question",
+        title: "The Chairman's Committee",
+        question: "Jones is the Chairman of a committee. In how many ways can a committee of 5 be chosen from 10 people given that Jones must be one of them?",
+        answer: "Since Jones <b>must</b> be on the committee, his spot is already fixed. <br> We only need to choose the remaining 4 members from the remaining 9 people. <br> Total ways = $9C4 = \\cfrac{9 \\times 8 \\times 7 \\times 6}{4 \\times 3 \\times 2 \\times 1} = 126$ ways.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+    id: "P24",
+    mainTitle: "Counting Problem",
+    parts: [
+      {
+        id: "P24",
+        type: "question",
+        title: "Selecting Children",
+        question: "In a group of 6 boys and 4 girls, four children are to be selected. In how many different ways can they be selected such that at least one boy should be there?",
+        answer: "Use the complement method: Total ways to choose 4 children minus the ways to choose <b>no</b> boys (all girls). <br><br> 1. Total ways to choose 4 from 10: $10C4 = 210$. <br> 2. Ways to choose 4 girls (0 boys): $4C4 = 1$. <br> Total ways = $210 - 1 = 209$. <br><br> <i>Alternatively, you can sum the cases for 1, 2, 3, and 4 boys:</i> <br> $(6C1 \\times 4C3) + (6C2 \\times 4C2) + (6C3 \\times 4C1) + (6C4 \\times 4C0)$ <br> $= (6 \\times 4) + (15 \\times 6) + (20 \\times 4) + (15 \\times 1) = 24 + 90 + 80 + 15 = 209$.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+        id: "P25",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P25",
+                type: "question",
+                title: "Advanced Mathematics Committee",
+                question: "An advanced mathematics class consists of 7 girls and 9 boys. <br> a) How many different committees of 7 students can be chosen from this class? <br> b) How many such committees can be chosen if the class members Tim (boy) and Josephine (girl) cannot both be on the committee? <br> c) How many committees of 7 students can be chosen if there must be more boys than girls on the committee?",
+                answer: "Total students = $7 + 9 = 16$. <br><br> <b>a) Total committees:</b> <br> Choosing 7 from 16 without restrictions. <br> Total = $16C7 = \\cfrac{16 \\times 15 \\times 14 \\times 13 \\times 12 \\times 11 \\times 10}{7 \\times 6 \\times 5 \\times 4 \\times 3 \\times 2 \\times 1} = 11,440$. <br><br> <b>b) Tim and Josephine cannot both be on the committee:</b> <br> Use the complement method: Total committees minus committees where <b>both</b> are present. <br> 1. If both are on the committee, we only need to choose 5 more students from the remaining 14. <br> 2. Both present = $14C5 = 2,002$. <br> Total = $11,440 - 2,002 = 9,438$. <br><br> <b>c) More boys than girls:</b> <br> Total members = 7. Possible (Boys, Girls) combinations where B > G: <br> 1. Case (4B, 3G): $9C4 \\times 7C3 = 126 \\times 35 = 4,410$. <br> 2. Case (5B, 2G): $9C5 \\times 7C2 = 126 \\times 21 = 2,646$. <br> 3. Case (6B, 1G): $9C6 \\times 7C1 = 84 \\times 7 = 588$. <br> 4. Case (7B, 0G): $9C7 \\times 7C0 = 36 \\times 1 = 36$. <br> Total = $4,410 + 2,646 + 588 + 36 = 7,680$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P26",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P26",
+                type: "question",
+                title: "Committee of Four",
+                question: "1) How many committees of 4 people can be chosen from 5 men and 3 women? <br> 2) How many of these could be all men? <br> 3) How many would consist of 2 men and 2 women?",
+                answer: "Total people = $5 + 3 = 8$. <br><br> <b>1) Total committees of 4:</b> <br> Choosing 4 people out of 8 without restrictions. <br> Total = $8C4 = \\cfrac{8 \\times 7 \\times 6 \\times 5}{4 \\times 3 \\times 2 \\times 1} = 70$. <br><br> <b>2) All men:</b> <br> Choosing 4 men out of the 5 available men. <br> Total = $5C4 = 5$. <br><br> <b>3) 2 men and 2 women:</b> <br> 1. Choose 2 men out of 5: $5C2 = \\cfrac{5 \\times 4}{2 \\times 1} = 10$. <br> 2. Choose 2 women out of 3: $3C2 = 3$. <br> Total = $10 \\times 3 = 30$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P27",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P27",
+                type: "question",
+                title: "Random Committee Selection",
+                question: "There are 30 students in a class, of which 18 are girls and 12 are boys. Four students are selected at random to form a committee. Find how many ways the committee can contain: <br> a) Two girls and two boys; <br> b) Students all of the same gender.",
+                answer: "<b>a) Two girls and two boys:</b> <br> 1. Choose 2 girls from 18: $18C2 = \\cfrac{18 \\times 17}{2 \\times 1} = 153$. <br> 2. Choose 2 boys from 12: $12C2 = \\cfrac{12 \\times 11}{2 \\times 1} = 66$. <br> Total = $153 \\times 66 = 10,098$. <br><br> <b>b) Students all of the same gender:</b> <br> This includes two mutually exclusive cases: all 4 are girls OR all 4 are boys. <br> 1. Case (4 Girls): $18C4 = \\cfrac{18 \\times 17 \\times 16 \\times 15}{4 \\times 3 \\times 2 \\times 1} = 3,060$. <br> 2. Case (4 Boys): $12C4 = \\cfrac{12 \\times 11 \\times 10 \\times 9}{4 \\times 3 \\times 2 \\times 1} = 495$. <br> Total = $3,060 + 495 = 3,555$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P28",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P28",
+                type: "question",
+                title: "Committee of Five",
+                question: "A class has 20 students, of which 12 are females and 8 are males. In how many ways can a committee of five students be picked from this class under each condition? <br> a) No restriction is placed on the number of males or females on the committee. <br> b) No males are to be included on the committee. <br> c) The committee must have three females and two males.",
+                answer: "<b>a) No restrictions:</b> <br> Choosing 5 students out of the total 20. <br> Total = $20C5 = \\cfrac{20 \\times 19 \\times 18 \\times 17 \\times 16}{5 \\times 4 \\times 3 \\times 2 \\times 1} = 15,504$. <br><br> <b>b) No males included:</b> <br> All 5 members must be chosen from the 12 females. <br> Total = $12C5 = \\cfrac{12 \\times 11 \\times 10 \\times 9 \\times 8}{5 \\times 4 \\times 3 \\times 2 \\times 1} = 792$. <br><br> <b>c) Three females and two males:</b> <br> 1. Choose 3 females from 12: $12C3 = \\cfrac{12 \\times 11 \\times 10}{3 \\times 2 \\times 1} = 220$. <br> 2. Choose 2 males from 8: $8C2 = \\cfrac{8 \\times 7}{2 \\times 1} = 28$. <br> Total = $220 \\times 28 = 6,160$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P29",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P29",
+                type: "question",
+                title: "Arranging Colored Balls",
+                question: "There are 5 yellow, 4 green and 3 black balls in a bag. All the 12 balls are drawn one by one and arranged in a row. Find out the number of different arrangements possible.",
+                answer: "This is a permutation problem involving <b>indistinguishable objects</b> (balls of the same color are considered identical). <br><br> 1. Total number of balls: $5 + 4 + 3 = 12$. <br> 2. The formula for permutations with repetitions is: $\\cfrac{n!}{n_1!n_2!n_3!}$. <br><br> Total arrangements = $\\cfrac{12!}{5! \\times 4! \\times 3!}$ <br> Total = $\\cfrac{479,001,600}{120 \\times 24 \\times 6}$ <br> Total = $\\cfrac{479,001,600}{17,280} = 27,720$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+ {
+        id: "P30",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P30",
+                type: "question",
+                title: "Successive Draws Without Replacement",
+                question: "A bag contains 4 red, 5 green, and 3 blue balls. 3 balls are drawn successively without replacement. How many different draws are possible in each of the following cases: <br> 1) The 3 balls are of same color. <br> 2) The 3 balls are of different color. <br> 3) Exactly one red ball is in the draw. <br> 4) At least one red ball is in the draw. <br> 5) The 3 balls drawn are red, green, blue balls in this order.",
+                answer: "Since the balls are drawn <b>successively</b>, the order of the draw matters. We use permutations ($nPr$) or the fundamental counting principle. <br> Total balls = 12. <br><br> <b>1) 3 balls of same color:</b> <br> This can be (R,R,R) OR (G,G,G) OR (B,B,B). <br> Total = $4P3 + 5P3 + 3P3 = (4 \\times 3 \\times 2) + (5 \\times 4 \\times 3) + (3 \\times 2 \\times 1)$ <br> Total = $24 + 60 + 6 = 90$. <br><br> <b>2) 3 balls of different color:</b> <br> One of each color can be drawn in $3! = 6$ different orders (RGB, RBG, GRB, GBR, BRG, BGR). <br> For any one order, the ways are $4 \\times 5 \\times 3 = 60$. <br> Total = $60 \\times 6 = 360$. <br><br> <b>3) Exactly one red ball:</b> <br> The red ball can be in position 1, 2, or 3 (3 positions). <br> For each position, we have 4 choices for the Red and $8 \\times 7$ choices for the two non-red balls. <br> Total = $3 \\times (4 \\times 8 \\times 7) = 3 \\times 224 = 672$. <br><br> <b>4) At least one red ball:</b> <br> Use the complement: Total possible draws of 3 balls minus draws with NO red balls. <br> - Total draws = $12P3 = 12 \\times 11 \\times 10 = 1,320$. <br> - No Red draws (using only the 8 non-red): $8P3 = 8 \\times 7 \\times 6 = 336$. <br> Total = $1,320 - 336 = 984$. <br><br> <b>5) Red, green, blue in this order:</b> <br> The order is fixed. <br> Total = $4 \\times 5 \\times 3 = 60$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+     {
+    id: "P31",
+    mainTitle: "Counting Problem",
+    parts: [
+      {
+        id: "P31",
+        type: "question",
+        title: "Coin Tossing Outcomes",
+        question: "A coin is tossed 5 times. <br> a) Determine the number of all possible outcomes. <br> b) Determine the number of possible outcomes with exactly two heads. <br> c) Determine the number of possible outcomes with at most two heads.",
+        answer: "Each toss has 2 outcomes (H or T). <br> <b>a) All possible outcomes:</b> <br> Total = $2^5 = 32$. <br><br> <b>b) Exactly two heads:</b> <br> We need to choose 2 positions for Heads out of the 5 tosses. <br> Total = $5C2 = 10$. <br><br> <b>c) At most two heads:</b> <br> This includes the cases of 0, 1, or 2 heads. <br> Case 0H: $5C0 = 1$ <br> Case 1H: $5C1 = 5$ <br> Case 2H: $5C2 = 10$ <br> Total = $1 + 5 + 10 = 16$.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+    id: "P32",
+    mainTitle: "Counting Problem",
+    parts: [
+      {
+        id: "P32",
+        type: "question",
+        title: "Permutations of ETHICS",
+        question: "Using the letters of the word 'ETHICS' (all 6 letters are distinct): <br> a) How many 4-distinct letter words start with the letter E? <br> b) How many 4-distinct letter words start with the letter T and end by E or I? <br> c) How many 4-distinct letter words start with the letter T or end by E? <br> d) How many anagrams of the word 'ETHICS' have E and T next to each other?",
+        answer: "The word has 6 distinct letters: {E, T, H, I, C, S}. <br> <b>a) Start with E (4-letter word):</b> <br> Fix E in slot 1. Choose and arrange 3 more from the remaining 5. <br> Total = $5P3 = 5 \\times 4 \\times 3 = 60$. <br><br> <b>b) Start with T, end with E or I:</b> <br> - Slot 1: T (1 choice) <br> - Slot 4: E or I (2 choices) <br> - Middle slots: Arrange 2 from remaining 4 letters ($4P2 = 12$). <br> Total = $1 \\times 12 \\times 2 = 24$. <br><br> <b>c) Start with T OR end with E:</b> <br> Use Principle of Inclusion-Exclusion: $n(Start T) + n(End E) - n(Start T \\text{ and } End E)$. <br> - Start T: $5P3 = 60$ <br> - End E: $5P3 = 60$ <br> - Start T and End E: $4P2 = 12$ <br> Total = $60 + 60 - 12 = 108$. <br><br> <b>d) E and T together (Full word anagram):</b> <br> 1. Block {ET} + 4 other letters = 5 items. <br> 2. Arrange items ($5!$) and arrange block ($2!$). <br> Total = $120 \\times 2 = 240$.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+    id: "P33",
+    mainTitle: "Counting Problem",
+    parts: [
+      {
+        id: "P33",
+        type: "question",
+        title: "Anagrams of INSPIRATION",
+        question: "How many different permutations of the letters of the word 'INSPIRATION' are possible if: <br> a) there are no restrictions? <br> b) the arrangement starts with A? <br> c) the anagram begins and ends with N?",
+        answer: "Total letters: 11. Counts: I(3), N(2), S(1), P(1), R(1), A(1), T(1), O(1). <br> <b>a) No restrictions:</b> <br> Total = $\\cfrac{11!}{3!2!} = \\cfrac{39,916,800}{12} = 3,326,400$. <br><br> <b>b) Starts with A:</b> <br> Fix A. Arrange remaining 10: {I,I,I, N,N, S, P, R, T, O}. <br> Total = $\\cfrac{10!}{3!2!} = \\cfrac{3,628,800}{12} = 302,400$. <br><br> <b>c) Begins and ends with N:</b> <br> Fix both Ns at the ends. Arrange remaining 9: {I,I,I, S, P, R, A, T, O}. <br> Total = $\\cfrac{9!}{3!} = \\cfrac{362,880}{6} = 60,480$.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+   {
+    id: "P34",
+    mainTitle: "Counting Problem",
+    parts: [
+      {
+        id: "P34",
+        type: "question",
+        title: "Selecting Bills from an Urn",
+        question: "An urn contains 4 bills of 10,000 L.L. each, 2 bills of 50,000 L.L. each, and 3 bills of 100,000 L.L. each. Three bills are selected simultaneously from the urn. <br> 1) Find the total number of all possible selections. <br> 2) In how many ways can we select 3 bills whose sum is 70,000 L.L? <br> 3) In how many ways can we select 3 bills whose sum is 160,000 L.L?",
+        answer: "Since the selection is <b>simultaneous</b>, the order does not matter. We use combinations ($nCr$). <br> Total bills = $4 + 2 + 3 = 9$. <br><br> <b>1) Total possible selections:</b> <br> Choosing 3 bills out of 9. <br> Total = $9C3 = \\cfrac{9 \\times 8 \\times 7}{3 \\times 2 \\times 1} = 84$. <br><br> <b>2) Sum is 70,000 L.L:</b> <br> The only way to get a sum of 70,000 using 3 bills is: <br> (Two 10,000 bills) AND (One 50,000 bill) $\\rightarrow 10k + 10k + 50k = 70k$. <br> Ways = $4C2 \\times 2C1 = 6 \\times 2 = 12$. <br><br> <b>3) Sum is 160,000 L.L:</b> <br> There are two possible combinations to reach 160,000: <br> - <b>Case 1:</b> (One 10,000) AND (Three 50,000) $\\rightarrow$ Not possible (only two 50k bills available). <br> - <b>Case 2:</b> (One 10,000) AND (One 50,000) AND (One 100,000) $\\rightarrow 10k + 50k + 100k = 160k$. <br> Ways = $4C1 \\times 2C1 \\times 3C1 = 4 \\times 2 \\times 3 = 24$. <br> Total = 24.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+        id: "P35",
+        mainTitle: "Counting Problem",
+        parts: [
+            {
+                id: "P35_A",
+                type: "question",
+                title: "Simultaneous Selection",
+                question: "An urn contains 9 balls: 4 red, 3 yellow, and 2 black. Three balls are selected simultaneously. Calculate the outcomes for: <br> a) Only one red ball. <br> b) Three different colors. <br> c) Same color. <br> d) No black ball. <br> e) At least two red balls. <br> f) At most two yellow balls.",
+                answer: "Total = 9 balls. Simultaneous = Use $nCr$. <br> <b>a) Only 1 Red:</b> $4C1 \\times 5C2 = 4 \\times 10 = 40$. <br> <b>b) Different colors:</b> $4C1 \\times 3C1 \\times 2C1 = 4 \\times 3 \\times 2 = 24$. <br> <b>c) Same color:</b> $4C3 (R) + 3C3 (Y) = 4 + 1 = 5$. <br> <b>d) No black:</b> Choose 3 from 7 (R+Y) $\\rightarrow 7C3 = 35$. <br> <b>e) At least 2 Red:</b> $4C2 \\times 5C1 (2R, 1X) + 4C3 (3R) = 30 + 4 = 34$. <br> <b>f) At most 2 Yellow:</b> Total - 3 Yellow $\\rightarrow 9C3 - 3C3 = 84 - 1 = 83$.",
+                qImg: "",
+                aImg: ""
+            },
+            {
+                id: "P35_B",
+                type: "question",
+                title: "Successive Without Replacement",
+                question: "Three balls are selected one after the other without replacement. Calculate outcomes for: <br> 1) Only two red balls. <br> 2) Three different colors. <br> 3) 2 red and one black.",
+                answer: "Successive = Order matters. <br> <b>1) Only 2 Red:</b> Positions for Red: $3C2 = 3$. <br> Ways = $3 \\times (4 \\times 3 \\times 5) = 180$. <br> <b>2) Different colors:</b> $3!$ orders. <br> Ways = $6 \\times (4 \\times 3 \\times 2) = 144$. <br> <b>3) 2 Red, 1 Black:</b> 3 positions for Black. <br> Ways = $3 \\times (4 \\times 3 \\times 2) = 72$.",
+                qImg: "",
+                aImg: ""
+            },
+            {
+                id: "P35_C",
+                type: "question",
+                title: "Successive With Replacement",
+                question: "Three balls are selected one after the other with replacement. Calculate: <br> 1) At least two red balls. <br> 2) Three different colors.",
+                answer: "With replacement = independent choices. <br> <b>1) At least 2 Red:</b> <br> - 2 Red (3 positions): $3 \\times (4 \\times 4 \\times 5) = 240$. <br> - 3 Red: $4 \\times 4 \\times 4 = 64$. <br> Total = $240 + 64 = 304$. <br> <b>2) Different colors:</b> $3!$ orders. <br> Ways = $6 \\times (4 \\times 3 \\times 2) = 144$.",
+                qImg: "",
+                aImg: ""
+            },
+            {
+                id: "P35_D",
+                type: "question",
+                title: "Numbered Balls (Simultaneous)",
+                question: "Black=2, Red=1, Yellow=0. 3 balls chosen simultaneously. Calculate: <br> 1) Sum is 3. <br> 2) Product is 0. <br> 3) Sum is 2.",
+                answer: "<b>1) Sum = 3:</b> <br> - 3 Reds: $4C3 = 4$. <br> - 1 Black, 1 Red, 1 Yellow: $2C1 \\times 4C1 \\times 3C1 = 24$. <br> Total = $4 + 24 = 28$. <br> <b>2) Product = 0:</b> At least one Yellow ball. <br> Total - No Yellow $\\rightarrow 9C3 - 6C3 = 84 - 20 = 64$. <br> <b>3) Sum = 2:</b> <br> - 1 Black, 2 Yellow: $2C1 \\times 3C2 = 6$. <br> - 2 Red, 1 Yellow: $4C2 \\times 3C1 = 18$. <br> Total = $6 + 18 = 24$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    }
+
+
+
+
+
+
+
+
+
+
+];
+
+
+
+        function init() {
+            const nav = document.getElementById('nav-list');
+            nav.innerHTML = '';
+            const scrollTarget = document.getElementById('content'); // Get the scrollable div
+
+            courseData.forEach((topic, tIdx) => {
+                const details = document.createElement('details');
+                details.className = 'sidebar-group';
+
+                const summary = document.createElement('summary');
+                summary.className = 'compact-title';
+                summary.innerHTML = `${tIdx + 1}. ${topic.mainTitle}`;
+
+                // 1. INITIAL STATE (Runs once per refresh for the first item)
+                if (tIdx === 0) {
+                    summary.classList.add('active-link');
+                    details.open = true;
+                    displayTopic(tIdx);
+
+                    // Fix: Scroll to top on page load
+                    if (scrollTarget) scrollTarget.scrollTop = 0;
+                }
+
+                // 2. CLICK LOGIC
+                summary.onclick = (e) => {
+                    document.querySelectorAll('.compact-title').forEach(el => el.classList.remove('active-link'));
+                    document.querySelectorAll('.sidebar-group').forEach(det => {
+                        if (det !== details) det.open = false;
+                    });
+
+                    summary.classList.add('active-link');
+                    displayTopic(tIdx);
+
+                    // Fix: Scroll to top when clicking a new problem
+                    if (scrollTarget) {
+                        scrollTarget.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                };
+
+                const ul = document.createElement('ul');
+                ul.className = 'parts-list';
+                topic.parts.forEach(p => {
+                    const li = document.createElement('li');
+                    li.innerText = p.title.replace(/^Part\s[A-Z]:\s/i, "");
+                    ul.appendChild(li);
+                });
+
+                details.appendChild(summary);
+                details.appendChild(ul);
+                nav.appendChild(details);
+            });
+            document.getElementById('count-display').innerText = courseData.length;
+        }
+
+
+function displayTopic(index) {
+    const container = document.getElementById('problem-container');
+    container.innerHTML = '';
+    const topic = courseData[index];
+    const section = document.createElement('div');
+    section.className = 'topic-section';
+
+    // Helper to generate Image HTML if a string exists
+    const getImageHTML = (imgData) => {
+        if (!imgData || imgData.trim() === "") return "";
+
+        // Add prefix if user forgot to include it in the JSON string
+        const src = imgData.startsWith('data:image')
+                    ? imgData
+                    : `data:image/png;base64,${imgData}`;
+
+        return `<img src="${src}" class="math-image" alt="Problem Illustration">`;
+    };
+
+    topic.parts.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'puzzle-card';
+
+        if (p.type === "context") {
+            card.innerHTML = `
+                <div class="header"><h3>${p.title}</h3></div>
+                <div class="question-body">${p.content}</div>
+                ${getImageHTML(p.qImg)}
+            `;
+        } else {
+            card.innerHTML = `
+                <div class="header"><h3>${p.id}. ${p.title}</h3></div>
+                <div class="question-body">${p.question}</div>
+                ${getImageHTML(p.qImg)}
+
+                <div class="answer-link" onclick="toggleAns('${p.id}')">View Solution ▼</div>
+
+                <div id="ans-box-${p.id}" class="answer-box hidden">
+                    <div>${p.answer}</div>
+                    ${getImageHTML(p.aImg)}
+                </div>
+            `;
+        }
+        section.appendChild(card);
+    });
+
+    container.appendChild(section);
+
+    // Re-run KaTeX if present
+    if (window.renderMathInElement) {
+        renderMathInElement(container, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+        });
+    }
+}
+
+
+
+
+
+
+function filterContent() {
+        const query = document.getElementById('search-box').value.toLowerCase();
+        const sidebarGroups = document.querySelectorAll('.sidebar-group');
+        let visibleCount = 0;
+
+        courseData.forEach((topic, index) => {
+                const sidebar = sidebarGroups[index];
+                const match = topic.mainTitle.toLowerCase().includes(query) ||
+                                            topic.parts.some(p => p.title.toLowerCase().includes(query));
+
+                if (match) {
+                        sidebar.classList.remove('hidden');
+                        visibleCount++;
+                } else {
+                        sidebar.classList.add('hidden');
+                }
+        });
+
+        document.getElementById('count-display').innerText = visibleCount;
+}
+
+
+
+
+
+
+function toggleAns(id) {
+    const box = document.getElementById(`ans-box-${id}`);
+    if (box) {
+        box.classList.toggle('hidden');
+    }
+}
+
+
+window.onload = init;
+</script>
+
+
+</body>
+</html>

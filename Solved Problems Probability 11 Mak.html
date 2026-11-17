@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solved Problems</title>
+
+    <link rel="stylesheet" href="cdn.jsdelivr.net">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
+     <script src="https://cdn.tailwindcss.com"></script>
+
+ <!-- KaTeX Auto-Render Extension with Custom Delimiter Config -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false},
+                {left: '\\[', right: '\\]', display: true}
+            ],
+            throwOnError: false
+        });">
+        </script>
+
+ <style>
+/* 1. Global Variables & Base Setup */
+:root {
+    --accent: #2563eb;       /* Primary Blue */
+    --accent-bg: #e7f3ff;    /* Light Blue for active states */
+    --star-color: #f59e0b;   /* Gold for ratings */
+    --bg-sidebar: #f8f9fa;   /* Light gray sidebar */
+    --border-color: #e0e0e0;
+    --text-main: #333;
+    --text-muted: #64748b;
+}
+
+body {
+    display: flex;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    height: 100vh;
+    color: var(--text-main);
+    overflow: hidden; /* Prevents double scrollbars */
+}
+
+/* 2. Sidebar & Search Layout */
+#sidebar {
+    width: 300px;
+    border-right: 1px solid var(--border-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-sidebar);
+    box-sizing: border-box;
+}
+
+#search-box {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+#search-box:focus {
+    border-color: var(--accent);
+}
+
+#nav-list {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+/* 3. Collapsible Sidebar Items */
+.sidebar-group {
+    margin-bottom: 8px;
+}
+
+/* Remove default browser arrows */
+summary {
+    list-style: none;
+    outline: none;
+}
+summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Main Clickable Topic Title */
+.compact-title {
+    padding: 12px 15px;
+    cursor: pointer;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+    display: block;
+}
+
+.compact-title:hover {
+    background-color: #edf2f7;
+}
+
+/* Active/Selected Highlight */
+.compact-title.active-link,
+details[open] .compact-title {
+    background-color: var(--accent-bg);
+    color: var(--accent);
+    border-left-color: var(--accent);
+}
+
+/* Sub-problem Bullet List */
+.parts-list {
+    margin: 8px 0 15px 35px;
+    padding: 0;
+    list-style-type: disc;
+    color: var(--text-muted);
+    font-size: 0.85em;
+}
+
+.parts-list li {
+    margin-bottom: 5px;
+}
+
+/* 4. Main Content Area */
+#content {
+    flex: 1;
+    padding: 40px 60px;
+    overflow-y: auto;
+    background: white;
+}
+
+.puzzle-card {
+    border: 1px solid var(--border-color);
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #1a202c;
+}
+
+/* Solution Box Styling */
+.answer-link {
+    display: inline-block;
+    color: var(--accent);
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.answer-box {
+    background: #f0f7ff;
+    padding: 20px;
+    margin-top: 15px;
+    border-left: 5px solid var(--accent);
+    border-radius: 4px;
+}
+
+/* 5. Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.image-div img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.math-image {
+    display: block;
+    max-width: 100%; /* Prevents image from overflowing card */
+    height: auto;
+    margin: 15px auto; /* Centers the image with spacing */
+    border-radius: 8px; /* Matches card aesthetic */
+    border: 1px solid #eee; /* Light border to define the image area */
+}
+
+/* Hide the answer box by default */
+.hidden {
+    display: none;
+}
+
+.puzzle-card h3 {
+    font-weight: bold !important;
+    display: block;
+    font-size: 1.25rem; /* Adjust as needed */
+    margin-bottom: 0.5rem;
+}
+
+</style>
+
+</head>
+<body>
+
+<div id="sidebar">
+    <h2 style="font-size: 1.2rem; margin-top: 0;">
+    Problems (<span id="count-display">0</span>)
+    </h2>
+
+    <input type="text" id="search-box" placeholder="Filter problems..." onkeyup="filterContent()">
+    <div id="nav-list"></div>
+</div>
+
+<div id="content">
+        <div id="logo1" style="display: flex; justify-content: center; align-items: center;">
+        </div>
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <p class="text-xl font-bold text-slate-500 uppercase tracking-widest mt-2">Grade 11 | 2025-2026 Academic Session</p>
+        <div class="mt-6 inline-block bg-blue-100 text-blue-800 px-4 py-1 rounded-full font-semibold">Document by Mathematics Department General Coordinator</div>
+        </div>
+        <br>
+    <div id="problem-container"></div>
+</div>
+
+<script>
+
+    const mylogo = "data:image/jpeg;base64,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";
+
+    const targetDiv = document.getElementById('logo1');
+    targetDiv.innerHTML = `<img src="${mylogo}" alt="Log Image" />`;
+
+const courseData = [
+    {
+        id: "P1",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+            id: "P1",
+            type: "question",
+            title: "Picking Cards from Bags",
+            question: "Two sets of cards with letters are placed into separate bags. <br> Sara randomly picks one card from each bag. Find the probability that: <br> a) She picked the letters 'J' and 'R'. <br> b) Both letters are 'L'. <br> c) Both letters are vowels.",
+            answer: "Total outcomes = (5 letters in Bag 1) $\\times$ (6 letters in Bag 2) = $30$. <br><br> <b>a) Picked 'J' and 'R':</b> Probability = $\\cfrac{1}{5} \\times \\cfrac{1}{6} = \\cfrac{1}{30}$. <br><br> <b>b) Both letters are 'L':</b> <br> Probability = $\\cfrac{1}{5} \\times \\cfrac{1}{6} = \\cfrac{1}{30}$. <br><br> <b>c) Both letters are vowels:</b> <br> 1. Vowels in Bag 1: {I, A, U} (3 total). <br> 2. Vowels in Bag 2: {E, A} (2 total). <br> Probability = $\\cfrac{3}{5} \\times \\cfrac{2}{6} = \\cfrac{6}{30} = \\cfrac{1}{5}$ or $0.2$.",
+            qImg: "data:image/png;base64,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",
+            aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P2",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+              id: "P2",
+              type: "question",
+              title: "Urns and Marbles",
+              question: "<b>A-</b> An urn contains 10 red marbles and 6 blue marbles. <br> 1) One marble is drawn at random. Determine the probability of drawing a red marble. <br> 2) Two marbles are drawn successively, at random and without replacement. Find the probability that the first drawn marble is red and the second is blue. <br><br> <b>B-</b> These marbles are distributed in two bags S and T. <br> The bag S contains 4 red and 2 blue marbles. <br> The bag T contains 6 red and 4 blue marbles. <br> We draw, at random, one marble from S and one marble from T. <br> 1) Prove that the probability of drawing 2 red marbles is equal to $\\cfrac{2}{5}$. <br> 2) Calculate the probability of drawing two marbles having same color.",
+              answer: "<b>Section A:</b> <br> 1) $p(R) = \\cfrac{10}{16} = \\cfrac{5}{8}$ <br><br> 2) $p(R \\text{ then } B) = \\cfrac{10}{16} \\times \\cfrac{6}{15} = \\cfrac{1}{4}$ <br><br> <b>Section B:</b> <br> 1) $p(RR) = \\cfrac{4}{6} \\times \\cfrac{6}{10} = \\cfrac{2}{5}$ <br><br> 2) $p(\\text{same color}) = p(RR) + p(BB) = \\cfrac{4}{6} \\times \\cfrac{6}{10} + \\cfrac{2}{6} \\times \\cfrac{4}{10} = \\cfrac{2}{5} + \\cfrac{2}{15} = \\cfrac{8}{15}$",
+              qImg: "",
+              aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P3",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+              id: "P3",
+              type: "question",
+              title: "Exam Preparation",
+              question: "When preparing for an exam, a student studied only 50 of 100 lessons. We put 100 papers in an urn, each containing a question, these questions are from different lessons. The candidate draws two papers simultaneously and randomly. <br> 1) What is the probability that he does not know any of these topics? <br> 2) What is the probability that he knows the two topics? <br> 3) What is the probability that he knows one and only one of these topics? <br> 4) What is the probability that he knows at least one of these topics?",
+              answer: "Total ways to draw 2 papers = $100C2 = \\cfrac{100 \\times 99}{2} = 4950$. <br> Number of known lessons = 50. <br> Number of unknown lessons = 50. <br><br> <b>1) Knows none:</b> <br> Choose 2 from the 50 unknown lessons. <br> $P(\\text{none}) = \\cfrac{50C2}{100C2} = \\cfrac{1225}{4950} = \\cfrac{49}{198}$. <br><br> <b>2) Knows both:</b> <br> Choose 2 from the 50 known lessons. <br> $P(\\text{both}) = \\cfrac{50C2}{100C2} = \\cfrac{49}{198}$. <br><br> <b>3) Knows exactly one:</b> <br> Choose 1 known and 1 unknown. <br> $P(\\text{exactly 1}) = \\cfrac{50C1 \\times 50C1}{100C2} = \\cfrac{50 \\times 50}{4950} = \\cfrac{2500}{4950} = \\cfrac{50}{99}$. <br><br> <b>4) Knows at least one:</b> <br> Use the complement of knowing none. <br> $P(\\text{at least 1}) = 1 - P(\\text{none}) = 1 - \\cfrac{49}{198} = \\cfrac{149}{198}$.",
+              qImg: "",
+              aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P4",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+              id: "P4",
+              type: "question",
+              title: "Numbered Cards",
+              question: "A bag contains 9 cards numbered 1 through 9. Two cards are selected from this bag <b>one after the other and without replacement</b>. <br> Calculate the probability of each of the following events: <br> A: 'a number less than 4 and a number greater than 3 are obtained'. <br> B: 'the two numbers are even' <br> C: 'only one of the numbers is even' <br> D: 'at least one of the two numbers is odd' <br> E: 'one of the numbers is less than 4 and the other is a multiple of 4'.",
+              answer: "Total outcomes = $9P2 = 9 \\times 8 = 72$. <br><br> <b>Event A:</b> <br> Numbers $< 4$: {1, 2, 3} (3 total). <br> Numbers $> 3$: {4, 5, 6, 7, 8, 9} (6 total). <br> $P(A) = \\cfrac{3P1 \\times6P1 \\times 2!}{9P2} = \\cfrac{36}{72} = \\cfrac{1}{2}$. <br><br> <b>Event B:</b> <br> Even numbers: {2, 4, 6, 8} (4 total). <br> $P(B) = \\cfrac{4P2}{9P2} = \\cfrac{12}{72} = \\cfrac{1}{6}$. <br><br> <b>Event C:</b> <br> 1 Even (from 4) and 1 Odd (from 5). <br> $P(C) = \\cfrac{4P1 \\times 5P1 \\times 2!}{9P2} = \\cfrac{40}{72} = \\cfrac{5}{9}$. <br><br> <b>Event D:</b> <br> Complement of 'both are even' (Event B). <br> $P(D) = 1 - P(B) = 1 - \\cfrac{1}{6} = \\cfrac{5}{6}$. <br><br> <b>Event E:</b> <br> Numbers $< 4$: {1, 2, 3} (3 total). <br> Multiples of 4: {4, 8} (2 total). <br> $P(E) = \\cfrac{3P1 \\times 2P1 \\times 2!}{9P2} = \\cfrac{12}{72} = \\cfrac{1}{6}$.",
+              qImg: "",
+              aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P5",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+                id: "P5",
+                type: "question",
+                title: "Balls in an Urn (With Replacement)",
+                question: "An urn contains 5 R(ed), 6 B(blue), and 8 G(reen) balls. 3 balls are randomly drawn from the urn successively and with replacement</b>. <br> What is the probability that: <br> a) All of the balls will be of the same color. <br> b) No two balls will have the same color. <br> c) Only two balls have the same color.",
+                answer: "Total balls = $5 + 6 + 8 = 19$. <br> Since it is with replacement, the denominator for each draw is 19. <br> Total outcomes = $19^3 = 6859$. <br><br> <b>a) Same color (RRR, BBB, or GGG):</b> <br> $P(\\text{same}) = \\left(\\cfrac{5}{19}\\right)^3 + \\left(\\cfrac{6}{19}\\right)^3 + \\left(\\cfrac{8}{19}\\right)^3 = \\cfrac{125 + 216 + 512}{6859} = \\cfrac{853}{6859}$. <br><br> <b>b) No two same color (Different colors: R, B, G):</b> <br> The letters can be in any order ($3! = 6$ arrangements). <br> $P(\\text{diff}) = 6 \\times \\left(\\cfrac{5}{19} \\times \\cfrac{6}{19} \\times \\cfrac{8}{19}\\right) = \\cfrac{6 \\times 240}{6859} = \\cfrac{1440}{6859}$. <br><br> <b>c) Only two same color:</b> <br> This is the complement of 'all same' and 'all different'. <br> $P(\\text{only 2 same}) = 1 - [P(\\text{same}) + P(\\text{diff})]$ <br> $P(\\text{only 2 same}) = 1 - \\left(\\cfrac{853 + 1440}{6859}\\right) = 1 - \\cfrac{2293}{6859} = \\cfrac{4566}{6859}$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P6",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+                id: "P6",
+                type: "question",
+                title: "Independent Events and Bernoulli Trials",
+                question: "From an urn containing 5 white balls and 5 black balls, we draw 7 balls one at a time <b>with replacement</b>. <br> 1) Justify that the number of possible outcomes is $10^7$. <br> 2) Consider the events: <br> A: 'the drawn balls are black' <br> B: 'the drawn balls have the same color' <br> C: 'only one white ball is drawn' <br> E: 'the drawn balls are not of the same color' <br> F: 'at most one ball is white' <br> a) Calculate the probability of each of the events A and B. <br> b) Prove that $p(C) = \\cfrac{7}{128}$, $p(E) = \\cfrac{63}{64}$ and $p(F) = \\cfrac{1}{16}$. <br> c) Justify that $C = E \\cap F$ and verify that $p(C) \\neq p(E) \\times p(F)$. Conclude.",
+                answer: "1) Since there are 10 balls and we draw 7 times with replacement, each draw has 10 options. Total outcomes = $10 \\times 10 \\times 10 \\times 10 \\times 10 \\times 10 \\times 10 = 10^7$. <br><br> 2) Let $p(W) = p(B) = \\cfrac{5}{10} = \\cfrac{1}{2}$. <br> <b>a) Events A and B:</b> <br> $p(A) = p(BBBBBBB) = \\left(\\cfrac{1}{2}\\right)^7 = \\cfrac{1}{128}$. <br> $p(B) = p(\\text{all } B) + p(\\text{all } W) = \\cfrac{1}{128} + \\cfrac{1}{128} = \\cfrac{2}{128} = \\cfrac{1}{64}$. <br><br> <b>b) Proofs:</b> <br> $p(C) = \\left(\\cfrac{1}{2}\\right)^1 \\times \\left(\\cfrac{1}{2}\\right)^6 \\times 7 = \\cfrac{7}{128}$. <br> $p(E) = 1 - p(B) = 1 - \\cfrac{1}{64} = \\cfrac{63}{64}$. <br> $p(F) = p(\\text{0 white}) + p(\\text{1 white}) = \\cfrac{1}{128} + \\cfrac{7}{128} = \\cfrac{8}{128} = \\cfrac{1}{16}$. <br><br> <b>c) Conclusion:</b> <br> $F$ consists of 'all black' and 'only 1 white'. $E$ excludes 'all black' and 'all white'. Thus, $E \\cap F$ is strictly 'only 1 white', which is event $C$. <br> $p(E) \\times p(F) = \\cfrac{63}{64} \\times \\cfrac{1}{16} = \\cfrac{63}{1024} \\approx 0.0615$. <br> $p(C) = \\cfrac{7}{128} = \\cfrac{56}{1024} \\approx 0.0547$. <br> Since $p(C) \\neq p(E) \\times p(F)$, events $E$ and $F$ are <b>dependent</b>.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P7",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+                id: "P7",
+                type: "question",
+                title: "Simultaneous vs. Successive Selection",
+                question: "An urn contains 5 red balls, 4 black balls and 3 green balls. Three balls are randomly selected. <br> E: 'The three balls have the same color' <br> F: 'The three selected balls have three different colors' <br> G: 'Only two of the three selected balls have the same color' <br><br> <b>Part A:</b> Selection is <b>simultaneously</b>. Calculate $p(E), p(F)$ and $p(G)$. <br><br> <b>Part B:</b> Selection is <b>successively and with replacement</b>. <br> 1) Calculate $p(E)$ and $p(F)$. Deduce $p(G)$. <br> 2) Calculate $p(N)$ where N: 'No red ball' and $p(T)$ where T: 'Three red balls'. <br> 3) Prove that $p(S) = \\cfrac{175}{576}$ where S: 'Two of the three are red'.",
+                answer: "Total balls = 12. <br> <b>Part A (Simultaneous):</b> Total = $12C3 = 220$. <br><br> $p(E) = \\cfrac{5C3 + 4C3 + 3C3}{220} = \\cfrac{10 + 4 + 1}{220} = \\cfrac{15}{220} = \\cfrac{3}{44}$. <br><br> $p(F) = \\cfrac{5C1 \\times 4C1 \\times 3C1}{220} = \\cfrac{60}{220} = \\cfrac{3}{11}$. <br><br> $p(G) = 1 - \\left[p(E) + p(F)\\right] = 1 - \\left[\\cfrac{15+60}{220}\\right] = \\cfrac{145}{220} = \\cfrac{29}{44}$. <br><br> <b>Part B (With Replacement):</b> Total = $12^3 = 1728$. <br><br> 1) $p(E) = \\cfrac{5^3 + 4^3 + 3^3}{1728} = \\cfrac{125+64+27}{1728} = \\cfrac{216}{1728} = \\cfrac{1}{8}$. <br><br> $p(F) = \\cfrac{3! \\times (5 \\times 4 \\times 3)}{1728} = \\cfrac{360}{1728} = \\cfrac{5}{24}$. <br><br> $p(G) = 1 - \\left[\\cfrac{1}{8} + \\cfrac{5}{24}\\right] = 1 - \\cfrac{8}{24} = \\cfrac{2}{3}$. <br><br> 2) $p(N) = p(\\bar{R}\\bar{R}\\bar{R}) = \\left(\\cfrac{7}{12}\\right)^3 = \\cfrac{343}{1728}$. <br><br> $p(T) = p(RRR) = \\left(\\cfrac{5}{12}\\right)^3 = \\cfrac{125}{1728}$. <br><br> 3) $p(S) = \\left(\\cfrac{5}{12}\\right)^2 \\times \\left(\\cfrac{7}{12}\\right)^1 \\times 3 = \\cfrac{25}{144} \\times \\cfrac{7}{12} \\times 3 = \\cfrac{525}{1728} = \\cfrac{175}{576}$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P8",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+                id: "P8",
+                type: "question",
+                title: "Successive vs. Simultaneous Drawing",
+                question: "An urn contains 2 white balls, 3 red balls and 5 black balls. <br> 1) Two balls are drawn <b>successively without replacement</b>. Calculate the probability of: <br> A: 'The two balls are red' <br> B: 'The two balls have same color' <br> C: 'No black balls' <br> D: 'At least one black ball' <br><br> 2) Three balls are drawn <b>simultaneously</b>. Calculate the probability of: <br> E: 'The 3 balls of the same color' <br> F: 'The 3 balls are of different colors'",
+                answer: "Total balls = $2 + 3 + 5 = 10$. <br><br> <b>1) Successive (Without Replacement - $nPr$):</b> <br> Total outcomes = $10P2 = 90$. <br> $p(A) = \\cfrac{3P2}{10P2} = \\cfrac{6}{10P2} = \\cfrac{1}{15}$. <br><br> $p(B) = \\cfrac{2P2 + 3P2 + 5P2}{10P2} = \\cfrac{2 + 6 + 20}{10P2} = \\cfrac{28}{10P2} = \\cfrac{14}{45}$. <br><br> $p(C) = \\cfrac{5P2}{10P2}$ (choosing from 5 non-black) $= \\cfrac{20}{10P2} = \\cfrac{2}{9}$. <br><br> $p(D) = 1 - p(C) = 1 - \\cfrac{2}{9} = \\cfrac{7}{9}$. <br><br> <b>2) Simultaneous ($nCr$):</b> <br> Total outcomes = $10C3 = 120$. <br><br> $p(E) = \\cfrac{2C3(\\text{impossible}) + 3C3 + 5C3}{10C3} = \\cfrac{0 + 1 + 10}{10C3} = \\cfrac{11}{120}$. <br><br> $p(F) = \\cfrac{2C1 \\times 3C1 \\times 5C1}{10C3} = \\cfrac{2 \\times 3 \\times 5}{10C3} = \\cfrac{30}{120} = \\cfrac{1}{4}$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P9",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+                id: "P9",
+                type: "question",
+                title: "Loaded Die Probability",
+                question: "Suppose that a loaded die is such that 3 appears twice as often as each other number but that the other five outcomes are equally likely. What is the probability that an odd number appears when we roll this die?",
+                answer: "Let $p(1) = x$, then $p(2) = p(4) = p(5) = p(6) = x$ and $p(3) = 2x$. <br> Since the sum of all probabilities must be 1: <br> $p(1) + p(2) + p(3) + p(4) + p(5) + p(6) = 1$ <br> $x + x + 2x + x + x + x = 1$ <br> $7x = 1 \\implies x = \\cfrac{1}{7}$ <br><br> The probability of an odd number {1, 3, 5} is: <br> $p(\\{1,3,5\\}) = p(1) + p(3) + p(5)$ <br> $p(\\{1,3,5\\}) = \\cfrac{1}{7} + \\cfrac{2}{7} + \\cfrac{1}{7} = \\cfrac{4}{7}$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P10",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+                id: "P10",
+                type: "question",
+                title: "Another Loaded Die",
+                question: "A loaded die is such that 6 appears half as often as the other numbers. The other 5 outcomes are equally likely. What is the probability of rolling an even number on this die?",
+                answer: "Let $p(6) = x$, then $p(1) = p(2) = p(3) = p(4) = p(5) = 2x$. <br> Since the sum of all probabilities must be 1: <br> $p(1) + p(2) + p(3) + p(4) + p(5) + p(6) = 1$ <br> $2x + 2x + 2x + 2x + 2x + x = 1$ <br> $11x = 1 \\implies x = \\cfrac{1}{11}$ <br><br> The probability of an even number {2, 4, 6} is: <br> $p(\\{2,4,6\\}) = p(2) + p(4) + p(6)$ <br> $p(\\{2,4,6\\}) = \\cfrac{2}{11} + \\cfrac{2}{11} + \\cfrac{1}{11} = \\cfrac{5}{11}$.",
+                qImg: "",
+                aImg: ""
+            }
+        ]
+    },
+     {
+    id: "P11",
+    mainTitle: "Probability Problem",
+    parts: [
+      {
+        id: "P11",
+        type: "question",
+        title: "Rolling Two Fair Dice",
+        question: "We roll two fair dice. Calculate the probability for each of the following events: <br> 1) The sum of the 2 obtained numbers is 10. <br> 2) The sum of the 2 obtained numbers is greater than 11. <br> 3) The product of the 2 obtained numbers is 24. <br> 4) Obtaining a double 6. <br> 5) Obtaining no 6s at all. <br> 6) Obtaining at least one 6. <br> 7) The sum is a prime number. <br> 8) The two numbers are different.",
+        answer: "Total outcomes for two dice = $6 \\times 6 = 36$. <br><br> 1) <b>Sum is 10:</b> Successes = {(4,6), (5,5), (6,4)} (3 total). <br> $P = \\cfrac{3}{36} = \\cfrac{1}{12}$. <br><br> 2) <b>Sum > 11:</b> Only (6,6) gives sum 12. <br> $P = \\cfrac{1}{36}$. <br><br> 3) <b>Product is 24:</b> Successes = {(4,6), (6,4)} (2 total). <br> $P = \\cfrac{2}{36} = \\cfrac{1}{18}$. <br><br> 4) <b>Double 6:</b> Only (6,6). <br> $P = \\cfrac{1}{36}$. <br><br> 5) <b>No 6s:</b> Each die has 5 non-6 options. <br> Successes = $5 \\times 5 = 25$. <br> $P = \\cfrac{25}{36}$. <br><br> 6) <b>At least one 6:</b> Complement of 'no 6s'. <br> $P = 1 - \\cfrac{25}{36} = \\cfrac{11}{36}$. <br><br> 7) <b>Sum is Prime:</b> Sums can be {2, 3, 5, 7, 11}. <br> Successes: (1,1), (1,2), (2,1), (1,4), (4,1), (2,3), (3,2), (1,6), (6,1), (2,5), (5,2), (3,4), (4,3), (5,6), (6,5) (15 total). <br> $P = \\cfrac{15}{36} = \\cfrac{5}{12}$. <br><br> 8) <b>Numbers are different:</b> Complement of 'doubles' (6 doubles). <br> $P = 1 - \\cfrac{6}{36} = \\cfrac{30}{36} = \\cfrac{5}{6}$.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+    id: "P12",
+    mainTitle: "Probability Problem",
+    parts: [
+      {
+        id: "P12",
+        type: "question",
+        title: "Set Operations and Complementary Events",
+        question: "An urn contains 20 balls numbered 1 to 20. One ball is drawn at random. <br> Consider the following events: <br> A: 'the number is a multiple of 3' <br> B: 'the number is strictly greater than 5' <br><br> Calculate: $p(A)$, $p(B)$, $p(\\overline{A})$, $p(\\overline{B})$, $p(\\overline{A \\cap B})$, $p(\\overline{A} \\cup \\overline{B})$, $p(\\overline{A \\cup B})$ and $p(\\overline{A} \\cap \\overline{B})$.",
+        answer: "Since the draws are random, we have a situation of equiprobability. <br> <b>Defining the sets:</b> <br> $A = \\{3, 6, 9, 12, 15, 18\\}$ therefore $\\overline{A} = \\{1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20\\}$ <br> $B = \\{6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20\\}$ therefore $\\overline{B} = \\{1, 2, 3, 4, 5\\}$ <br><br> <b>Basic Probabilities:</b> <br> $p(A) = \\cfrac{6}{20} = 0.3$ <br> $p(B) = \\cfrac{15}{20} = 0.75$ <br> $p(\\overline{A}) = 1 - p(A) = 0.7$ <br> $p(\\overline{B}) = 1 - p(B) = 0.25$ <br><br> <b>Compound Operations:</b> <br> $p(A \\cap B) = \\cfrac{5}{20} = 0.25$ (Multiples of 3 that are > 5) <br> $p(\\overline{A \\cap B}) = 1 - p(A \\cap B) = 0.75$ <br> $p(\\overline{A} \\cup \\overline{B}) = p(\\overline{A \\cap B}) = 0.75$ (By De Morgan's Law) <br><br> <b>Intersection of Complements:</b> <br> $p(A \\cup B) = p(A) + p(B) - p(A \\cap B) = 0.3 + 0.75 - 0.25 = 0.8$ <br> $p(\\overline{A \\cup B}) = 1 - p(A \\cup B) = 1 - 0.8 = 0.2$ <br> $p(\\overline{A} \\cap \\overline{B}) = p(\\overline{A \\cup B}) = 0.2$",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+    id: "P13",
+    mainTitle: "Probability Problem",
+    parts: [
+      {
+        id: "P13",
+        type: "question",
+        title: "Pastry Shop Probability",
+        question: "For a ceremony, a baker makes an assortment of 180 pastries consisting of chocolate eclairs, coffee eclairs, chocolate cream puffs, and coffee cream puffs. <br> Two-thirds of these pastries are eclairs. There are 100 chocolate pastries, of which one-quarter are cream puffs. <br><br> 1) Complete the following table: <br><br> <table style='border-collapse: collapse; text-align: center; width: 100%; border: 1px solid black;'><tr><th style='border: 1px solid black;'></th><th style='border: 1px solid black;'>Chocolate</th><th style='border: 1px solid black;'>Coffee</th><th style='border: 1px solid black;'>Total</th></tr><tr><td style='border: 1px solid black;'><b>Eclairs</b></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'></td></tr><tr><td style='border: 1px solid black;'><b>Cream Puffs</b></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'></td></tr><tr><td style='border: 1px solid black;'><b>Total</b></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'>180</td></tr></table> <br> 2) <b>Samer</b> randomly chooses one pastry. What is the probability it is: <br> &nbsp;&nbsp;&nbsp;&nbsp; a. A chocolate eclair? <br> &nbsp;&nbsp;&nbsp;&nbsp; b. A cream puff? <br> &nbsp;&nbsp;&nbsp;&nbsp; c. A coffee pastry? <br> 3) <b>Jad</b> picks a pastry. <b>Given that</b> it is a cream puff, what is the probability it is chocolate? <br> 4) <b>Amer</b> takes two pastries at random. What is the probability they have the same flavor?",
+        answer: "<b>1) Completed Table:</b> <br> • Total = 180. <br> • Eclairs = $\\cfrac{2}{3} \\times 180 = 120$. <br> • Cream Puffs = $180 - 120 = 60$. <br> • Total Chocolate = 100. <br> • Chocolate Cream Puffs = $\\cfrac{1}{4} \\times 100 = 25$. <br> • Chocolate Eclairs = $100 - 25 = 75$. <br> • Coffee Eclairs = $120 - 75 = 45$. <br> • Coffee Cream Puffs = $60 - 25 = 35$. <br> • Total Coffee = $45 + 35 = 80$. <br><br> <table style='border-collapse: collapse; text-align: center; width: 100%; border: 1px solid black;'><tr><th style='border: 1px solid black;'></th><th style='border: 1px solid black;'>Chocolate</th><th style='border: 1px solid black;'>Coffee</th><th style='border: 1px solid black;'>Total</th></tr><tr><td style='border: 1px solid black;'><b>Eclairs</b></td><td style='border: 1px solid black;'>75</td><td style='border: 1px solid black;'>45</td><td style='border: 1px solid black;'>120</td></tr><tr><td style='border: 1px solid black;'><b>Cream Puffs</b></td><td style='border: 1px solid black;'>25</td><td style='border: 1px solid black;'>35</td><td style='border: 1px solid black;'>60</td></tr><tr><td style='border: 1px solid black;'><b>Total</b></td><td style='border: 1px solid black;'>100</td><td style='border: 1px solid black;'>80</td><td style='border: 1px solid black;'>180</td></tr></table> <br><br> <b>2) Probabilities:</b> <br> a) $P = \\cfrac{75}{180} = \\cfrac{5}{12}$. <br> b) $P = \\cfrac{60}{180} = \\cfrac{1}{3}$. <br> c) $P = \\cfrac{80}{180} = \\cfrac{4}{9}$. <br><br> <b>3) Conditional:</b> <br> $P(\\text{Choc | Puff}) = \\cfrac{25}{60} = \\cfrac{5}{12}$. <br><br> <b>4) Same Flavor:</b> <br> $P = \\cfrac{100C2 + 80C2}{180C2} = \\cfrac{811}{1611}$.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+    id: "P14",
+    mainTitle: "Probability Problem",
+    parts: [
+      {
+        id: "P14",
+        type: "question",
+        title: "Library Textbook Assortment",
+        question: "A library has 100 textbooks such that: <br> • 20% of the books are in Arabic of which 80% are of the Intermediate level. <br> • 60% of the books are in English of which 75% are of the Secondary level. <br> • 60% of the books are of the secondary level. <br> Copy and complete the following table: <br><br> <table style='border-collapse: collapse; text-align: center; width: 100%; border: 1px solid black;'><tr><th style='border: 1px solid black;'></th><th style='border: 1px solid black;'>Arabic</th><th style='border: 1px solid black;'>English</th><th style='border: 1px solid black;'>French</th><th style='border: 1px solid black;'>Total</th></tr><tr><td style='border: 1px solid black;'><b>Intermediate</b></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'>15</td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'></td></tr><tr><td style='border: 1px solid black;'><b>Secondary</b></td><td style='border: 1px solid black;'>4</td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'></td></tr><tr><td style='border: 1px solid black;'><b>Total</b></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'>20</td><td style='border: 1px solid black;'>100</td></tr></table> <br> <b>Part A.</b> <br> One book is randomly selected from the library. <br> Consider the following events: <br> $A$: \"The chosen book is in English and of the Intermediate level\". <br> $B$: \"The chosen book is in Arabic or of the Secondary level\". <br> $C$: \"The chosen book is of the Secondary level and not in French\". <br> 1) Verify that $P(A) = \\cfrac{3}{20}$. <br> 2) Calculate $P(B)$ and $P(C)$. <br><br> <b>Part B.</b> <br> Three books are randomly and simultaneously selected from the library. <br> 1) How many possible selections of the three books are there? <br> 2) Consider the following events: <br> $D$: \"The three chosen books are of the same level\". <br> $E$: \"Each of the three chosen books is of a different language\". <br> $F$: \"Only two from the three chosen books are in French\". <br> $G$: \"At least one of the three chosen books is of the Intermediate level\". <br> a) Verify that $P(D) = \\cfrac{3}{11}$. <br> b) Calculate $P(E), P(F)$ and $P(G)$. <br><br> <b>Part C.</b> <br> Two books are selected from the library successively and with replacement. <br> 1) How many possible selections of the two books are there? <br> 2) Calculate the probability of each of following events: <br> $M$: \"The two chosen books are of the Intermediate level\". <br> $N$: \"The first book is in English and the second is in French in this order\".",
+        answer: "<b>1) Table Completion:</b> <br> • Total Arabic = 20. Intermediate Arabic = $0.80 \\times 20 = 16$. <br> • Total English = 60. Secondary English = $0.75 \\times 60 = 45$. <br> • Total Secondary = 60. <br><br> <table style='border-collapse: collapse; text-align: center; width: 100%; border: 1px solid black;'><tr><th style='border: 1px solid black;'></th><th style='border: 1px solid black;'>Arabic</th><th style='border: 1px solid black;'>English</th><th style='border: 1px solid black;'>French</th><th style='border: 1px solid black;'>Total</th></tr><tr><td style='border: 1px solid black;'><b>Intermediate</b></td><td style='border: 1px solid black;'>16</td><td style='border: 1px solid black;'>15</td><td style='border: 1px solid black;'>9</td><td style='border: 1px solid black;'>40</td></tr><tr><td style='border: 1px solid black;'><b>Secondary</b></td><td style='border: 1px solid black;'>4</td><td style='border: 1px solid black;'>45</td><td style='border: 1px solid black;'>11</td><td style='border: 1px solid black;'>60</td></tr><tr><td style='border: 1px solid black;'><b>Total</b></td><td style='border: 1px solid black;'>20</td><td style='border: 1px solid black;'>60</td><td style='border: 1px solid black;'>20</td><td style='border: 1px solid black;'>100</td></tr></table> <br> <b>Part A:</b> <br> 1) $P(A) = \\cfrac{15}{100} = \\cfrac{3}{20}$. <br> 2) $P(B) = \\cfrac{20 + 60 - 4}{100} = \\cfrac{76}{100} = 0.76$. <br> $P(C) = \\cfrac{4 + 45}{100} = \\cfrac{49}{100} = 0.49$. <br><br> <b>Part B:</b> <br> 1) Total = $100C3 = 161,700$. <br> 2a) $P(D) = \\cfrac{40C3 + 60C3}{161700} = \\cfrac{44100}{161700} = \\cfrac{3}{11}$. <br> 2b) $P(E) = \\cfrac{20 \\times 60 \\times 20}{161700} = \\cfrac{8}{539}$. <br> $P(F) = \\cfrac{20C2 \\times 80C1}{161700} = \\cfrac{15200}{161700} = \\cfrac{152}{1617}$. <br> $P(G) = 1 - P(\\text{no Intermediate}) = 1 - \\cfrac{60C3}{161700} = \\cfrac{12748}{16170}$. <br><br> <b>Part C:</b> <br> 1) Total = $100^2 = 10,000$. <br> 2) $P(M) = \\left(\\cfrac{40}{100}\\right)^2 = 0.16$. <br> $P(N) = \\cfrac{60}{100} \\times \\cfrac{20}{100} = 0.12$.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+    id: "P15",
+    mainTitle: "Probability Problem",
+    parts: [
+      {
+        id: "P15",
+        type: "question",
+        title: "Balls in an Urn: Three Methods",
+        question: "An urn contains 9 balls: 2 blue balls, 3 red balls and 4 green balls. <br> 1) We draw, simultaneously and at random, three balls from the urn. <br> &nbsp;&nbsp;&nbsp;&nbsp; a) Prove that we have 84 possible drawings. <br> &nbsp;&nbsp;&nbsp;&nbsp; b) What is the probability of drawing exactly two red balls? <br> &nbsp;&nbsp;&nbsp;&nbsp; c) What is the probability of drawing at least one blue ball? <br> 2) We draw, one by one and without replacement, three balls from the urn. <br> &nbsp;&nbsp;&nbsp;&nbsp; a) Prove that we have 504 possible drawings. <br> &nbsp;&nbsp;&nbsp;&nbsp; b) What is the probability of drawing a blue ball, a red ball and a green ball? <br> &nbsp;&nbsp;&nbsp;&nbsp; c) What is the probability of drawing at most one green ball? <br> 3) We draw, one by one and with replacement, three balls from the urn. <br> &nbsp;&nbsp;&nbsp;&nbsp; a) Prove that we have 729 possible drawings. <br> &nbsp;&nbsp;&nbsp;&nbsp; b) What is the probability of drawing at least two blue balls? <br> &nbsp;&nbsp;&nbsp;&nbsp; c) What is the probability of drawing that the third drawn ball is the only green ball?",
+        answer: "Total balls = 9 (2B, 3R, 4G). <br><br> <b>1) Simultaneous (Combinations):</b> <br> a) Total = $9C3 = \\cfrac{9 \\times 8 \\times 7}{3 \\times 2 \\times 1} = 84$. <br> b) $P(\\text{exactly 2R}) = \\cfrac{3C2 \\times 6C1}{84} = \\cfrac{3 \\times 6}{84} = \\cfrac{18}{84} = \\cfrac{3}{14}$. <br> c) $P(\\text{at least 1B}) = 1 - P(\\text{no B}) = 1 - \\cfrac{7C3}{84} = 1 - \\cfrac{35}{84} = \\cfrac{49}{84} = \\cfrac{7}{12}$. <br><br> <b>2) One by one without replacement (Permutations):</b> <br> a) Total = $9P3 = 9 \\times 8 \\times 7 = 504$. <br> b) Any order of B, R, G: Successes = $3! \\times (2P1 \\times 3P1 \\times 4P1) = 6 \\times 24 = 144$. <br> $P = \\cfrac{144}{504} = \\cfrac{2}{7}$. <br> c) $P(\\text{at most 1G}) = P(\\text{0G}) + P(\\text{1G}) = \\cfrac{5P3 + (3 \\times 4P1 \\times 5P2)}{504} = \\cfrac{60 + 240}{504} = \\cfrac{300}{504} = \\cfrac{25}{42}$. <br><br> <b>3) One by one with replacement:</b> <br> a) Total = $9^3 = 729$. <br> b) $P(\\text{at least 2B}) = P(2B) + P(3B) = \\left(3 \\times (\\cfrac{2}{9})^2 \\times \\cfrac{7}{9}\\right) + (\\cfrac{2}{9})^3 = \\cfrac{84}{729} + \\cfrac{8}{729} = \\cfrac{92}{729}$. <br> c) Third is only Green means (Not G, Not G, G): <br> $P = \\cfrac{5}{9} \\times \\cfrac{5}{9} \\times \\cfrac{4}{9} = \\cfrac{100}{729}$.",
+        qImg: "",
+        aImg: ""
+      }
+    ]
+  },
+  {
+        id: "P16",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+              id: "P16",
+              type: "question",
+              title: "Coins in a Pocket",
+              question: "I have 6 gold coins, 4 silver coins and 3 bronze coins in my pocket. <br> I take out <b>simultaneously three</b> coins at random. What is the probability that: <br> 1) they are all of different material? <br> 2) they are all of the same material? <br> 3) only two of the coins are of the same material?",
+              answer: "Total coins = $6 + 4 + 3 = 13$. <br> Total possible outcomes = $13C3 = \\cfrac{13 \\times 12 \\times 11}{3 \\times 2 \\times 1} = 286$. <br><br> 1) <b>All different material:</b> <br> We must pick 1 Gold, 1 Silver, and 1 Bronze. <br> Successes = $6C1 \\times 4C1 \\times 3C1 = 6 \\times 4 \\times 3 = 72$. <br> Probability = $\\cfrac{72}{286} = \\cfrac{36}{143}$. <br><br> 2) <b>All same material:</b> <br> We can pick 3 Gold OR 3 Silver OR 3 Bronze. <br> Successes = $6C3 + 4C3 + 3C3 = 20 + 4 + 1 = 25$. <br> Probability = $\\cfrac{25}{286}$. <br><br> 3) <b>Only two same material:</b> <br> This is the complement of having all three the same or all three different. <br> Probability = $1 - \\left(\\cfrac{72}{286} + \\cfrac{25}{286}\\right) = 1 - \\cfrac{97}{286} = \\cfrac{189}{286}$.",
+              qImg: "",
+              aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P17",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+            id: "P17",
+            type: "question",
+            title: "Urn Selection: Simultaneous vs. Successive",
+            question: "An urn contains 3 red balls, 2 blue balls and 4 black balls. <br> 1) Two balls are randomly and simultaneously drawn. Find the probability of each of the following events: <br> A: the 2 balls are red <br> B: the 2 balls have the same color <br> C: exactly 1 ball is red <br> D: at most 1 ball is black <br> E: 1 ball is red and the other is blue <br><br> 2) Two balls are successively drawn and without replacement. Find the probability of each of the following events: <br> F: the 2 balls are black <br> G: the 2 balls have the same color <br> H: at least 1 ball is blue <br> I: the first ball is red and the second is blue.",
+            answer: "Total balls = $3 + 2 + 4 = 9$. <br><br> <b>1) Simultaneous (using $nCr$):</b> <br> Total outcomes = $9C2 = 36$. <br> • $P(A) = \\cfrac{3C2}{36} = \\cfrac{3}{36} = \\cfrac{1}{12}$. <br> • $P(B) = \\cfrac{3C2 + 2C2 + 4C2}{36} = \\cfrac{3 + 1 + 6}{36} = \\cfrac{10}{36} = \\cfrac{5}{18}$. <br> • $P(C) = \\cfrac{3C1 \\times 6C1}{36} = \\cfrac{18}{36} = \\cfrac{1}{2}$. <br> • $P(D) = P(\\text{0 black}) + P(\\text{1 black}) = \\cfrac{5C2 + (4C1 \\times 5C1)}{36} = \\cfrac{10 + 20}{36} = \\cfrac{30}{36} = \\cfrac{5}{6}$. <br> • $P(E) = \\cfrac{3C1 \\times 2C1}{36} = \\cfrac{6}{36} = \\cfrac{1}{6}$. <br><br> <b>2) Successive Without Replacement (using $nPr$):</b> <br> Total outcomes = $9P2 = 72$. <br> • $P(F) = \\cfrac{4P2}{72} = \\cfrac{12}{72} = \\cfrac{1}{6}$. <br> • $P(G) = \\cfrac{3P2 + 2P2 + 4P2}{72} = \\cfrac{6 + 2 + 12}{72} = \\cfrac{20}{72} = \\cfrac{5}{18}$. <br> • $P(H) = 1 - P(\\text{no blue}) = 1 - \\cfrac{7P2}{72} = 1 - \\cfrac{42}{72} = \\cfrac{30}{72} = \\cfrac{5}{12}$. <br> • $P(I) = \\cfrac{3 \\times 2}{72} = \\cfrac{6}{72} = \\cfrac{1}{12}$.",
+            qImg: "",
+            aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P18",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+            id: "P18",
+            type: "question",
+            title: "Laboratory Mice Probability",
+            question: "A cage in a laboratory contains 24 mice: <br> 9 white mice (6 females and 3 males), and 15 grey mice (8 females and 7 males). <br><br> 1) A mouse is selected at random from the cage. <br> Consider the following events: <br> A: \"The selected mouse is grey\". <br> B: \"The selected mouse is a male\". <br> C: \"The selected mouse is a grey male\". <br> a) Calculate the probability of the events A, B and C. <br> b) Calculate the probability of the events $A \\cap \\overline{B}$ and $B \\cap \\overline{A}$. <br> c) Calculate the probability that the selected mouse is grey or a male mouse. <br><br> 2) The selected mouse is not replaced in the cage, another mouse is selected. <br> Calculate the probability of each of the following events: <br> D: \"The first mouse is white and the second is grey\". <br> E: \"The first mouse is a male and the second is a female\". <br> F: \"The two mice have the same sex\".",
+            answer: "Total mice = 24. <br> <b>Summary table:</b> <br> • White: 6F, 3M (Total 9) <br> • Grey: 8F, 7M (Total 15) <br> • Total Females = 14, Total Males = 10. <br><br> <b>Part 1 (Single Selection):</b> <br> a) $P(A) = \\cfrac{15}{24} = \\cfrac{5}{8}$ <br> &nbsp;&nbsp;&nbsp; $P(B) = \\cfrac{10}{24} = \\cfrac{5}{12}$ <br> &nbsp;&nbsp;&nbsp; $P(C) = \\cfrac{7}{24}$ <br> b) $P(A \\cap \\overline{B})$ = Grey and Female = $\\cfrac{8}{24} = \\cfrac{1}{3}$ <br> &nbsp;&nbsp;&nbsp; $P(B \\cap \\overline{A})$ = Male and White = $\\cfrac{3}{24} = \\cfrac{1}{8}$ <br> c) $P(A \\cup B) = P(A) + P(B) - P(A \\cap B) = \\cfrac{15}{24} + \\cfrac{10}{24} - \\cfrac{7}{24} = \\cfrac{18}{24} = \\cfrac{3}{4}$ <br><br> <b>Part 2 (Successive without replacement):</b> <br> Total pairs = $24 \\times 23 = 552$. <br> D) $P(D) = \\cfrac{9}{24} \\times \\cfrac{15}{23} = \\cfrac{135}{552} = \\cfrac{45}{184}$ <br> E) $P(E) = \\cfrac{10}{24} \\times \\cfrac{14}{23} = \\cfrac{140}{552} = \\cfrac{35}{138}$ <br> F) $P(F) = P(MM) + P(FF) = \\left(\\cfrac{10}{24} \\times \\cfrac{9}{23}\\right) + \\left(\\cfrac{14}{24} \\times \\cfrac{13}{23}\\right) = \\cfrac{90 + 182}{552} = \\cfrac{272}{552} = \\cfrac{34}{69}$",
+            qImg: "",
+            aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P19",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+            id: "P19",
+            type: "question",
+            title: "Successive Selection with Replacement",
+            question: "From an urn containing 2 white balls, 3 red balls and 5 black balls we draw <u>three</u> balls one after the other <b>with replacement</b>. <br> Calculate the probability of each of the following events: <br> A: \"the three balls are white\" <br> B: \"the three balls have the same color\" <br> C: \"the three balls have different colors\" <br> D: \"no red ball is drawn\" <br> E: \"at least one of the balls is red\" <br> F: \"only one of the balls is red\" <br> G: \"only two of the balls have the same color\".",
+            answer: "Total balls = $2 + 3 + 5 = 10$. <br> Since selection is with replacement, total outcomes = $10^3 = 1000$. <br><br> • $P(A) = \\left(\\cfrac{2}{10}\\right)^3 = \\cfrac{8}{1000} = \\cfrac{1}{125}$ or $0.008$. <br> • $P(B) = P(WWW) + P(RRR) + P(BBB) = \\left(\\cfrac{2}{10}\\right)^3 + \\left(\\cfrac{3}{10}\\right)^3 + \\left(\\cfrac{5}{10}\\right)^3 = \\cfrac{8 + 27 + 125}{1000} = \\cfrac{160}{1000} = \\cfrac{4}{25}$ or $0.16$. <br> • $P(C) = 3! \\times \\left(\\cfrac{2}{10} \\times \\cfrac{3}{10} \\times \\cfrac{5}{10}\\right) = 6 \\times \\cfrac{30}{1000} = \\cfrac{180}{1000} = \\cfrac{9}{50}$ or $0.18$. <br> • $P(D) = \\left(\\cfrac{7}{10}\\right)^3 = \\cfrac{343}{1000} = 0.343$. <br> • $P(E) = 1 - P(D) = 1 - 0.343 = 0.657$. <br> • $P(F) = 3 \\times \\left(\\cfrac{3}{10} \\times \\cfrac{7}{10} \\times \\cfrac{7}{10}\\right) = \\cfrac{441}{1000} = 0.441$. <br> • $P(G) = 1 - [P(B) + P(C)] = 1 - [0.16 + 0.18] = 1 - 0.34 = 0.66$.",
+            qImg: "",
+            aImg: ""
+            }
+        ]
+    },
+    {
+        id: "P20",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+            id: "P20",
+            type: "question",
+            title: "School Distribution and Probabilities",
+            question: "The 575 students of a secondary school are distributed as follows: <br> 210 students are in the first secondary year, 180 are in the 2nd year and the others are in the 3rd year. <br> 40% of the students in the first year are girls. <br> 50% of the students in the 2nd year are boys. <br><br> 1) Copy and complete the following table: <br><br> <table style='border-collapse: collapse; text-align: center; width: 100%; border: 1px solid black;'><tr><th style='border: 1px solid black;'></th><th style='border: 1px solid black;'>1<sup>st</sup> year</th><th style='border: 1px solid black;'>2<sup>nd</sup> year</th><th style='border: 1px solid black;'>3<sup>rd</sup> year</th><th style='border: 1px solid black;'>Total</th></tr><tr><td style='border: 1px solid black;'><b>Girls</b></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'>74</td><td style='border: 1px solid black;'></td></tr><tr><td style='border: 1px solid black;'><b>Boys</b></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'></td></tr><tr><td style='border: 1px solid black;'><b>Total</b></td><td style='border: 1px solid black;'>210</td><td style='border: 1px solid black;'>180</td><td style='border: 1px solid black;'></td><td style='border: 1px solid black;'>575</td></tr></table> <br> 2) One student is randomly chosen from this school. <br> Consider the following events: <br> $A$: \"the chosen student is a girl\". <br> $B$: \"the chosen student is a student in the 3<sup>rd</sup> secondary year\". <br> $C$: \"the chosen student is a boy\". <br> Calculate the following probabilities: $p(A)$, $p(C)$, $p(A/B)$ and $p(B \\cup C)$. <br><br> 3) In this part we choose randomly two students, one after the other, from this secondary school. <br> Calculate the probability of choosing a boy and a girl from the 3<sup>rd</sup> secondary year.",
+            answer: "<b>1) Table Calculation:</b> <br> • Total 3<sup>rd</sup> year = $575 - (210 + 180) = 185$. <br> • Girls 1<sup>st</sup> year = $0.40 \\times 210 = 84$. Boys 1<sup>st</sup> year = $210 - 84 = 126$. <br> • Boys 2<sup>nd</sup> year = $0.50 \\times 180 = 90$. Girls 2<sup>nd</sup> year = $180 - 90 = 90$. <br> • Boys 3<sup>rd</sup> year = $185 - 74 = 111$. <br> • Total Girls = $84 + 90 + 74 = 248$. <br> • Total Boys = $126 + 90 + 111 = 327$. <br><br> <table style='border-collapse: collapse; text-align: center; width: 100%; border: 1px solid black;'><tr><th style='border: 1px solid black;'></th><th style='border: 1px solid black;'>1<sup>st</sup> year</th><th style='border: 1px solid black;'>2<sup>nd</sup> year</th><th style='border: 1px solid black;'>3<sup>rd</sup> year</th><th style='border: 1px solid black;'>Total</th></tr><tr><td style='border: 1px solid black;'><b>Girls</b></td><td style='border: 1px solid black;'>84</td><td style='border: 1px solid black;'>90</td><td style='border: 1px solid black;'>74</td><td style='border: 1px solid black;'>248</td></tr><tr><td style='border: 1px solid black;'><b>Boys</b></td><td style='border: 1px solid black;'>126</td><td style='border: 1px solid black;'>90</td><td style='border: 1px solid black;'>111</td><td style='border: 1px solid black;'>327</td></tr><tr><td style='border: 1px solid black;'><b>Total</b></td><td style='border: 1px solid black;'>210</td><td style='border: 1px solid black;'>180</td><td style='border: 1px solid black;'>185</td><td style='border: 1px solid black;'>575</td></tr></table> <br> <b>2) Probabilities:</b> <br> • $p(A) = \\cfrac{248}{575} \\approx 0.431$. <br> • $p(C) = \\cfrac{327}{575} \\approx 0.569$. <br> • $p(A/B) = \\cfrac{\\text{Girls in 3rd year}}{\\text{Total 3rd year}} = \\cfrac{74}{185} = \\cfrac{2}{5} = 0.4$. <br> • $p(B \\cup C) = p(B) + p(C) - p(B \\cap C) = \\cfrac{185}{575} + \\cfrac{327}{575} - \\cfrac{111}{575} = \\cfrac{401}{575} \\approx 0.697$. <br><br> <b>3) Successive Selection (2 students from school):</b> <br> We need one boy and one girl specifically from the 3<sup>rd</sup> year. There are two orders: (Boy3, Girl3) or (Girl3, Boy3). <br> $P = \\left(\\cfrac{111}{575} \\times \\cfrac{74}{574}\\right) + \\left(\\cfrac{74}{575} \\times \\cfrac{111}{574}\\right) = 2 \\times \\cfrac{8214}{330050} = \\cfrac{16428}{330050} \\approx 0.0498$.",
+            qImg: "",
+            aImg: ""
+            }
+        ]
+    },
+       {
+        id: "P21",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+            id: "P21",
+            type: "question",
+            title: "Venn Diagrams and Conditional Probability",
+            question: "We have a class of 18 students. Some play football (F), some play basketball (B), some play both, and some play neither. <br> One student is chosen at random. <br> Based on the provided Venn diagram, calculate the following probabilities: <br> 1) $p(F)$ <br> 2) $p(B)$ <br> 3) $p(F \\cap B)$ <br> 4) $p(F \\cap \\overline{B})$ (Student playing only football) <br> 5) $p(F/B)$ (Student playing football knowing that he plays basketball) <br> 6) $p(B/F)$ (Student playing basketball knowing that he plays football) <br> 7) Based on the results of $p(F/B)$ and $p(B/F)$, what can you conclude about events F and B?",
+            answer: "From the Venn diagram: <br> • Total students = $3 + 3 + 6 + 6 = 18$. <br> • Students playing Football $n(F) = 3 + 3 = 6$. <br> • Students playing Basketball $n(B) = 3 + 6 = 9$. <br> • Students playing both $n(F \\cap B) = 3$. <br><br> <b>Probabilities:</b> <br> 1) $p(F) = \\cfrac{6}{18} = \\cfrac{1}{3}$. <br> 2) $p(B) = \\cfrac{9}{18} = \\cfrac{1}{2}$. <br> 3) $p(F \\cap B) = \\cfrac{3}{18} = \\cfrac{1}{6}$. <br> 4) $p(F \\cap \\overline{B}) = \\cfrac{3}{18} = \\cfrac{1}{6}$. <br> 5) $p(F/B) = \\cfrac{p(F \\cap B)}{p(B)} = \\cfrac{3}{9} = \\cfrac{1}{3}$. <br> 6) $p(B/F) = \\cfrac{p(F \\cap B)}{p(F)} = \\cfrac{3}{6} = \\cfrac{1}{2}$. <br><br> <b>7) Conclusion:</b> <br> Since $p(F/B) = p(F)$ and $p(B/F) = p(B)$, the events $F$ and $B$ are <b>independent</b>.",
+            qImg: "data:image/png;base64,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",
+            aImg: ""
+            }
+        ]
+    },
+        {
+        id: "P22",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+            id: "P22",
+            type: "question",
+            title: "Basketball Club Distribution",
+            question: "The 40 students in the basketball club of a school are distributed as shown in the table below: <br><br> <table style='border-collapse: collapse; text-align: center; width: 100%; border: 1px solid black;'><tr><th style='border: 1px solid black;'></th><th style='border: 1px solid black;'>Boys</th><th style='border: 1px solid black;'>Girls</th></tr><tr><td style='border: 1px solid black;'><b>1<sup>st</sup> secondary year</b></td><td style='border: 1px solid black;'>8</td><td style='border: 1px solid black;'>6</td></tr><tr><td style='border: 1px solid black;'><b>2<sup>nd</sup> secondary year</b></td><td style='border: 1px solid black;'>7</td><td style='border: 1px solid black;'>4</td></tr><tr><td style='border: 1px solid black;'><b>3<sup>rd</sup> secondary year</b></td><td style='border: 1px solid black;'>8</td><td style='border: 1px solid black;'>7</td></tr></table> <br> A group of 3 students is chosen simultaneously and randomly from this club. <br> 1- Consider the following events: <br> $A$: \"The three chosen students are all in 3<sup>rd</sup> secondary year\" <br> $B$: \"The three chosen students are all girls, each one from a different year\" <br> $C$: \"The three chosen students are all in the same secondary year\" <br> Verify that the probability $P(A)$ is equal to $\\cfrac{7}{152}$ and calculate $P(B)$ and $P(C)$. <br> 2- The chosen group is formed of three boys. What is the probability that they are all from the same secondary year? <br> 3- In this part we choose randomly and successively three students from this club (without replacement). <br> a) What is the probability that the first is in the 1<sup>st</sup> year, the second is in 2<sup>nd</sup> year and the third is in 3<sup>rd</sup> year? <br> b) What is the probability that at least one of them is in the 1<sup>st</sup> year?",
+            answer: "Total students = 40. <br> <b>Part 1 (Simultaneous - $40C3 = 9880$):</b> <br> • $P(A) = \\cfrac{15C3}{9880} = \\cfrac{455}{9880} = \\cfrac{7}{152}$. (Verified) <br> • $P(B) = \\cfrac{6 \\times 4 \\times 7}{9880} = \\cfrac{168}{9880} = \\cfrac{21}{1235}$. <br> • $P(C) = \\cfrac{14C3 + 11C3 + 15C3}{9880} = \\cfrac{364 + 165 + 455}{9880} = \\cfrac{984}{9880} = \\cfrac{123}{1235}$. <br><br> <b>Part 2 (Conditional Probability):</b> <br> Total boys = $8+7+8 = 23$. Total boy groups = $23C3 = 1771$. <br> Boys from same year = $8C3 + 7C3 + 8C3 = 56 + 35 + 56 = 147$. <br> $P(\\text{Same year | All boys}) = \\cfrac{147}{1771} = \\cfrac{21}{253}$. <br><br> <b>Part 3 (Successive - $40 \\times 39 \\times 38 = 59280$):</b> <br> a) $P = \\cfrac{14}{40} \\times \\cfrac{11}{39} \\times \\cfrac{15}{38} = \\cfrac{2310}{59280} = \\cfrac{77}{1976}$. <br> b) $P(\\text{At least 1 in 1st year}) = 1 - P(\\text{None in 1st year}) = 1 - \\cfrac{26P3}{40P3} = 1 - \\cfrac{15600}{59280} = \\cfrac{43680}{59280} = \\cfrac{28}{38} = \\cfrac{14}{19}$.",
+            qImg: "",
+            aImg: ""
+            }
+        ]
+    },
+           {
+        id: "P23",
+        mainTitle: "Probability Problem",
+        parts: [
+            {
+            id: "P23",
+            type: "question",
+            title: "Armed Forces Survey",
+            question: "A recent survey asked 100 people if they thought women in the armed forces should be permitted to participate in combat. The results of the survey are shown: <br><br> <table style='border-collapse: collapse; text-align: center; width: 100%; border: 1px solid black;'><tr><th style='border: 1px solid black;'></th><th style='border: 1px solid black;'>Yes</th><th style='border: 1px solid black;'>No</th></tr><tr><td style='border: 1px solid black;'><b>Male</b></td><td style='border: 1px solid black;'>32</td><td style='border: 1px solid black;'>18</td></tr><tr><td style='border: 1px solid black;'><b>Female</b></td><td style='border: 1px solid black;'>8</td><td style='border: 1px solid black;'>42</td></tr></table> <br> If 2 persons are selected at random. <br> 1- Find the probability of the following events: <br> A: \"they are of different gender and answered no\". <br> B: \"both are women knowing that they answered yes\". <br> C: \"at least one of them answered yes\". <br> 2- The selected persons are men, what is the probability that they answered no?",
+            answer: "Total people = 100. <br> Selection of 2 people simultaneously: $100C2 = 4950$. <br><br> <b>Part 1:</b> <br> • <b>Event A:</b> (1 Male No AND 1 Female No) <br> $P(A) = \\cfrac{18C1 \\times 42C1}{4950} = \\cfrac{18 \\times 42}{4950} = \\cfrac{756}{4950} = \\cfrac{42}{275}$. <br> • <b>Event B:</b> Total 'Yes' = $32 + 8 = 40$. We choose 2 from these 40. <br> $P(B) = \\cfrac{8C2}{40C2} = \\cfrac{28}{780} = \\cfrac{7}{195}$. <br> • <b>Event C:</b> Complement of 'both answered No'. Total 'No' = $18 + 42 = 60$. <br> $P(C) = 1 - \\cfrac{60C2}{100C2} = 1 - \\cfrac{1770}{4950} = \\cfrac{3180}{4950} = \\cfrac{106}{165}$. <br><br> <b>Part 2 (Conditional):</b> <br> Total Men = $32 + 18 = 50$. Total pairs of men = $50C2 = 1225$. <br> Pairs of men who answered No = $18C2 = 153$. <br> $P(\\text{Both No | Both Men}) = \\cfrac{153}{1225} \\approx 0.125$.",
+            qImg: "",
+            aImg: ""
+            }
+        ]
+    }
+
+
+];
+
+
+
+        function init() {
+            const nav = document.getElementById('nav-list');
+            nav.innerHTML = '';
+            const scrollTarget = document.getElementById('content'); // Get the scrollable div
+
+            courseData.forEach((topic, tIdx) => {
+                const details = document.createElement('details');
+                details.className = 'sidebar-group';
+
+                const summary = document.createElement('summary');
+                summary.className = 'compact-title';
+                summary.innerHTML = `${tIdx + 1}. ${topic.mainTitle}`;
+
+                // 1. INITIAL STATE (Runs once per refresh for the first item)
+                if (tIdx === 0) {
+                    summary.classList.add('active-link');
+                    details.open = true;
+                    displayTopic(tIdx);
+
+                    // Fix: Scroll to top on page load
+                    if (scrollTarget) scrollTarget.scrollTop = 0;
+                }
+
+                // 2. CLICK LOGIC
+                summary.onclick = (e) => {
+                    document.querySelectorAll('.compact-title').forEach(el => el.classList.remove('active-link'));
+                    document.querySelectorAll('.sidebar-group').forEach(det => {
+                        if (det !== details) det.open = false;
+                    });
+
+                    summary.classList.add('active-link');
+                    displayTopic(tIdx);
+
+                    // Fix: Scroll to top when clicking a new problem
+                    if (scrollTarget) {
+                        scrollTarget.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                };
+
+                const ul = document.createElement('ul');
+                ul.className = 'parts-list';
+                topic.parts.forEach(p => {
+                    const li = document.createElement('li');
+                    li.innerText = p.title.replace(/^Part\s[A-Z]:\s/i, "");
+                    ul.appendChild(li);
+                });
+
+                details.appendChild(summary);
+                details.appendChild(ul);
+                nav.appendChild(details);
+            });
+            document.getElementById('count-display').innerText = courseData.length;
+        }
+
+
+function displayTopic(index) {
+    const container = document.getElementById('problem-container');
+    container.innerHTML = '';
+    const topic = courseData[index];
+    const section = document.createElement('div');
+    section.className = 'topic-section';
+
+    // Helper to generate Image HTML if a string exists
+    const getImageHTML = (imgData) => {
+        if (!imgData || imgData.trim() === "") return "";
+
+        // Add prefix if user forgot to include it in the JSON string
+        const src = imgData.startsWith('data:image')
+                    ? imgData
+                    : `data:image/png;base64,${imgData}`;
+
+        return `<img src="${src}" class="math-image" alt="Problem Illustration">`;
+    };
+
+    topic.parts.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'puzzle-card';
+
+        if (p.type === "context") {
+            card.innerHTML = `
+                <div class="header"><h3>${p.title}</h3></div>
+                <div class="question-body">${p.content}</div>
+                ${getImageHTML(p.qImg)}
+            `;
+        } else {
+            card.innerHTML = `
+                <div class="header"><h3>${p.id}. ${p.title}</h3></div>
+                <div class="question-body">${p.question}</div>
+                ${getImageHTML(p.qImg)}
+
+                <div class="answer-link" onclick="toggleAns('${p.id}')">View Solution ▼</div>
+
+                <div id="ans-box-${p.id}" class="answer-box hidden">
+                    <div>${p.answer}</div>
+                    ${getImageHTML(p.aImg)}
+                </div>
+            `;
+        }
+        section.appendChild(card);
+    });
+
+    container.appendChild(section);
+
+    // Re-run KaTeX if present
+    if (window.renderMathInElement) {
+        renderMathInElement(container, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+        });
+    }
+}
+
+
+
+
+
+
+function filterContent() {
+        const query = document.getElementById('search-box').value.toLowerCase();
+        const sidebarGroups = document.querySelectorAll('.sidebar-group');
+        let visibleCount = 0;
+
+        courseData.forEach((topic, index) => {
+                const sidebar = sidebarGroups[index];
+                const match = topic.mainTitle.toLowerCase().includes(query) ||
+                                            topic.parts.some(p => p.title.toLowerCase().includes(query));
+
+                if (match) {
+                        sidebar.classList.remove('hidden');
+                        visibleCount++;
+                } else {
+                        sidebar.classList.add('hidden');
+                }
+        });
+
+        document.getElementById('count-display').innerText = visibleCount;
+}
+
+
+
+
+
+
+function toggleAns(id) {
+    const box = document.getElementById(`ans-box-${id}`);
+    if (box) {
+        box.classList.toggle('hidden');
+    }
+}
+
+
+window.onload = init;
+</script>
+
+
+</body>
+</html>

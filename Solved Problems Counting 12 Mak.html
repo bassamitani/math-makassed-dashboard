@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solved Problems</title>
+
+    <link rel="stylesheet" href="cdn.jsdelivr.net">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
+     <script src="https://cdn.tailwindcss.com"></script>
+
+ <!-- KaTeX Auto-Render Extension with Custom Delimiter Config -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false},
+                {left: '\\[', right: '\\]', display: true}
+            ],
+            throwOnError: false
+        });">
+        </script>
+
+ <style>
+/* 1. Global Variables & Base Setup */
+:root {
+    --accent: #2563eb;       /* Primary Blue */
+    --accent-bg: #e7f3ff;    /* Light Blue for active states */
+    --star-color: #f59e0b;   /* Gold for ratings */
+    --bg-sidebar: #f8f9fa;   /* Light gray sidebar */
+    --border-color: #e0e0e0;
+    --text-main: #333;
+    --text-muted: #64748b;
+}
+
+body {
+    display: flex;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    height: 100vh;
+    color: var(--text-main);
+    overflow: hidden; /* Prevents double scrollbars */
+}
+
+/* 2. Sidebar & Search Layout */
+#sidebar {
+    width: 300px;
+    border-right: 1px solid var(--border-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-sidebar);
+    box-sizing: border-box;
+}
+
+#search-box {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+#search-box:focus {
+    border-color: var(--accent);
+}
+
+#nav-list {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+/* 3. Collapsible Sidebar Items */
+.sidebar-group {
+    margin-bottom: 8px;
+}
+
+/* Remove default browser arrows */
+summary {
+    list-style: none;
+    outline: none;
+}
+summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Main Clickable Topic Title */
+.compact-title {
+    padding: 12px 15px;
+    cursor: pointer;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+    display: block;
+}
+
+.compact-title:hover {
+    background-color: #edf2f7;
+}
+
+/* Active/Selected Highlight */
+.compact-title.active-link,
+details[open] .compact-title {
+    background-color: var(--accent-bg);
+    color: var(--accent);
+    border-left-color: var(--accent);
+}
+
+/* Sub-problem Bullet List */
+.parts-list {
+    margin: 8px 0 15px 35px;
+    padding: 0;
+    list-style-type: disc;
+    color: var(--text-muted);
+    font-size: 0.85em;
+}
+
+.parts-list li {
+    margin-bottom: 5px;
+}
+
+/* 4. Main Content Area */
+#content {
+    flex: 1;
+    padding: 40px 60px;
+    overflow-y: auto;
+    background: white;
+}
+
+.puzzle-card {
+    border: 1px solid var(--border-color);
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #1a202c;
+}
+
+/* Solution Box Styling */
+.answer-link {
+    display: inline-block;
+    color: var(--accent);
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.answer-box {
+    background: #f0f7ff;
+    padding: 20px;
+    margin-top: 15px;
+    border-left: 5px solid var(--accent);
+    border-radius: 4px;
+}
+
+/* 5. Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.image-div img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.math-image {
+    display: block;
+    max-width: 100%; /* Prevents image from overflowing card */
+    height: auto;
+    margin: 15px auto; /* Centers the image with spacing */
+    border-radius: 8px; /* Matches card aesthetic */
+    border: 1px solid #eee; /* Light border to define the image area */
+}
+
+/* Hide the answer box by default */
+.hidden {
+    display: none;
+}
+
+.puzzle-card h3 {
+    font-weight: bold !important;
+    display: block;
+    font-size: 1.25rem; /* Adjust as needed */
+    margin-bottom: 0.5rem;
+}
+
+</style>
+
+</head>
+<body>
+
+<div id="sidebar">
+    <h2 style="font-size: 1.2rem; margin-top: 0;">
+    Problems (<span id="count-display">0</span>)
+    </h2>
+
+    <input type="text" id="search-box" placeholder="Filter problems..." onkeyup="filterContent()">
+    <div id="nav-list"></div>
+</div>
+
+<div id="content">
+        <div id="logo1" style="display: flex; justify-content: center; align-items: center;">
+        </div>
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <p class="text-xl font-bold text-slate-500 uppercase tracking-widest mt-2">Grade 12 | 2025-2026 Academic Session</p>
+        <div class="mt-6 inline-block bg-blue-100 text-blue-800 px-4 py-1 rounded-full font-semibold">Document by Mathematics Department General Coordinator</div>
+        </div>
+        <br>
+    <div id="problem-container"></div>
+</div>
+
+<script>
+
+    const mylogo = "data:image/jpeg;base64,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";
+
+    const targetDiv = document.getElementById('logo1');
+    targetDiv.innerHTML = `<img src="${mylogo}" alt="Log Image" />`;
+
+const courseData = [
+  {
+    id: "M1",
+    mainTitle: "Successive selections with replacement",
+    parts: [
+    {
+    "id": "1",
+    "type": "question",
+    "title": "Selecting at least 1 red ball",
+    "question": "An urn contains 2 red balls and 5 black balls. Three balls are selected randomly and successively with replacement. Find the number of different ways of selecting at least 1 red ball.",
+    "answer": "Total number of possible outcomes = $7^3 = 343$. <br> Number of ways to select only black balls (0 red balls) = $5^3 = 125$. <br> Number of ways to select at least 1 red ball = $343 - 125 = 218$.",
+    "qImg": "",
+    "aImg": ""
+    },
+    {
+    "id": "2",
+    "type": "question",
+    "title": "Selecting 3 red balls and 1 black ball",
+    "question": "An urn contains 7 balls: 4 red balls and 3 black balls. Find the number of ways to select, at random successively and with replacement 3 red balls and 1 black ball.",
+    "answer": "Since the selection is successive and with replacement, the order matters. <br> Number of ways to arrange the sequence (e.g., RRBR, RRRB, ...) is $4$. <br> For each sequence, there are $4^3 \\times 3^1 = 192$ ways. <br> Total ways = $4 \\times 192 = 768$.",
+    "qImg": "",
+    "aImg": ""
+    },
+    {
+        "id": "3",
+        "type": "question",
+        "title": "Selecting at Least One White Ball",
+        "question": "An urn contains 3 white balls and 6 green balls. Two balls are selected randomly and successively with replacement. Find the number of different ways of selecting at least 1 white ball.",
+        "answer": "1. Total outcomes: $9 \\times 9 = 81$. <br> 2. Ways with no white balls (all green): $6 \\times 6 = 36$. <br> 3. Final Result: $81 - 36 = 45$.",
+        "qImg": "",
+        "aImg": ""
+    },
+    {
+        "id": "4",
+        "type": "question",
+        "title": "Specific Ratio with Replacement",
+        "question": "An urn contains 5 blue balls and 2 yellow balls. Four balls are selected randomly and successively with replacement. Find the number of ways to select 2 blue balls and 2 yellow balls.",
+        "answer": "1. Number of possible orders: $\\binom{4}{2} = 6$. <br> 2. Ways per specific order: $5^2 \\times 2^2 = 25 \\times 4 = 100$. <br> 3. Total ways: $6 \\times 100 = 600$.",
+        "qImg": "",
+        "aImg": ""
+    },
+    {
+        "id": "5",
+        "type": "question",
+        "title": "One of Each Color",
+        "question": "An urn contains 3 red balls and 4 black balls. Two balls are selected successively with replacement. Find the number of ways to get exactly one of each color.",
+        "answer": "1. Possible orders: Red-Black or Black-Red (2 orders). <br> 2. **Ways per order: $3 \\times 4 = 12$. <br> 3. Total ways: $2 \\times 12 = 24$.",
+        "qImg": "",
+        "aImg": ""
+    },
+    {
+        "id": "6",
+        "type": "question",
+        "title": "All Balls Same Color",
+        "question": "An urn contains 4 gold balls and 5 silver balls. Three balls are selected successively with replacement. Find the number of ways all selected balls are the same color.",
+        "answer": "1. Ways to get 3 gold**: $4^3 = 64$. <br> 2. **Ways to get 3 silver: $5^3 = 125$. <br> 3. Total ways: $64 + 125 = 189$.",
+        "qImg": "",
+        "aImg": ""
+    },
+    {
+        "id": "7",
+        "type": "question",
+        "title": "At Most One Specific Color",
+        "question": "An urn contains 2 green balls and 8 purple balls. Three balls are selected successively with replacement. Find the number of ways to select at most 1 green ball.",
+        "answer": "1. Case 0 green: $8^3 = 512$ ways. <br> 2. Case 1 green: $\\binom{3}{1} \\times 2^1 \\times 8^2 = 3 \\times 2 \\times 64 = 384$ ways. <br> 3. Total ways: $512 + 384 = 896$.",
+        "qImg": "",
+        "aImg": ""
+    },
+    {
+        "id": "8",
+        "type": "question",
+        "title": "Large Urn Selection",
+        "question": "An urn contains 6 orange balls and 4 white balls. Three balls are selected successively with replacement. Find the number of ways to select at least 1 white ball.",
+        "answer": "1. Total outcomes: $10^3 = 1000$. <br> 2. Ways with no white balls (all orange): $6^3 = 216$. <br> 3. Final Result: $1000 - 216 = 784$.",
+        "qImg": "",
+        "aImg": ""
+    },
+    {
+        "id": "9",
+        "type": "question",
+        "title": "Three Color Selection",
+        "question": "An urn contains 3 red, 3 blue, and 3 green balls. Three balls are selected successively with replacement. Find the number of ways to select exactly one of each color.",
+        "answer": "1. Possible orders: $3! = 6$ arrangements. <br> 2. Ways per specific order: $3 \\times 3 \\times 3 = 27$. <br> 3. Total ways: $6 \\times 27 = 162$.",
+        "qImg": "",
+        "aImg": ""
+    },
+    {
+        "id": "10",
+        "type": "question",
+        "title": "Majority Selection",
+        "question": "An urn contains 5 black balls and 5 white balls. Four balls are selected with replacement. Find the number of ways to select 3 black balls and 1 white ball.",
+        "answer": "1. Number of possible orders: $\\binom{4}{3} = 4$. <br> 2. Ways per specific order: $5^3 \\times 5^1 = 625$. <br> 3. Total ways: $4 \\times 625 = 2500$.",
+        "qImg": "",
+        "aImg": ""
+    }
+
+
+  ]
+  },
+
+  {
+    id: "M2",
+    mainTitle: "Successive choices",
+    parts: [
+    {
+    "id": "1",
+    "type": "question",
+    "title": "Even codes greater than or equal to 300",
+    "question": "A code is a number formed of three digits using the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9. Find the number of possible even codes greater than or equal to 300.",
+    "answer": "For the first digit (hundreds): Since the code must be $\\ge 300$, it can be {3, 4, 5, 6, 7, 8, 9} $\\rightarrow$ 7 choices. <br> For the second digit (tens): It can be any digit from 0 to 9 $\\rightarrow$ 10 choices. <br> For the third digit (units): To be even, it must be {0, 2, 4, 6, 8} $\\rightarrow$ 5 choices. <br> Total number of codes = $7 \\times 10 \\times 5 = 350$.",
+    "qImg": "",
+    "aImg": ""
+    },
+    {
+    "id": "2",
+    "type": "question",
+    "title": "Number of possible codes",
+    "question": "A security entrance keyboard of a building is formed of three letters A, B and C and five digits 1, 2, 3, 4 and 5. The entrance code is formed of one letter followed by a number consisting of three distinct digits. Find the number of all possible codes.",
+    "answer": "For the letter: There are 3 choices (A, B, or C). <br> For the number: Since the three digits must be distinct, we have $5 \\times 4 \\times 3 = 60$ (or $_5P_3 = 60$) possibilities. <br> Total number of codes = $3 \\times 60 = 180$.",
+    "qImg": "",
+    "aImg": ""
+    },
+    {
+    "id": "3",
+    "type": "question",
+    "title": "Answer exactly 2 questions correct",
+    "question": "A multiple-choice exam is composed of 6 independent questions. For each question, 3 answers are given, exactly one of which is correct. What is the number of possibilities that a student answers exactly two correct questions?",
+    "answer": "Number of possibilities = $1^2 \\times 2^4 \\times \\cfrac{6!}{2! \\times 4!} = 240.$ <br> Another method: <br> To find the number of possibilities for exactly two correct answers: <br> Choose which 2 questions out of 6 are correct: $\\binom{6}{2} = 15$. <br> For each correct question, there is 1 correct choice $\\rightarrow 1^2 = 1$. <br> For the remaining 4 incorrect questions, there are 2 wrong choices each $\\rightarrow 2^4 = 16$. <br> Total possibilities = $15 \\times 1 \\times 16 = 240$.",
+    "qImg": "",
+    "aImg": ""
+    },
+    {
+    "id": "4",
+    "type": "question",
+    "title": "Even codes greater than or equal to 400",
+    "question": "A code is a number formed of three digits using the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9. Find the number of possible even codes greater than or equal to 400.",
+    "answer": "For the first digit (hundreds): Since the code must be $\\ge 400$, it can be {4, 5, 6, 7, 8, 9} $\\rightarrow$ 6 choices. <br> For the second digit (tens): It can be any digit from 0 to 9 $\\rightarrow$ 10 choices. <br> For the third digit (units): To be even, it must be {0, 2, 4, 6, 8} $\\rightarrow$ 5 choices. <br> Total number of codes = $6 \\times 10 \\times 5 = 300$.",
+    "qImg": "",
+    "aImg": ""
+    },
+    {
+    "id": "5",
+    "type": "question",
+    "title": "Even numbers less than or equal to 299",
+    "question": "What is the number of three-distinct digits even numbers less than or equal to 299?",
+    "answer": "To find the number of 3-digit even numbers with distinct digits $\\le 299$, the hundreds digit must be 1 or 2. <br> Case 1: Hundreds digit is 1: The units digit must be even {0, 2, 4, 6, 8} (5 choices). The tens digit can be any of the remaining 8 digits. Total = $1 \\times 8 \\times 5 = 40$. <br> Case 2: Hundreds digit is 2: The units digit must be even and cannot be 2, so {0, 4, 6, 8} (4 choices). The tens digit can be any of the remaining 8 digits. Total = $1 \\times 8 \\times 4 = 32$. <br> Total numbers = $40 + 32 = 72$.",
+    "qImg": "",
+    "aImg": ""
+    },
+    {
+    "id": "6",
+    "type": "question",
+    "title": "Successive Selection Without Replacement",
+    "question": "An urn contains 5 balls numbered 1 and 5 balls numbered 3. Seven balls are drawn successively without replacement from this urn. Find the number of different ways of drawing five balls numbered 1 and two balls numbered 3.",
+    "answer": "Since the selection is successive and without replacement, the order of the sequence matters. <br> Arrangements: Number of ways to choose the positions for the five balls numbered '1' in the sequence of 7 draws is $\\binom{7}{5} = 21$. <br> Selection of '1's: Number of ways to pick and arrange the five '1' balls in those positions is $_5P_5 = 120$. <br> Selection of '3's: Number of ways to pick and arrange the two '3' balls in the remaining positions is $_5P_2 = 20$. <br> Total ways = $21 \\times 120 \\times 20 = 50,400$. <br> Another method: <br> Calculate ways for a single specific sequence: <br> Imagine we draw the balls in this exact order: (1, 1, 1, 1, 1, 3, 3). <br> Since we are drawing without replacement, the number of choices decreases each time: <br> • 1st ball (Number 1): 5 choices <br> • 2nd ball (Number 1): 4 choices <br> • 3rd ball (Number 1): 3 choices <br> • 4th ball (Number 1): 2 choices <br> • 5th ball (Number 1): 1 choice <br> • 6th ball (Number 3): 5 choices <br> • 7th ball (Number 3): 4 choices <br> Multiplying these gives: $(5 \\times 4 \\times 3 \\times 2 \\times 1) \\times (5 \\times 4) = 120 \\times 20 = 2,400$ ways for this specific sequence (Or $_5P_5 \\times _5P_2 = 120 \\times 20 = 2,400$). <br><br> Find the number of possible sequences: <br> Any sequence containing five '1's and two '3's will have exactly 2,400 ways. We just need to count how many different sequences (orders) exist. <br> We have 7 positions to fill. The number of ways to arrange the symbols {1, 1, 1, 1, 1, 3, 3} is: <br> Total sequences = $\\frac{7! \\text{ (Total arrangements)}}{5! \\text{ (Repeated 1s)} \\times 2! \\text{ (Repeated 3s)}} = \\frac{5,040}{120 \\times 2} = \\frac{5,040}{240} = 21$. <br><br> Final Total: <br> Multiply the ways for one sequence by the total number of sequences: <br> Total Ways = $21 \\times 2,400 = 50,400$.",
+    "qImg": "",
+    "aImg": ""
+    }
+
+
+
+
+  ]
+  },
+     {
+        id: "M3",
+        mainTitle: "Simultaneous selections",
+        parts: [
+        {
+        "id": "1",
+        "type": "question",
+        "title": "Selecting 3 balls of the same color",
+        "question": "A box contains 2 red balls, 4 green balls and 5 blue balls. Three balls are selected randomly and simultaneously from this box. What is the possible number of selections made of three balls of same color?",
+        "answer": "To have 3 balls of the same color, they must be all green or all blue (there are not enough red balls): <br> Three green balls: $\\binom{4}{3} = 4$. <br> Three blue balls: $\\binom{5}{3} = 10$. <br> Three red balls: $\\binom{2}{3} = 0$. <br> Total number of ways = $4 + 10 = 14$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "2",
+        "type": "question",
+        "title": "Combined Box Selections",
+        "question": "Two boxes A and B contain bouquets of flowers: Box A contains 4 bouquets of roses and 3 bouquets of tulips and box B contains 1 bouquet of roses and 2 bouquets of tulips. Two bouquets are selected randomly and simultaneously from box A and one bouquet is randomly selected from box B. What is the number of possible selections of getting at least 2 bouquets of roses and at most 1 bouquet of tulips?",
+        "answer": "Since 3 bouquets are selected in total, the condition 'at least 2 roses and at most 1 tulip' implies we must have either (3 roses, 0 tulips) or (2 roses, 1 tulip). <br> Case 1: 3 Roses (2 from A, 1 from B): $\\binom{4}{2} \\times \\binom{1}{1} = 6 \\times 1 = 6$. <br> Case 2: 2 Roses and 1 Tulip: <br> - 2 Roses from A and 1 Tulip from B: $\\binom{4}{2} \\times \\binom{2}{1} = 6 \\times 2 = 12$. <br> - 1 Rose & 1 Tulip from A and 1 Rose from B: $(\\binom{4}{1} \\times \\binom{3}{1}) \\times \\binom{1}{1} = 12 \\times 1 = 12$. <br> Total ways = $6 + 12 + 12 = 30$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "3",
+        "type": "question",
+        "title": "Committee Selection",
+        "question": "From a group of 6 men and 8 women, what is the number of committees of 3 persons that can be formed, so that at least 1 woman is there on the committee?",
+        "answer": "Using the complement method: <br> Total possible committees of 3 from 14 people (6M + 8W) = $\\binom{14}{3} = \\frac{14 \\times 13 \\times 12}{3 \\times 2 \\times 1} = 364$. <br> Number of committees with no women (all men) = $\\binom{6}{3} = \\frac{6 \\times 5 \\times 4}{3 \\times 2 \\times 1} = 20$. <br> Number of committees with at least 1 woman = $364 - 20 = 344$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "4",
+        "type": "question",
+        "title": "Committee Selection with Constraints",
+        "question": "What is the number of ways in which a committee of 5 can be selected from 15 managers if 2 particular managers are never selected?",
+        "answer": "Since 2 particular managers are never to be selected, we must choose the 5 committee members from the remaining $15 - 2 = 13$ managers. <br> Total available managers = $13$. <br> Number to select = $5$. <br> Calculation: $\\binom{13}{5} = \\frac{13 \\times 12 \\times 11 \\times 10 \\times 9}{5 \\times 4 \\times 3 \\times 2 \\times 1} = 1287$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "5",
+        "type": "question",
+        "title": "Exam Question Selection",
+        "question": "A math exam is composed of 20 multiple choice questions. The student should answer at least 18 questions in order to be accepted at a university. How many possibilities does he have?",
+        "answer": "To be accepted, the student can choose to answer exactly 18, 19, or 20 questions out of the 20 available. <br> Ways to answer 18 questions: $\\binom{20}{18} = \\binom{20}{2} = \\frac{20 \\times 19}{2 \\times 1} = 190$. <br> Ways to answer 19 questions: $\\binom{20}{19} = 20$. <br> Ways to answer 20 questions: $\\binom{20}{20} = 1$. <br> Total possibilities = $190 + 20 + 1 = 211$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "6",
+        "type": "question",
+        "title": "Number of chess games",
+        "question": "Six friends want to play enough games of chess to be sure everyone plays everyone else. How many games will they have to play?",
+        "answer": "This problem can be solved using combinations because we are choosing a pair of players from a group where the order does not matter. <br><br> Identify the Selection: <br> We need to select 2 people to play a game from a total of 6 friends. <br> The number of ways to choose 2 people out of 6 is: <br> $_6C_2 = \\binom{6}{2} = 15$ <br> Total Games = 15. <br><br> Another method: <br> This problem is a variation of the 'handshake problem' where we need to count every unique pair that can be formed from a group of 6 people. <br><br> Breakdown of the Games: <br> We can count the games one friend at a time, making sure not to count the same game twice: <br> • The 1st friend must play against the other 5 friends $\\rightarrow$ 5 games. <br> • The 2nd friend has already played the 1st, so they have 4 new opponents left $\\rightarrow$ 4 games. <br> • The 3rd friend has already played the 1st and 2nd, leaving 3 new opponents $\\rightarrow$ 3 games. <br> • The 4th friend has 2 new opponents left to play $\\rightarrow$ 2 games. <br> • The 5th friend has 1 new opponent left to play $\\rightarrow$ 1 game. <br> • The 6th friend has now already played everyone. <br><br> The Final Total: <br> To find the total number of games required, we sum these values: <br> Total games = $5 + 4 + 3 + 2 + 1 = 15$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "7",
+        "type": "question",
+        "title": "Committee Constraints",
+        "question": "From a group of 8 men and 7 women a committee consisting of 4 men and 3 women is to be formed. How many different committees are possible if: <br> a) 2 of the men refuse to serve together? <br> b) 2 of the women refuse to serve together? <br> c) 1 man and 1 woman refuse to serve together?",
+        "answer": "First, calculate the total possible committees without restrictions: <br> Men: $\\binom{8}{4} = 70$, Women: $\\binom{7}{3} = 35$. <br> Total = $70 \\times 35 = 2,450$. <br><br> a) 2 men refuse to serve together: <br> 1. Find cases where they ARE together: $\\binom{6}{2} \\times \\binom{7}{3} = 15 \\times 35 = 525$. <br> 2. Subtract from total: $2,450 - 525 = 1,925$. <br><br> b) 2 women refuse to serve together: <br> 1. Find cases where they ARE together: $\\binom{8}{4} \\times \\binom{5}{1} = 70 \\times 5 = 350$. <br> 2. Subtract from total: $2,450 - 350 = 2,100$. <br><br> c) 1 man and 1 woman refuse to serve together: <br> 1. Find cases where they ARE together: $\\binom{7}{3} \\text{ (men)} \\times \\binom{6}{2} \\text{ (women)} = 35 \\times 15 = 525$. <br> 2. Subtract from total: $2,450 - 525 = 1,925$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "8",
+        "type": "question",
+        "title": "Selecting at Least One Black Ball",
+        "question": "A box contains 2 white balls, 3 black balls and 4 red balls. In how many ways can 3 balls be drawn from the box, if at least one black ball is to be included in the draw?",
+        "answer": "Choosing 1 black, 2 black, or 3 black balls: <br><br> Identify the groups: <br> • Black balls: 3 <br> • Non-black balls (2 white + 4 red): 6 <br><br> Break down the possible cases for 'at least 1 black': <br> • Case 1: Exactly 1 black and 2 non-black <br> Calculation: $\\binom{3}{1} \\times \\binom{6}{2} = 3 \\times 15 = 45$ ways. <br> • Case 2: Exactly 2 black and 1 non-black <br> Calculation: $\\binom{3}{2} \\times \\binom{6}{1} = 3 \\times 6 = 18$ ways. <br> • Case 3: Exactly 3 black balls <br> Calculation: $\\binom{3}{3} = 1$ way. <br><br> Final Total: <br> Sum the results of all cases: $45 + 18 + 1 = 64$. <br><br> Another method: Using the complement method (Total - No Black). <br><br> Identify Total Balls: <br> Total balls = 2 (white) + 3 (black) + 4 (red) = 9 balls. <br><br> Calculate Total Possible Selections: <br> Total ways to choose 3 balls out of 9 = $\\binom{9}{3} = \\frac{9 \\times 8 \\times 7}{3 \\times 2 \\times 1} = 84$. <br><br> Calculate Selections with NO Black Balls: <br> To have no black balls, we must choose 3 balls from the 6 other balls (2 white + 4 red). <br> Ways to choose 3 from 6 = $\\binom{6}{3} = \\frac{6 \\times 5 \\times 4}{3 \\times 2 \\times 1} = 20$. <br><br> Final Total: <br> Ways with at least one black ball = Total - No black balls <br> $84 - 20 = 64$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "9",
+        "type": "question",
+        "title": "Selecting at Least One Boy",
+        "question": "In a group of 6 boys and 4 girls, four children are to be selected. In how many different ways can they be selected such that at least one boy should be there?",
+        "answer": "To find the number of ways to select at least one boy, it is easiest to use the complement method (Total selections - Selections with no boys). <br><br> 1. Calculate Total Selections <br> Total ways to choose 4 children out of a total of 10 (6 boys + 4 girls): <br> $\\binom{10}{4} = \\frac{10 \\times 9 \\times 8 \\times 7}{4 \\times 3 \\times 2 \\times 1} = 210$. <br><br> 2. Calculate Selections with NO Boys <br> This means all 4 selected children must be girls. Since there are exactly 4 girls: <br> $\\binom{4}{4} = 1$. <br><br> 3. Final Calculation <br> Ways with at least one boy = Total selections - Selections with no boys <br> $210 - 1 = 209$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "10",
+        "type": "question",
+        "title": "Committee Selection with Minimum Men",
+        "question": "From a group of 7 men and 6 women, five persons are to be selected to form a committee so that at least 3 men are there on the committee. In how many ways can it be done?",
+        "answer": "Since the committee requires 'at least 3 men', we need to calculate the ways for each valid scenario (3, 4, or 5 men) and add them together. <br><br> 1. Identify the possible cases: <br> • Case 1: 3 men and 2 women <br> • Case 2: 4 men and 1 woman <br> • Case 3: 5 men and 0 women <br><br> 2. Calculate each case using combinations ($nCr$): <br> • Case 1 (3M, 2W): $\\binom{7}{3} \\times \\binom{6}{2} = 35 \\times 15 = 525$ ways. <br> • Case 2 (4M, 1W): $\\binom{7}{4} \\times \\binom{6}{1} = 35 \\times 6 = 210$ ways. <br> • Case 3 (5M, 0W): $\\binom{7}{5} \\times \\binom{6}{0} = 21 \\times 1 = 21$ ways. <br><br> 3. Final Total: <br> Sum the results from all possible cases: $525 + 210 + 21 = 756$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+            "id": "11",
+            "type": "question",
+            "title": "Selecting a Team and Captain",
+            "question": "A college has 10 basketball players. A 5-member team and a captain will be selected out of these 10 players. How many different selections can be made?",
+            "answer": "There are two logical ways to approach this problem, both leading to the same result. <br><br> Method 1: Select the team first, then the captain <br> 1. Choose a 5-member team from the 10 players: <br> $\\binom{10}{5} = \\frac{10 \\times 9 \\times 8 \\times 7 \\times 6}{5 \\times 4 \\times 3 \\times 2 \\times 1} = 252$. <br> 2. From those 5 team members, choose 1 to be the captain: <br> $\\binom{5}{1} = 5$ ways. <br> 3. Total selections = $252 \\times 5 = 1,260$. <br><br> Method 2: Select the captain first, then the rest of the team <br> 1. Choose 1 captain from the 10 players: <br> $\\binom{10}{1} = 10$ ways. <br> 2. Choose the remaining 4 team members from the 9 players left: <br> $\\binom{9}{4} = \\frac{9 \\times 8 \\times 7 \\times 6}{4 \\times 3 \\times 2 \\times 1} = 126$. <br> 3. Total selections = $10 \\times 126 = 1,260$. <br><br> Final Total = 1,260.",
+            "qImg": "",
+            "aImg": ""
+        },
+        {
+        "id": "12",
+        "type": "question",
+        "title": "Mathematics Class Committee Selection",
+        "question": "An advanced mathematics class consists of 7 girls and 9 boys. <br> a) How many different committees of 7 students can be chosen from this class? <br> b) How many such committees can be chosen if the class members Tim (boy) and Josephine (girl) cannot both be on the committee? <br> c) How many committees of 7 students can be chosen if there must be more boys than girls on the committee?",
+        "answer": "a) Total Committees <br> To choose 7 students out of 16 (7 girls + 9 boys): <br> $\\binom{16}{7} = \\frac{16 \\times 15 \\times 14 \\times 13 \\times 12 \\times 11 \\times 10}{7 \\times 6 \\times 5 \\times 4 \\times 3 \\times 2 \\times 1} = 11,440$. <br><br> b) Tim and Josephine cannot both be on it <br> We use the complement method: Total - (Cases where both are included). <br> 1. Total committees from part (a) = 11,440. <br> 2. If Tim and Josephine are both included, we need to choose the remaining 5 members from the 14 remaining students: <br> $\\binom{14}{5} = 2,002$. <br> 3. Calculation: $11,440 - 2,002 = 9,438$. <br><br> c) More boys than girls <br> Since the committee has 7 members, 'more boys than girls' means there must be 4, 5, 6, or 7 boys. <br> 1. 4 Boys, 3 Girls: $\\binom{9}{4} \\times \\binom{7}{3} = 126 \\times 35 = 4,410$. <br> 2. 5 Boys, 2 Girls: $\\binom{9}{5} \\times \\binom{7}{2} = 126 \\times 21 = 2,646$. <br> 3. 6 Boys, 1 Girl: $\\binom{9}{6} \\times \\binom{7}{1} = 84 \\times 7 = 588$. <br> 4. 7 Boys, 0 Girls: $\\binom{9}{7} \\times \\binom{7}{0} = 36 \\times 1 = 36$. <br> Final Total: $4,410 + 2,646 + 588 + 36 = 7,680$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "13",
+        "type": "question",
+        "title": "Committee Selection with a Fixed Member",
+        "question": "In how many ways can a committee of four be selected from nine men so as to always include a particular man?",
+        "answer": "Since one particular man must always be included in the committee, he is already chosen. We only need to select the remaining members to fill the committee. <br><br> 1. Identify the remaining spots: <br> The committee needs 4 members in total. With 1 man already chosen, we need to select $4 - 1 = 3$ more members. <br><br> 2. Identify the remaining pool: <br> Since one man is already taken from the original group of 9, there are $9 - 1 = 8$ men left to choose from. <br><br> 3. Apply the Combination Formula: <br> We choose 3 men from the remaining 8: <br> $\\binom{8}{3} = \\frac{8 \\times 7 \\times 6}{3 \\times 2 \\times 1} = 56$. <br><br> Total ways = 56.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "14",
+        "type": "question",
+        "title": "Committee Selection Scenarios",
+        "question": "1) How many committees of 4 people can be chosen from 5 men and 3 women? <br> 2) How many of these could be all men? <br> 3) How many would consist of 2 men and 2 women?",
+        "answer": "1) Total committees: <br> To choose 4 people out of 8 total (5 men + 3 women): <br> $\\binom{8}{4} = \\frac{8 \\times 7 \\times 6 \\times 5}{4 \\times 3 \\times 2 \\times 1} = 70$. <br><br> 2) All men committees: <br> To choose 4 men out of the 5 available men: <br> $\\binom{5}{4} = 5$. <br><br> 3) 2 men and 2 women: <br> • Ways to choose 2 men from 5: $\\binom{5}{2} = 10$. <br> • Ways to choose 2 women from 3: $\\binom{3}{2} = 3$. <br> • Total = $10 \\times 3 = 30$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "15",
+        "type": "question",
+        "title": "Class Committee Gender Distribution",
+        "question": "There are 30 students in a class, of which 18 are girls and 12 are boys. Four students are selected at random to form a committee. Find how many ways the committee can contain: <br> a) Two girls and two boys; <br> b) Students all of the same gender.",
+        "answer": "a) Two girls and two boys: <br> 1. Choose 2 girls from 18: $\\binom{18}{2} = \\frac{18 \\times 17}{2 \\times 1} = 153$ ways. <br> 2. Choose 2 boys from 12: $\\binom{12}{2} = \\frac{12 \\times 11}{2 \\times 1} = 66$ ways. <br> 3. Total ways: $153 \\times 66 = 10,098$. <br><br> b) Students all of the same gender: <br> This means either all 4 are girls or all 4 are boys. <br> 1. Case all girls (choose 4 from 18): $\\binom{18}{4} = \\frac{18 \\times 17 \\times 16 \\times 15}{4 \\times 3 \\times 2 \\times 1} = 3,060$. <br> 2. Case all boys (choose 4 from 12): $\\binom{12}{4} = \\frac{12 \\times 11 \\times 10 \\times 9}{4 \\times 3 \\times 2 \\times 1} = 495$. <br> 3. Total ways: $3,060 + 495 = 3,555$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "16",
+        "type": "question",
+        "title": "Selecting Balls of Different Colors",
+        "question": "A box contains 4 red, 3 white and 2 blue balls. Three balls are drawn at random. Find out the number of ways of selecting the balls of different colours?",
+        "answer": "Since there are 3 distinct colors available and we are drawing 3 balls, selecting balls of 'different colors' means we must select exactly one ball of each color (1 red, 1 white, and 1 blue). <br><br> 1. Identify the number of ways for each color: <br> • Ways to choose 1 red ball from 4: $\\binom{4}{1} = 4$. <br> • Ways to choose 1 white ball from 3: $\\binom{3}{1} = 3$. <br> • Ways to choose 1 blue ball from 2: $\\binom{2}{1} = 2$. <br><br> 2. Calculate the total: <br> Multiply the number of choices for each color: <br> Total ways = $4 \\times 3 \\times 2 = 24$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "17",
+        "type": "question",
+        "title": "Team Selection by Nationality",
+        "question": "There are 10 Americans, 5 Australians (which include Bob) and 5 Austrians. Eight are needed for a math team. In how many ways can this be done if: <br> a) Nationality is irrelevant? <br> b) The team must be all American? <br> c) The team must have 3 Americans, 3 Australians, and 2 Austrians? <br> d) Nationality is irrelevant, but Bob must be on the team?",
+        "answer": "a) Nationality is irrelevant: <br> Total pool = 10 + 5 + 5 = 20 people. <br> Choose 8 from 20: $\\binom{20}{8} = 125,970$. <br><br> b) All American team: <br> Choose 8 from the 10 Americans: <br> $\\binom{10}{8} = \\binom{10}{2} = \\frac{10 \\times 9}{2 \\times 1} = 45$. <br><br> c) 3 Americans, 3 Australians, and 2 Austrians: <br> 1. Choose 3 Americans: $\\binom{10}{3} = 120$. <br> 2. Choose 3 Australians: $\\binom{5}{3} = 10$. <br> 3. Choose 2 Austrians: $\\binom{5}{2} = 10$. <br> Total = $120 \\times 10 \\times 10 = 12,000$. <br><br> d) Bob must be on the team (nationality irrelevant): <br> Since Bob is already chosen, we need 7 more players from the remaining 19 people: <br> $\\binom{19}{7} = 50,388$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "18",
+        "type": "question",
+        "title": "Committee Selection with Gender Constraints",
+        "question": "A class has 20 students, of which 12 are females and 8 are males. In how many ways can a committee of five students be picked from this class under each condition? <br> a) No restriction is placed on the number of males or females on the committee. <br> b) No males are to be included on the committee. <br> c) The committee must have three females and two males.",
+        "answer": "a) No restriction: <br> We choose any 5 students out of the total 20: <br> $\\binom{20}{5} = \\frac{20 \\times 19 \\times 18 \\times 17 \\times 16}{5 \\times 4 \\times 3 \\times 2 \\times 1} = 15,504$. <br><br> b) No males included: <br> This means all 5 members must be chosen from the 12 females: <br> $\\binom{12}{5} = \\frac{12 \\times 11 \\times 10 \\times 9 \\times 8}{5 \\times 4 \\times 3 \\times 2 \\times 1} = 792$. <br><br> c) Three females and two males: <br> 1. Choose 3 females from 12: $\\binom{12}{3} = \\frac{12 \\times 11 \\times 10}{3 \\times 2 \\times 1} = 220$. <br> 2. Choose 2 males from 8: $\\binom{8}{2} = \\frac{8 \\times 7}{2 \\times 1} = 28$. <br> 3. Total ways: $220 \\times 28 = 6,160$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "19",
+        "type": "question",
+        "title": "Vacancy Selection with Reservations",
+        "question": "To fill 8 vacancies there are 15 candidates of which 5 are from ST. If 3 of the vacancies are reserved for ST candidates while the rest are open to all, Find the number of ways in which the selection can be done?",
+        "answer": "1. Fill the reserved vacancies: <br> We must select 3 candidates from the 5 ST candidates. <br> Ways to choose 3 ST candidates = $\\binom{5}{3} = 10$. <br><br> 2. Fill the open vacancies: <br> There are $8 - 3 = 5$ vacancies remaining. These are open to all remaining candidates. <br> After selecting 3 ST candidates, there are $15 - 3 = 12$ candidates left in the pool. <br> Ways to choose 5 from the remaining 12 = $\\binom{12}{5} = \\frac{12 \\times 11 \\times 10 \\times 9 \\times 8}{5 \\times 4 \\times 3 \\times 2 \\times 1} = 792$. <br><br> 3. Final Total: <br> Multiply the selections: $10 \\times 792 = 7,920$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "20",
+        "type": "question",
+        "title": "Professional Committee Selection",
+        "question": "A company has 10 software engineers and 6 civil engineers. In how many ways can a committee of 4 engineers be formed from them such that the committee must contain at least 1 civil engineer?",
+        "answer": "This problem is most efficiently solved using the complement method (Total selections - Selections with zero civil engineers). <br><br> 1. Calculate Total Possible Committees <br> There are a total of $10 + 6 = 16$ engineers. To choose any 4 from 16: <br> $\\binom{16}{4} = \\frac{16 \\times 15 \\times 14 \\times 13}{4 \\times 3 \\times 2 \\times 1} = 1,820$ ways. <br><br> 2. Calculate Committees with NO Civil Engineers <br> This means all 4 members must be chosen from the 10 software engineers: <br> $\\binom{10}{4} = \\frac{10 \\times 9 \\times 8 \\times 7}{4 \\times 3 \\times 2 \\times 1} = 210$ ways. <br><br> 3. Final Calculation <br> Subtract the undesired cases from the total: <br> Ways (at least 1 civil engineer) = $1,820 - 210 = 1,610$.",
+        "qImg": "",
+        "aImg": ""
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ]
+     },
+
+         {
+        id: "M4",
+        mainTitle: "Geometry Counting",
+        parts: [
+       {
+        "id": "1",
+        "type": "question",
+        "title": "Largest number of chords",
+        "question": "A, B, C, D and E are five distinct points on a circle. What is the largest number of chords that could be formed by these five points?",
+        "answer": "To form a chord, we must select any 2 distinct points from the 5 available points on the circle. Since the order of the points does not matter (chord AB is the same as chord BA), we use combinations: <br> Number of chords = $\\binom{5}{2} = \\frac{5 \\times 4}{2 \\times 1} = 10$.",
+        "qImg": "",
+        "aImg": ""
+       },
+       {
+        "id": "2",
+        "type": "question",
+        "title": "Triangle Combinations",
+        "question": "10 distinct points are placed on a circle. What is the number of triangles that can be formed from these points?",
+        "answer": "To form a triangle, we must select any 3 distinct points from the 10 available points on the circle. Since the order of selection does not matter, we use combinations: <br> Number of triangles = $\\binom{10}{3} = \\frac{10 \\times 9 \\times 8}{3 \\times 2 \\times 1} = 120$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "3",
+        "type": "question",
+        "title": "Counting Triangles",
+        "question": "How many triangles are there in the given figure?",
+        "answer": "The figure is composed of 3 vertical slices meeting at a common vertex and 3 horizontal levels. <br> On each level, the number of triangles formed is $3 + 2 + 1 = 6$ (3 single-width, 2 double-width, and 1 triple-width). <br> Since there are 3 such horizontal levels, the total number of triangles is $6 \\times 3 = 18$.",
+        "qImg": "data:image/jpeg;base64,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",
+        "aImg": ""
+        },
+        {
+        "id": "4",
+        "type": "question",
+        "title": "Quadrilateral Combinations",
+        "question": "With 8 distinct points situated on a circle, how many quadrilaterals can be determined?",
+        "answer": "To form a quadrilateral, we must select any 4 distinct points from the 8 available points on the circle. Since the order of selection does not matter, we use combinations: <br> Number of quadrilaterals = $\\binom{8}{4} = \\frac{8 \\times 7 \\times 6 \\times 5}{4 \\times 3 \\times 2 \\times 1} = 70$.",
+        "qImg": "",
+        "aImg": ""
+        },
+        {
+        "id": "5",
+        "type": "question",
+        "title": "Counting Rectangles",
+        "question": "Find the number of rectangles in the given figure ($3 \\times 4$ grid).",
+        "answer": "To form a rectangle, we must choose two horizontal lines and two vertical lines from the grid. <br><br> Count the horizontal lines: <br> In a grid with 3 rows, there are 4 horizontal lines. <br> The number of ways to choose 2 horizontal lines is: $\\frac{4 \\times 3}{2} = 6$ (or $\\binom{4}{2} = 6$). <br><br> Count the vertical lines: <br> In a grid with 4 columns, there are 5 vertical lines. <br> The number of ways to choose 2 vertical lines is: $\\frac{5 \\times 4}{2} = 10$. (or $\\binom{5}{2} = 10$) <br><br> Final Total: <br> Multiply the number of horizontal pairs by the number of vertical pairs: <br> Total rectangles = $6 \\times 10 = 60$. <br><br> Another method: <br> This method is a shortcut for counting rectangles in a grid by summing the possible widths and heights. It is based on the idea that any rectangle is defined by its span across the rows and its span across the columns. <br><br> Here is the breakdown of why $(1 + 2 + 3) \\times (1 + 2 + 3 + 4) = 60$ works for a $3 \\times 4$ grid: <br><br> The Horizontal Component: (1 + 2 + 3) <br> In a grid with 3 rows, we look at how many \"vertical spans\" (heights) are possible: <br> • Rectangles with height of 1 unit: There are 3 possible positions. <br> • Rectangles with height of 2 units: There are 2 possible positions. <br> • Rectangles with height of 3 units: There is 1 possible position. <br> • Total height options: $3 + 2 + 1 = 6$. <br><br> The Vertical Component: (1 + 2 + 3 + 4) <br> In a grid with 4 columns, we look at how many \"horizontal spans\" (widths) are possible: <br> • Rectangles with width of 1 unit: There are 4 possible positions. <br> • Rectangles with width of 2 units: There are 3 possible positions. <br> • Rectangles with width of 3 units: There are 2 possible positions. <br> • Rectangles with width of 4 units: There is 1 possible position. <br> • Total width options: $4 + 3 + 2 + 1 = 10$. <br><br> The Final Result: <br> To form a unique rectangle, you must pair one horizontal option with one vertical option. <br> Total Rectangles = $6 \\times 10 = 60$.",
+        "qImg": "data:image/jpeg;base64,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",
+        "aImg": ""
+        }
+
+
+
+
+
+
+
+     ]
+     }
+
+
+
+
+        ];
+
+
+        function init() {
+            const nav = document.getElementById('nav-list');
+            nav.innerHTML = '';
+            const scrollTarget = document.getElementById('content'); // Get the scrollable div
+
+            courseData.forEach((topic, tIdx) => {
+                const details = document.createElement('details');
+                details.className = 'sidebar-group';
+
+                const summary = document.createElement('summary');
+                summary.className = 'compact-title';
+                summary.innerHTML = `${tIdx + 1}. ${topic.mainTitle}`;
+
+                // 1. INITIAL STATE (Runs once per refresh for the first item)
+                if (tIdx === 0) {
+                    summary.classList.add('active-link');
+                    details.open = true;
+                    displayTopic(tIdx);
+
+                    // Fix: Scroll to top on page load
+                    if (scrollTarget) scrollTarget.scrollTop = 0;
+                }
+
+                // 2. CLICK LOGIC
+                summary.onclick = (e) => {
+                    document.querySelectorAll('.compact-title').forEach(el => el.classList.remove('active-link'));
+                    document.querySelectorAll('.sidebar-group').forEach(det => {
+                        if (det !== details) det.open = false;
+                    });
+
+                    summary.classList.add('active-link');
+                    displayTopic(tIdx);
+
+                    // Fix: Scroll to top when clicking a new problem
+                    if (scrollTarget) {
+                        scrollTarget.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                };
+
+                const ul = document.createElement('ul');
+                ul.className = 'parts-list';
+                topic.parts.forEach(p => {
+                    const li = document.createElement('li');
+                    li.innerText = p.title.replace(/^Part\s[A-Z]:\s/i, "");
+                    ul.appendChild(li);
+                });
+
+                details.appendChild(summary);
+                details.appendChild(ul);
+                nav.appendChild(details);
+            });
+            document.getElementById('count-display').innerText = courseData.length;
+        }
+
+
+function displayTopic(index) {
+    const container = document.getElementById('problem-container');
+    container.innerHTML = '';
+    const topic = courseData[index];
+    const section = document.createElement('div');
+    section.className = 'topic-section';
+
+    // Helper to generate Image HTML if a string exists
+    const getImageHTML = (imgData) => {
+        if (!imgData || imgData.trim() === "") return "";
+
+        // Add prefix if user forgot to include it in the JSON string
+        const src = imgData.startsWith('data:image')
+                    ? imgData
+                    : `data:image/png;base64,${imgData}`;
+
+        return `<img src="${src}" class="math-image" alt="Problem Illustration">`;
+    };
+
+    topic.parts.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'puzzle-card';
+
+        if (p.type === "context") {
+            card.innerHTML = `
+                <div class="header"><h3>${p.title}</h3></div>
+                <div class="question-body">${p.content}</div>
+                ${getImageHTML(p.qImg)}
+            `;
+        } else {
+            card.innerHTML = `
+                <div class="header"><h3>${p.id}. ${p.title}</h3></div>
+                <div class="question-body">${p.question}</div>
+                ${getImageHTML(p.qImg)}
+
+                <div class="answer-link" onclick="toggleAns('${p.id}')">View Solution ▼</div>
+
+                <div id="ans-box-${p.id}" class="answer-box hidden">
+                    <div>${p.answer}</div>
+                    ${getImageHTML(p.aImg)}
+                </div>
+            `;
+        }
+        section.appendChild(card);
+    });
+
+    container.appendChild(section);
+
+    // Re-run KaTeX if present
+    if (window.renderMathInElement) {
+        renderMathInElement(container, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+        });
+    }
+}
+
+
+
+
+
+
+function filterContent() {
+        const query = document.getElementById('search-box').value.toLowerCase();
+        const sidebarGroups = document.querySelectorAll('.sidebar-group');
+        let visibleCount = 0;
+
+        courseData.forEach((topic, index) => {
+                const sidebar = sidebarGroups[index];
+                const match = topic.mainTitle.toLowerCase().includes(query) ||
+                                            topic.parts.some(p => p.title.toLowerCase().includes(query));
+
+                if (match) {
+                        sidebar.classList.remove('hidden');
+                        visibleCount++;
+                } else {
+                        sidebar.classList.add('hidden');
+                }
+        });
+
+        document.getElementById('count-display').innerText = visibleCount;
+}
+
+
+
+
+
+
+function toggleAns(id) {
+    const box = document.getElementById(`ans-box-${id}`);
+    if (box) {
+        box.classList.toggle('hidden');
+    }
+}
+
+
+window.onload = init;
+</script>
+
+
+</body>
+</html>

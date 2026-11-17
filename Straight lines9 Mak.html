@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Straight Lines and Coordinate Geometry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+   <!-- KaTeX for Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<!-- Library Styles and Scripts -->
+ <link rel="stylesheet" type="text/css" href="https://jsxgraph.org/distrib/jsxgraph.css" />
+ <script type="text/javascript" src="https://jsxgraph.org/distrib/jsxgraphcore.js"></script>
+
+
+    <style>
+        .jxgbox { border: 1px solid #cbd5e1; border-radius: 0px; }
+        .config-panel { background-color: #f8fafc; border: 1px solid #cbd5e1; border-bottom: none; }
+        /* Change this line */
+        .info-box { background-color: white; border: 1px solid #cbd5e1; border-top: none; min-height: auto; padding: 15px; }
+        .activity-separator { border-top: 6px solid #1e3a8a; margin: 2rem 0; }
+        .config-panel, .jxgbox, .info-box {
+            width: 500px !important;
+            max-width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+        }
+    </style>
+
+       <style>
+        .reveal-box { display: none; margin-top: 0.5rem; padding: 0.75rem; background: #f0f9ff; border-left: 4px solid #3b82f6; border-radius: 0.5rem; }
+        .show { display: block !important; }
+        .section-card { background: white; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.05); padding: 2rem; margin-bottom: 3rem; border-top: 6px solid #1e3a8a; }
+        .math-block { background: #f8fafc; padding: 0.5rem; border-radius: 0.25rem; margin-bottom: 0.25rem; font-size: 0.85rem; }
+    </style>
+    <script>function toggle(id) { const el = document.getElementById(id); if (el) el.classList.toggle('show'); }</script>
+</head>
+<body class="bg-slate-50 p-6 md:p-12 font-sans">
+    <a href="grade9.html" style="padding-left:70px" class="back-btn">&#8592; Back to Grade 9</a>
+   <header class="max-w-6xl mx-auto bg-white rounded-2xl p-8 mb-12 shadow-md text-center border-b-4 border-blue-900">
+   <div style="display: flex; justify-content: center; align-items: center;">
+    <img src= "data:image/jpeg;base64,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";>
+    </div>
+    </br>
+        <h1 class="text-3xl md:text-5xl font-black text-blue-900 tracking-tight uppercase">Straight lines and Coordinate Geometry</h1>
+        <p class="text-xl font-bold text-slate-500 uppercase tracking-widest mt-2">Grade 9 | 2025-2026 Academic Session</p>
+    <div class="mt-6 inline-block bg-blue-100 text-blue-800 px-4 py-1 rounded-full font-semibold">Interactive document by Mathematics Department General Coordinator</div>
+    </header>
+
+    <main class="max-w-4xl mx-auto">
+
+        <!-- ACTIVITY 1 -->
+        <section class="mb-10">
+            <h2 class="text-xl font-bold text-blue-800 mb-4">Activity 1: Equation of non-vertical straight line $y=ax+b$</h2>
+            <div class="config-panel p-4 flex flex-wrap gap-4 items-center rounded-t-lg">
+                <span class="font-bold text-slate-700 text-sm">Slider Settings:</span>
+                <label class="text-xs">Min: <input type="number" id="sMin1" value="-5" class="w-12 border p-1 rounded"></label>
+                <label class="text-xs">Max: <input type="number" id="sMax1" value="5" class="w-12 border p-1 rounded"></label>
+                <label class="text-xs">Step: <input type="number" id="sStep1" value="0.5" class="w-12 border p-1 rounded"></label>
+                <button onclick="updateSliderConfig1()" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded hover:bg-blue-700 transition font-bold uppercase">Apply</button>
+            </div>
+            <div id="jxgbox1" class="jxgbox w-[500px] h-[500px]"></div>
+            <div id="infoBox1" class="info-box w-[500px] p-6 rounded-b-lg"></div>
+        </section>
+
+        <div class="activity-separator"></div>
+
+        <!-- ACTIVITY: LINEAR INTERSECTION -->
+        <section class="mb-10">
+            <h2 class="text-xl font-bold text-blue-800 mb-4">Activity: Intersection of Two straight lines</h2>
+            <div class="config-panel p-4 flex flex-wrap gap-4 items-center rounded-t-lg">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-blue-700 text-sm uppercase">Line 1:</span>
+                    <span class="text-sm">$y = $</span>
+                    <input type="number" id="inputA1" value="1" class="w-12 border p-1 rounded text-xs" oninput="updateLines()">
+                    <span class="text-sm">$x + $</span>
+                    <input type="number" id="inputB1" value="2" class="w-12 border p-1 rounded text-xs" oninput="updateLines()">
+                </div>
+                <div class="flex items-center gap-2 border-l pl-4 border-slate-300">
+                    <span class="font-bold text-red-700 text-sm uppercase">Line 2:</span>
+                    <span class="text-sm">$y = $</span>
+                    <input type="number" id="inputA2" value="-1" class="w-12 border p-1 rounded text-xs" oninput="updateLines()">
+                    <span class="text-sm">$x + $</span>
+                    <input type="number" id="inputB2" value="5" class="w-12 border p-1 rounded text-xs" oninput="updateLines()">
+                </div>
+            </div>
+            <div id="jxgbox_linear" class="jxgbox w-[500px] h-[500px]"></div>
+            <div id="infoBox_linear" class="info-box w-[500px] p-6 rounded-b-lg"></div>
+        </section>
+
+        <div class="activity-separator"></div>
+
+           <!-- SECTION 1: Finding Equation -->
+        <section class="section-card">
+            <h2 class="text-2xl font-bold text-blue-900 mb-6 pb-2 border-b">1. Finding equations of straight lines with given descriptions</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xs font-black text-slate-400 uppercase mb-4">10 Solved Examples</h3>
+                    <div class="space-y-2">
+                        <div class="math-block">1. Passing through $A(3,1), B(-2,4) \Rightarrow y = -0.6x + 2.8$</div>
+                        <div class="math-block">2. Passing through $P(2,-3)$, parallel to $y = 3x + 1 \Rightarrow y = 3x - 9$</div>
+                        <div class="math-block">3. Passing through $M(0,4)$, perpendicular to $y = 2x - 5 \Rightarrow y = -0.5x + 4$</div>
+                        <div class="math-block">4. Passing through $A(1,1), B(3,7) \Rightarrow y = 3x - 2$</div>
+                        <div class="math-block">5. Passing through $(5,2)$, perpendicular to $x$-axis $\Rightarrow x = 5$</div>
+                        <div class="math-block">6. Passing through $(-4,1)$, parallel to $x + 2y = 4 \Rightarrow y = -0.5x - 1$</div>
+                        <div class="math-block">7. Passing through $(0,0)$, perpendicular to $y = -x + 2 \Rightarrow y = x$</div>
+                        <div class="math-block">8. Passing through $(-2,6), B(4,-3) \Rightarrow y = -1.5x + 3$</div>
+                        <div class="math-block">9. Passing through $(3,2)$, parallel to $y = 5 \Rightarrow y = 2$</div>
+                        <div class="math-block">10. Passing through $(-1,-5)$, perpendicular to $3x - y = 2 \Rightarrow y = -\frac{1}{3}x - \frac{16}{3}$</div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xs font-black text-blue-600 uppercase mb-4">10 Practice Exercises</h3>
+                    <div class="space-y-2">
+                        <button onclick="toggle('s1p1')" class="w-full text-left p-2 border rounded text-sm">1. Passing through $A(1,2)$ and $B(3,8)$</button>
+                        <div id="s1p1" class="reveal-box text-sm">$y = 3x - 1$</div>
+
+                        <button onclick="toggle('s1p2')" class="w-full text-left p-2 border rounded text-sm">2. Passing through $(4,-1)$, parallel to $y = 2x + 5$</button>
+                        <div id="s1p2" class="reveal-box text-sm">$y = 2x - 9$</div>
+
+                        <button onclick="toggle('s1p3')" class="w-full text-left p-2 border rounded text-sm">3. Passing through $(0,3)$, perpendicular to $y = \frac{1}{3}x - 2$</button>
+                        <div id="s1p3" class="reveal-box text-sm">$y = -3x + 3$</div>
+
+                        <button onclick="toggle('s1p4')" class="w-full text-left p-2 border rounded text-sm">4. Passing through $P(-2,5)$ and $Q(2,1)$</button>
+                        <div id="s1p4" class="reveal-box text-sm">$y = -x + 3$</div>
+
+                        <button onclick="toggle('s1p5')" class="w-full text-left p-2 border rounded text-sm">5. Parallel to $y = -4x$, passing through the origin</button>
+                        <div id="s1p5" class="reveal-box text-sm">$y = -4x$</div>
+
+                        <button onclick="toggle('s1p6')" class="w-full text-left p-2 border rounded text-sm">6. Perpendicular to $x - y = 1$, passing through $(2,2)$</button>
+                        <div id="s1p6" class="reveal-box text-sm">$y = -x + 4$</div>
+
+                        <button onclick="toggle('s1p7')" class="w-full text-left p-2 border rounded text-sm">7. Passing through $(5,10)$ and $(-5,10)$</button>
+                        <div id="s1p7" class="reveal-box text-sm">$y = 10$</div>
+
+                        <button onclick="toggle('s1p8')" class="w-full text-left p-2 border rounded text-sm">8. Parallel to $2x + y = 6$, passing through $(1,4)$</button>
+                        <div id="s1p8" class="reveal-box text-sm">$y = -2x + 6$</div>
+
+                        <button onclick="toggle('s1p9')" class="w-full text-left p-2 border rounded text-sm">9. Perpendicular to $y = 5$, passing through $(3,3)$</button>
+                        <div id="s1p9" class="reveal-box text-sm">$x = 3$</div>
+
+                        <button onclick="toggle('s1p10')" class="w-full text-left p-2 border rounded text-sm">10. Passing through $M(-1,-1)$ and $N(1,1)$</button>
+                        <div id="s1p10" class="reveal-box text-sm">$y = x$</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="activity-separator"></div>
+
+        <!-- SECTION 2: Slope-Intercept Form -->
+        <section class="section-card">
+            <h2 class="text-2xl font-bold text-blue-900 mb-6 pb-2 border-b">2. Writing the equation in Slope-Intercept Form $y = mx + c$</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xs font-black text-slate-400 uppercase mb-4">10 Solved Examples</h3>
+                    <div class="space-y-2">
+                        <div class="math-block">1. $\cfrac{x}{2} + y = 3 \Rightarrow y = -0.5x + 3$</div>
+                        <div class="math-block">2. $2x + 3y = 6 \Rightarrow y = -\cfrac{2}{3}x + 2$</div>
+                        <div class="math-block">3. $5x - y = 10 \Rightarrow y = 5x - 10$</div>
+                        <div class="math-block">4. $4x - 2y = 8 \Rightarrow y = 2x - 4$</div>
+                        <div class="math-block">5. $x + y = 0 \Rightarrow y = -x$</div>
+                        <div class="math-block">6. $3x = 9y - 18 \Rightarrow y = \cfrac{1}{3}x + 2$</div>
+                        <div class="math-block">7. $x/3 - y/2 = 1 \Rightarrow y = \cfrac{2}{3}x - 2$</div>
+                        <div class="math-block">8. $7x + 2y - 14 = 0 \Rightarrow y = -3.5x + 7$</div>
+                        <div class="math-block">9. $y - 4 = 2(x + 1) \Rightarrow y = 2x + 6$</div>
+                        <div class="math-block">10. $0.5x + 0.2y = 1 \Rightarrow y = -2.5x + 5$</div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xs font-black text-blue-600 uppercase mb-4">10 Practice Exercises</h3>
+                    <div class="space-y-2">
+                        <button onclick="toggle('s2p1')" class="w-full text-left p-2 border rounded text-sm">1. $3x + y = 5$</button>
+                        <div id="s2p1" class="reveal-box text-sm">$y = -3x + 5$</div>
+                        <button onclick="toggle('s2p2')" class="w-full text-left p-2 border rounded text-sm">2. $x - 2y = 4$</button>
+                        <div id="s2p2" class="reveal-box text-sm">$y = 0.5x - 2$</div>
+                        <button onclick="toggle('s2p3')" class="w-full text-left p-2 border rounded text-sm">3. $2x - 4y = 12$</button>
+                        <div id="s2p3" class="reveal-box text-sm">$y = 0.5x - 3$</div>
+                        <button onclick="toggle('s2p4')" class="w-full text-left p-2 border rounded text-sm">4. $\cfrac{x}{4} + \cfrac{y}{4} = 1$</button>
+                        <div id="s2p4" class="reveal-box text-sm">$y = -x + 4$</div>
+                        <button onclick="toggle('s2p5')" class="w-full text-left p-2 border rounded text-sm">5. $6x + 2y = 10$</button>
+                        <div id="s2p5" class="reveal-box text-sm">$y = -3x + 5$</div>
+                        <button onclick="toggle('s2p6')" class="w-full text-left p-2 border rounded text-sm">6. $y + 3 = -2x$</button>
+                        <div id="s2p6" class="reveal-box text-sm">$y = -2x - 3$</div>
+                        <button onclick="toggle('s2p7')" class="w-full text-left p-2 border rounded text-sm">7. $5x = y + 2$</button>
+                        <div id="s2p7" class="reveal-box text-sm">$y = 5x - 2$</div>
+                        <button onclick="toggle('s2p8')" class="w-full text-left p-2 border rounded text-sm">8. $\cfrac{x}{5} - y = 2$</button>
+                        <div id="s2p8" class="reveal-box text-sm">$y = 0.2x - 2$</div>
+                        <button onclick="toggle('s2p9')" class="w-full text-left p-2 border rounded text-sm">9. $4y - 8 = 12x$</button>
+                        <div id="s2p9" class="reveal-box text-sm">$y = 3x + 2$</div>
+                        <button onclick="toggle('s2p10')" class="w-full text-left p-2 border rounded text-sm">10. $2x + 5y = 0$</button>
+                        <div id="s2p10" class="reveal-box text-sm">$y = -0.4x$</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+            <div class="activity-separator"></div>
+
+        <!-- SECTION 3: Midpoint and Distance -->
+        <section class="section-card">
+            <h2 class="text-2xl font-bold text-blue-900 mb-6 pb-2 border-b">3. Formulas and Geometric Proofs</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xs font-black text-slate-400 uppercase mb-4">10 Solved Examples</h3>
+                    <div class="space-y-2">
+                        <div class="math-block">1. Midpoint of $A(3,2), B(-1,4) \Rightarrow M(1,3)$</div>
+                        <div class="math-block">2. Distance between $A(0,0), B(3,4) \Rightarrow d = 5$</div>
+                        <div class="math-block">3. Prove triangle right $\triangle$: $A(0,0), B(3,0), C(3,4) \Rightarrow 3^2+4^2=5^2$</div>
+                        <div class="math-block">4. Prove parallelogram $ABCD$: Check diag midpoints $M_{AC} = M_{BD}$</div>
+                        <div class="math-block">5. Prove rectangle: $ABCD$ slopes $m_{AB} \cdot m_{BC} = -1$</div>
+                        <div class="math-block">6. Distance between $P(1,1), Q(4,5) \Rightarrow d = 5$</div>
+                        <div class="math-block">7. Midpoint $R(-4,-2), S(2,8) \Rightarrow M(-1,3)$</div>
+                        <div class="math-block">8. Prove triangle isosceles: $A(1,1), B(5,1), C(3,4) \Rightarrow AC=BC=\sqrt{13}$</div>
+                        <div class="math-block">9. Prove rhombus: Check all sides equal $d_{AB}=d_{BC}=d_{CD}=d_{DA}$</div>
+                        <div class="math-block">10. Prove square: Sides equal AND diagonals equal</div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xs font-black text-blue-600 uppercase mb-4">10 Practice Exercises</h3>
+                    <div class="space-y-2">
+                        <button onclick="toggle('s3p1')" class="w-full text-left p-2 border rounded text-sm">1. Midpoint of $A(5,8)$ and $B(1,2)$</button>
+                        <div id="s3p1" class="reveal-box text-sm">$(3, 5)$</div>
+                        <button onclick="toggle('s3p2')" class="w-full text-left p-2 border rounded text-sm">2. Distance between $C(-1,-1)$ and $D(2,3)$</button>
+                        <div id="s3p2" class="reveal-box text-sm">$d = 5$</div>
+                        <button onclick="toggle('s3p3')" class="w-full text-left p-2 border rounded text-sm">3. Show $A(0,0), B(4,0), C(0,3)$ is right-angled</button>
+                        <div id="s3p3" class="reveal-box text-sm">$AB=4, AC=3, BC=5 \therefore 4^2+3^2=5^2$</div>
+                        <button onclick="toggle('s3p4')" class="w-full text-left p-2 border rounded text-sm">4. Show $A(0,0), B(2,0), C(2,2), D(0,2)$ is a square</button>
+                        <div id="s3p4" class="reveal-box text-sm">Sides=2, Diagonals=$\sqrt{8}$</div>
+                        <button onclick="toggle('s3p5')" class="w-full text-left p-2 border rounded text-sm">5. Midpoint of $P(-10,4)$ and $Q(2,0)$</button>
+                        <div id="s3p5" class="reveal-box text-sm">$(-4, 2)$</div>
+                        <button onclick="toggle('s3p6')" class="w-full text-left p-2 border rounded text-sm">6. Distance between $R(2,2)$ and $S(5,6)$</button>
+                        <div id="s3p6" class="reveal-box text-sm">$d = 5$</div>
+                        <button onclick="toggle('s3p7')" class="w-full text-left p-2 border rounded text-sm">7. Show $A(1,1), B(4,1), C(5,3), D(2,3)$ is a parallelogram</button>
+                        <div id="s3p7" class="reveal-box text-sm">$M_{AC} = M_{BD} = (3, 2)$</div>
+                        <button onclick="toggle('s3p8')" class="w-full text-left p-2 border rounded text-sm">8. Is $\triangle$ with $A(2,2), B(6,2), C(4,5)$ isosceles?</button>
+                        <div id="s3p8" class="reveal-box text-sm">Yes, $AC=BC=\sqrt{13}$</div>
+                        <button onclick="toggle('s3p9')" class="w-full text-left p-2 border rounded text-sm">9. Midpoint of the origin and $(8, -6)$</button>
+                        <div id="s3p9" class="reveal-box text-sm">$(4, -3)$</div>
+                        <button onclick="toggle('s3p10')" class="w-full text-left p-2 border rounded text-sm">10. Show $A(0,0), B(3,4), C(0,8), D(-3,4)$ is a rhombus</button>
+                        <div id="s3p10" class="reveal-box text-sm">All sides $d=5$</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        /* --- HELPERS --- */
+        function fmt(num) { return Number(parseFloat(num).toFixed(2)); }
+
+        // Formats ax+b to clean math: 1x -> x, -1x -> -x, + 0 -> (nothing)
+        function formatTerm(val, variable, isLeading = false) {
+            if (val === 0) return "";
+            let sign = val > 0 ? (isLeading ? "" : " + ") : (isLeading ? "-" : " - ");
+            let absVal = Math.abs(val);
+            let coeff = (absVal === 1 && variable !== "") ? "" : fmt(absVal);
+            return sign + coeff + variable;
+        }
+
+        function buildEq(a, b) {
+            let termA = formatTerm(a, "x", true);
+            let termB = formatTerm(b, "", termA === "");
+            if (termA === "" && termB === "") return "0";
+            return termA + termB;
+        }
+
+        const standardGrid = {
+            boundingbox: [-10, 10, 10, -10], axis: true, showCopyright: false, keepaspectratio: true,
+            defaultAxes: {
+                  x: { ticks: { insertTicks: false, ticksDistance: 1, minorTicks: 0 } },
+                y: { ticks: { insertTicks: false, ticksDistance: 1, minorTicks: 0 } }
+            }
+        };
+
+        /* --- ACT 1 --- */
+        const board1 = JXG.JSXGraph.initBoard('jxgbox1', standardGrid);
+        let slA1 = board1.create('slider', [[-9, 9], [-4, 9], [-5, 1, 5]], { name: 'a' });
+        let slB1 = board1.create('slider', [[-9, 8], [-4, 8], [-5, 2, 5]], { name: 'b' });
+        /* Change this line in Activity 1 */
+        board1.create('line', [() => slB1.Value(), () => slA1.Value(), -1], { strokeColor: '#1e40af', strokeWidth: 3 });
+        function updateInfo1() {
+            const a = slA1.Value();
+            const b = slB1.Value();
+            document.getElementById('infoBox1').innerHTML = `<p class="text-lg">Equation: <b class="text-blue-700">$y = ${buildEq(a, b)}$</b></p>`;
+            if (window.renderMathInElement) renderMathInElement(document.getElementById('infoBox1'), { delimiters: [{left: "$", right: "$", display: false}] });
+        }
+        board1.on('update', updateInfo1);
+        updateInfo1();
+
+        function updateSliderConfig1() {
+            const min = parseFloat(document.getElementById('sMin1').value);
+            const max = parseFloat(document.getElementById('sMax1').value);
+            const step = parseFloat(document.getElementById('sStep1').value);
+            slA1.setAttribute({ min: min, max: max, snapWidth: step });
+            slB1.setAttribute({ min: min, max: max, snapWidth: step });
+            board1.update();
+        }
+
+        /* --- LINEAR INTERSECTION --- */
+        const boardL = JXG.JSXGraph.initBoard('jxgbox_linear', standardGrid);
+        let line1 = boardL.create('line', [
+            () => parseFloat(document.getElementById('inputB1').value || 0),
+            () => parseFloat(document.getElementById('inputA1').value || 0),
+            -1
+        ], {strokeColor: 'blue', strokeWidth: 2});
+        let line2 = boardL.create('line', [
+            () => parseFloat(document.getElementById('inputB2').value || 0),
+            () => parseFloat(document.getElementById('inputA2').value || 0),
+            -1
+        ], {strokeColor: 'red', strokeWidth: 2});
+
+        boardL.create('intersection', [line1, line2, 0], {
+            name: 'P', withLabel: true, fillColor: 'yellow', strokeColor: 'black', size: 4
+        });
+
+        function updateLines() {
+            boardL.update();
+            const a1 = parseFloat(document.getElementById('inputA1').value || 0);
+            const b1 = parseFloat(document.getElementById('inputB1').value || 0);
+            const a2 = parseFloat(document.getElementById('inputA2').value || 0);
+            const b2 = parseFloat(document.getElementById('inputB2').value || 0);
+            const info = document.getElementById('infoBox_linear');
+
+            if (a1 === a2) {
+                info.innerHTML = b1 === b2 ? `<p class="text-blue-600 font-bold">Lines are coincident (same line).</p>` : `<p class="text-red-600 font-bold">Lines are parallel. No intersection.</p>`;
+                return;
+            }
+
+            const x = (b2 - b1) / (a1 - a2);
+            const y = a1 * x + b1;
+
+            info.innerHTML = `
+                <div class="space-y-2">
+                    <p><strong>Equations:</strong></p>
+                    <p>$L_1: y = ${buildEq(a1, b1)}$</p>
+                    <p>$L_2: y = ${buildEq(a2, b2)}$</p>
+                    <hr class="my-2 border-slate-200">
+                    <p class="text-blue-800 font-bold">Intersection Point: $P(${fmt(x)}, ${fmt(y)})$</p>
+                </div>
+            `;
+            if (window.renderMathInElement) renderMathInElement(info, { delimiters: [{left: "$", right: "$", display: false}] });
+        }
+
+        window.onload = () => {
+            updateLines();
+            if (window.renderMathInElement) renderMathInElement(document.body, { delimiters: [{left: "$", right: "$", display: false}] });
+        };
+    </script>
+
+   <footer class="bg-slate-900 text-white py-12 text-center mt-12 rounded-t-3xl shadow-inner">
+        <p class="font-black text-2xl tracking-tighter">General Coordinator</p>
+        <p class="text-slate-500 text-sm mt-2 uppercase tracking-widest">Mathematics Department &copy; 2025-2026</p>
+        <div class="mt-6 flex justify-center gap-4">
+            <button onclick="window.print()" class="bg-white/10 px-4 py-2 rounded-lg text-xs hover:bg-white/20 transition">Download as PDF</button>
+        </div>
+    </footer>
+
+
+</body>
+</html>
